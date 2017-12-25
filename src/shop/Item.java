@@ -18,6 +18,7 @@ public class Item {
     private int monthstock;
     private int daliystock;
     private double totalprice;
+    private String date;
 
     /**
      * @return the itemID
@@ -129,6 +130,20 @@ public class Item {
      */
     public void setTotalprice(double totalprice) {
         this.totalprice = totalprice;
+    }
+
+    /**
+     * @return the date
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(String date) {
+        this.date = date;
     }
     
 }
