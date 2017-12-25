@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Acer
  */
 public class sales extends javax.swing.JFrame {
+    
     DBOP db = new DBOP();
     static double amount = 0;
     double discount = 0;
@@ -25,7 +27,11 @@ public class sales extends javax.swing.JFrame {
      * Creates new form sales
      */
     public sales() {
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        this.setUndecorated(true);
+        this.setVisible(true);
         initComponents();
+        
     }
 
     /**
