@@ -270,8 +270,6 @@ public class addItem extends javax.swing.JFrame {
                 .addContainerGap(259, Short.MAX_VALUE))
         );
 
-        jPanel2.getAccessibleContext().setAccessibleName("Add New Item");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(

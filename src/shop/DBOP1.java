@@ -14,8 +14,12 @@ import javax.swing.JOptionPane;
  * @author pasindu
  */
 public class DBOP1 {
+
+    /**
+     *
+     */
     
-    
+     String cursql=""; //use for report genarating
      void addItem(Item I){
         try{
             Statement s = Database.getStatement();
@@ -132,6 +136,74 @@ public class DBOP1 {
            } catch (Exception e) {
                e.printStackTrace();
            }
+       }
+       
+       //report genaring
+       
+       ResultSet getReport(String from,String to){
+           String sql="SELECT daily.item_id  ,item.item_name AS 'Name', SUM(`d_quantity`) AS 'Sold Quantity' FROM `daily` INNER JOIN item on daily.item_id=item.item_id WHERE daily.date BETWEEN '"+from+"' AND '"+to+"' GROUP by `item_id`";
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
+               cursql=sql;
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return null;
+       }
+       
+       ResultSet getOneReport(String date){
+           String sql="SELECT daily.item_id AS 'ItemID',item.item_name AS 'Name',`d_quantity` AS 'Sold Quantity' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"'";
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
+               cursql=sql;
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return null;
+       }
+       
+       ResultSet reportSearch(int seflag,String word,String from,String to,String date){
+           
+           if (seflag==1) {
+               String sql="SELECT daily.item_id,item.item_name AS 'Name', SUM(`d_quantity`) AS 'Sold Quantity' FROM `daily` INNER JOIN item on daily.item_id=item.item_id WHERE daily.date BETWEEN '"+from+"' AND '"+to+"' AND item.item_name LIKE '%"+word+"%' OR daily.item_id LIKE '%"+word+"%' GROUP by `item_id`";
+               try {
+                    
+                    Statement s = Database.getStatement();
+                    ResultSet rs = s.executeQuery(sql);
+                    return rs;
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }else if (seflag==2) {
+               String sql="SELECT daily.item_id AS 'ItemID',item.item_name AS 'Name',`d_quantity` AS 'Sold Quantity' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"' AND item.item_name LIKE '%"+word+"%' OR daily.item_id LIKE '%"+word+"%'";
+               try {
+                    
+                    Statement s = Database.getStatement();
+                    ResultSet rs = s.executeQuery(sql);
+                    return rs;
+                   
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }else{
+               return null;
+           }
+         return null;
+       }
+       
+       ResultSet getAll(){
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(cursql);
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return null;
        }
      
      
