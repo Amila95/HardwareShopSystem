@@ -14,6 +14,7 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
+
 /**
  *
  * @author Umesh Saranga
@@ -48,6 +49,7 @@ public class Admin_main extends javax.swing.JFrame {
         btnMonthlyReports = new javax.swing.JLabel();
         btnDailyReports = new javax.swing.JLabel();
         btnAddItems = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -83,7 +85,7 @@ public class Admin_main extends javax.swing.JFrame {
         btnMonthlyReports.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         btnMonthlyReports.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnMonthlyReports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shop/Admin/home_Report.png"))); // NOI18N
-        btnMonthlyReports.setText("Monthly Reports");
+        btnMonthlyReports.setText("  Monthly Reports                    ");
         btnMonthlyReports.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
         btnMonthlyReports.setOpaque(true);
         btnMonthlyReports.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -94,13 +96,13 @@ public class Admin_main extends javax.swing.JFrame {
                 btnMonthlyReportsMouseExited(evt);
             }
         });
-        jPanel2.add(btnMonthlyReports, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 70, 190, 25));
+        jPanel2.add(btnMonthlyReports, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, 190, 25));
 
         btnDailyReports.setBackground(new java.awt.Color(190, 190, 190));
         btnDailyReports.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         btnDailyReports.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnDailyReports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shop/Admin/home_Report.png"))); // NOI18N
-        btnDailyReports.setText("Daily Reports");
+        btnDailyReports.setText("   Daily Reports                         ");
         btnDailyReports.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
         btnDailyReports.setOpaque(true);
         btnDailyReports.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -111,12 +113,13 @@ public class Admin_main extends javax.swing.JFrame {
                 btnDailyReportsMouseExited(evt);
             }
         });
-        jPanel2.add(btnDailyReports, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 190, 25));
+        jPanel2.add(btnDailyReports, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 190, 25));
 
         btnAddItems.setBackground(new java.awt.Color(190, 190, 190));
         btnAddItems.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         btnAddItems.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnAddItems.setText("Add Item");
+        btnAddItems.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shop/Admin/home_Add_Item.png"))); // NOI18N
+        btnAddItems.setText("  Add Item                                  ");
         btnAddItems.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
         btnAddItems.setOpaque(true);
         btnAddItems.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -130,9 +133,12 @@ public class Admin_main extends javax.swing.JFrame {
                 btnAddItemsMouseExited(evt);
             }
         });
-        jPanel2.add(btnAddItems, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 110, 190, 25));
+        jPanel2.add(btnAddItems, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, 190, 25));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 670, -1));
+
+        jPanel1.setBackground(new java.awt.Color(49, 58, 115));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 670, 220));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -146,11 +152,11 @@ public class Admin_main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMonthlyReportsMouseExited
 
     private void btnDailyReportsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDailyReportsMouseEntered
-        // TODO add your handling code here:
+        setBtnColour(btnDailyReports);
     }//GEN-LAST:event_btnDailyReportsMouseEntered
 
     private void btnDailyReportsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDailyReportsMouseExited
-        // TODO add your handling code here:
+         resetBtnColour(btnDailyReports);
     }//GEN-LAST:event_btnDailyReportsMouseExited
 
     private void btnAddItemsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddItemsMouseClicked
@@ -253,6 +259,7 @@ public class Admin_main extends javax.swing.JFrame {
     private javax.swing.JLabel btnMonthlyReports;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
