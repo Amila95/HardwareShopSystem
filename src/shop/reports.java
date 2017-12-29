@@ -12,10 +12,13 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.proteanit.sql.DbUtils;
 
@@ -71,8 +74,7 @@ public class reports extends javax.swing.JFrame {
 
             d.close();
             
-            File myFile = new File("files//report.pdf");
-            Desktop.getDesktop().open(myFile);
+            
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -342,7 +344,14 @@ public class reports extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAllActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
-        this.printReport();        // TODO add your handling code here:
+        this.printReport();  
+        
+        File myFile = new File("files//report.pdf");
+        try {
+            Desktop.getDesktop().open(myFile);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_btnPrintActionPerformed
 
     /**
