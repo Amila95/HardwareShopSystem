@@ -5,10 +5,18 @@
  */
 package shop;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -25,8 +33,52 @@ public class reports extends javax.swing.JFrame {
      */
     public reports() {
         initComponents();
+        
         btnSearch.setEnabled(false);
         btnAll.setEnabled(false);
+        btnSearch.setEnabled(false);
+    }
+    
+    public void printReport(){
+        try {
+            Document d=new Document();
+            PdfWriter.getInstance(d, new FileOutputStream("files//report.pdf"));
+            ResultSet rs=db1.getAll();
+            int colno = rs.getMetaData().getColumnCount();
+            
+            PdfPTable pt=new PdfPTable(colno);
+            d.open();
+                Paragraph para1 = new Paragraph("Report");
+                para1.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para1);
+                if(seflag==2){
+                    d.add(new Paragraph("Date: "+date));
+                }else if(seflag==1){
+                    d.add(new Paragraph("From: "+from+" To: "+to));
+                }
+                
+                d.add(new Paragraph(" "));
+                pt.addCell("ItemID");
+                pt.addCell("Name");
+                pt.addCell("Sold quantity");
+                while(rs.next()) {
+                   pt.addCell(rs.getString(1));
+                   pt.addCell(rs.getString(2));
+                   pt.addCell(rs.getString(3));
+
+                }
+                d.add(pt);
+
+            d.close();
+            
+            File myFile = new File("files//report.pdf");
+            Desktop.getDesktop().open(myFile);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
     }
 
     /**
@@ -53,6 +105,7 @@ public class reports extends javax.swing.JFrame {
         search_id = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         btnAll = new javax.swing.JButton();
+        btnPrint = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 768));
@@ -189,6 +242,13 @@ public class reports extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnPrint.setText("PRINT");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -204,7 +264,9 @@ public class reports extends javax.swing.JFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(49, 49, 49)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -214,7 +276,9 @@ public class reports extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(229, 229, 229))
+                .addGap(33, 33, 33)
+                .addComponent(btnPrint)
+                .addGap(166, 166, 166))
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -240,6 +304,7 @@ public class reports extends javax.swing.JFrame {
         date_pick_one.setDate(null);
         btnSearch.setEnabled(true);
         btnAll.setEnabled(true);
+        btnSearch.setEnabled(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -255,6 +320,7 @@ public class reports extends javax.swing.JFrame {
         date_pick_to.setDate(null);
         btnSearch.setEnabled(true);
         btnAll.setEnabled(true);
+        btnSearch.setEnabled(true);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -274,6 +340,10 @@ public class reports extends javax.swing.JFrame {
         ResultSet rs=db1.getAll();
         report_table.setModel(DbUtils.resultSetToTableModel(rs));        //all
     }//GEN-LAST:event_btnAllActionPerformed
+
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        this.printReport();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPrintActionPerformed
 
     /**
      * @param args the command line arguments
@@ -312,6 +382,7 @@ public class reports extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAll;
+    private javax.swing.JButton btnPrint;
     private javax.swing.JButton btnSearch;
     private com.toedter.calendar.JDateChooser date_pick_fr;
     private com.toedter.calendar.JDateChooser date_pick_one;
