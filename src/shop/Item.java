@@ -5,6 +5,11 @@
  */
 package shop;
 
+import java.sql.ResultSet;
+import javax.swing.JTextField;
+
+
+
 /**
  *
  * @author Acer
@@ -19,6 +24,13 @@ public class Item {
     private int daliystock;
     private double totalprice;
     private String date;
+    private double amount;
+    private double discount;
+    private double total_price;
+    private double cash;
+    private double change_amount;
+    private int bill_id;
+    
 
     /**
      * @return the itemID
@@ -144,6 +156,98 @@ public class Item {
      */
     public void setDate(String date) {
         this.date = date;
+    }
+
+    /**
+     * @return the amount
+     */
+    public double getAmount() {
+        return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    /**
+     * @return the discount
+     */
+    public double getDiscount() {
+        return discount;
+    }
+
+    /**
+     * @param discount the discount to set
+     */
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    /**
+     * @return the total_price
+     */
+    public double getTotal_price() {
+        return total_price;
+    }
+
+    /**
+     * @param total_price the total_price to set
+     */
+    public void setTotal_price(double total_price) {
+        this.total_price = total_price;
+    }
+
+    /**
+     * @return the cash
+     */
+    public double getCash() {
+        return cash;
+    }
+
+    /**
+     * @param cash the cash to set
+     */
+    public void setCash(double cash) {
+        this.cash = cash;
+    }
+
+    /**
+     * @return the change_amount
+     */
+    public double getChange_amount() {
+        return change_amount;
+    }
+
+    /**
+     * @param change_amount the change_amount to set
+     */
+    public void setChange_amount(double change_amount) {
+        this.change_amount = change_amount;
+    }
+
+    void setTotalprice(JTextField price) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void setItemID(ResultSet rs) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the bill_id
+     */
+    public int getBill_id() {
+        return bill_id;
+    }
+
+    /**
+     * @param bill_id the bill_id to set
+     */
+    public void setBill_id(int bill_id) {
+        this.bill_id = bill_id;
     }
     
 }

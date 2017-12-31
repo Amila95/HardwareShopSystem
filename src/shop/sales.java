@@ -5,6 +5,17 @@
  */
 package shop;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.List;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import com.itextpdf.text.Element;
+import java.io.FileOutputStream;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +40,9 @@ public class sales extends javax.swing.JFrame {
     static double total = 0;
     double Cash= 0;
     double changeprice = 0;
+    double itemprice;
+    int qt;
+    double priceitem;
     
     Map<Integer, Integer> map = (Map<Integer, Integer>) new HashMap<Integer, Integer>();
     
@@ -55,6 +69,103 @@ public class sales extends javax.swing.JFrame {
         initComponents();
         
     }
+    
+    void printReport(Item I){
+        try {
+            //Item I = new Item();
+            Document d=new Document();
+            PdfWriter.getInstance(d, new FileOutputStream("report.pdf"));
+            
+            
+            d.open();
+                Paragraph para0 = new Paragraph("--------------------------------------");
+                //para0.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para0);
+                Paragraph para2 = new Paragraph("--------------------------------------");
+                //para2.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para2);
+                Paragraph para1 = new Paragraph("Goble Care");
+                //para1.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para1);
+                Paragraph para3 = new Paragraph("--------------------------------------");
+                //para3.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para3);
+                Paragraph para4 = new Paragraph("NO:37,Kadana Road,Kadana");
+               // para4.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para4);
+                Paragraph para5 = new Paragraph("Tel: 075 0504648");
+                //para5.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para5);
+                Paragraph para6 = new Paragraph("--------------------------------------");
+                //para6.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para6);
+                Paragraph para7 = new Paragraph("--------------------------------------");
+                //para7.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para7);
+                
+                
+                com.itextpdf.text.List list = new com.itextpdf.text.List();
+                list.add("Item name" +"     "+"Quntity"+"       "+"Price");
+                ResultSet rs = db.getbillitem(I.getBill_id());
+                while(rs.next()) {
+                    Double aitemprice = Double.parseDouble(rs.getString(5)); 
+                    int qty = Integer.parseInt(rs.getString(3));
+                    itemprice = aitemprice * qty ;
+                    list.add(rs.getString(4) +"     "+ rs.getString(3)+"        "+ itemprice );
+                    //list.setAlignment(com.itextpdf.text.List.ALIGN_CENTER);
+                
+                }
+                //list.setAlignment(List.ALIGN_CENTER);
+                d.add(list);
+                Paragraph para8 = new Paragraph("--------------------------------------");
+                //para8.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para8);
+                Paragraph para9 = new Paragraph("TOTAL:"+"                  "+amont.getText());
+                //para9.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para9);
+                Paragraph para10 = new Paragraph("Discount:"+"                  "+discontvalue.getText());
+                //para10.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para10);
+                Paragraph para11 = new Paragraph("--------------------------------------");
+                //para11.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para11);
+                Paragraph para12 = new Paragraph("NET TOTAL:"+"                  "+price.getText());
+                //para12.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para12);
+                Paragraph para14 = new Paragraph("--------------------------------------");
+                //para14.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para14);
+                Paragraph para13 = new Paragraph("Cash:"+"                  "+cash.getText());
+                //para13.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para13);
+                Paragraph para15 = new Paragraph("--------------------------------------");
+                //para15.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para15);
+                Paragraph para16 = new Paragraph("***************************************");
+               // para16.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para16);
+                Paragraph para17 = new Paragraph("BALANCE:"+"                  "+change.getText());
+                //para17.setAlignment(Paragraph.ALIGN_CENTER);
+                d.add(para17);
+                
+                
+                
+                
+                
+                
+
+            d.close();
+            
+            
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        }
+        
+        
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -301,6 +412,12 @@ public class sales extends javax.swing.JFrame {
 
     private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
         Item I = new Item();
+        I.setAmount(Double.parseDouble(amont.getText()));
+        I.setTotal_price(Double.parseDouble(price.getText()));
+        I.setDiscount(Double.parseDouble(discontvalue.getText()));
+        I.setCash(Double.parseDouble(cash.getText()));
+        I.setChange_amount(Double.parseDouble(change.getText()));
+        db.payment(I);
         Set set = map.entrySet();
         Iterator iterator = set.iterator();
         while(iterator.hasNext()) {
@@ -309,9 +426,33 @@ public class sales extends javax.swing.JFrame {
          System.out.println(mentry.getValue());*/
         I.setItemID((int) mentry.getKey());
         I.setQty((int) mentry.getValue());
+        try {
+                ResultSet rs = db.getlastid();
+                while(rs.next()) {
+                    //System.out.println(rs.getString(1));
+                    I.setBill_id(Integer.parseInt(rs.getString(1)));
+                }
+                
+            } catch (Exception ex) {
+                
+            }
+        
         db.settotalcount(I);
-        db.upadatedailypayment(I);
+       db.upadatedailypayment(I);
+       db.setbillitem(I.getBill_id(),I.getItemID(),I.getQty());
         }
+        
+            
+            
+        
+        
+        
+       
+        printReport(I);
+        //db.deletebill(I);
+       
+        
+        
     }//GEN-LAST:event_printActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
