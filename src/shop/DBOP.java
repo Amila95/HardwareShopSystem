@@ -131,6 +131,18 @@ public class DBOP {
         }
     
     }
+    ResultSet getitemid(String item_name){
+        try{
+            Statement s = Database.getStatement();
+            String p = "SELECT item_id,item_price FROM item WHERE item_name='"+item_name+"' ";
+            ResultSet rs = s.executeQuery(p);
+            return rs;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     /*void bill(Item I){
         try{
         Statement s = Database.getStatement();
