@@ -22,6 +22,11 @@ import java.util.logging.Logger;
 
 import net.proteanit.sql.DbUtils;
 
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author pasindu
@@ -30,6 +35,7 @@ public class reports extends javax.swing.JFrame {
     DBOP1 db1 = new DBOP1();
     public int seflag=0;
     public String from="",to="",date="";
+    public String email="pasindurohana@gmail.com";
     
     /**
      * Creates new form reports
@@ -39,7 +45,16 @@ public class reports extends javax.swing.JFrame {
         
         btnSearch.setEnabled(false);
         btnAll.setEnabled(false);
-        btnSearch.setEnabled(false);
+        
+        btnGen.setEnabled(false);
+        btnView.setEnabled(false);
+        btnSend.setEnabled(false);
+        
+        txtEmail.setText(email);
+
+
+        
+        
     }
     
     public void printReport(){
@@ -82,6 +97,72 @@ public class reports extends javax.swing.JFrame {
         
         
     }
+    
+    public void sendMail(){
+    final String username = "nuvan200@gmail.com"; //ur email
+    final String password = "vikum200";
+
+    Properties props = new Properties();
+    props.put("mail.smtp.auth", true);
+    props.put("mail.smtp.starttls.enable", true);
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.port", "587");
+
+    Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+    protected PasswordAuthentication getPasswordAuthentication() {
+        return new PasswordAuthentication(username, password);
+    }                            
+    });
+
+    try {
+        email=txtEmail.getText();
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress("nuvan200@gmail.com"));//ur email
+        message.setRecipients(Message.RecipientType.TO,
+        InternetAddress.parse(email));//u will send to
+        String file="",fileName="";
+        if(seflag==2){
+            message.setSubject("Report: Date: "+date);
+            file = "files//report.pdf";
+            fileName = date+".pdf";
+        }else if(seflag==1){
+            message.setSubject("Report: From: "+from+" To: "+to);
+            file = "files//report.pdf";
+            fileName = from+"_"+to+".pdf";
+        }
+            
+        message.setText("Email with an attachment");
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+        Multipart multipart = new MimeMultipart();
+
+
+     
+     
+    //attached 1 --------------------------------------------
+        
+        messageBodyPart = new MimeBodyPart();   
+        DataSource source = new FileDataSource(file);      
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setFileName(fileName);
+        multipart.addBodyPart(messageBodyPart);
+      
+  
+    
+        message.setContent(multipart);
+
+       
+        //show load dialog
+        Transport.send(message);
+        JOptionPane.showMessageDialog(null, "Report has been sent");
+        btnSend.setEnabled(false);
+        
+   
+
+            
+    }catch (MessagingException e) {
+        e.printStackTrace();
+    }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -107,7 +188,10 @@ public class reports extends javax.swing.JFrame {
         search_id = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         btnAll = new javax.swing.JButton();
-        btnPrint = new javax.swing.JButton();
+        btnGen = new javax.swing.JButton();
+        btnView = new javax.swing.JButton();
+        btnSend = new javax.swing.JButton();
+        txtEmail = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 768));
@@ -244,10 +328,24 @@ public class reports extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnPrint.setText("PRINT");
-        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+        btnGen.setText("GENARATE");
+        btnGen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrintActionPerformed(evt);
+                btnGenActionPerformed(evt);
+            }
+        });
+
+        btnView.setText("VIEW");
+        btnView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewActionPerformed(evt);
+            }
+        });
+
+        btnSend.setText("SEND");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
             }
         });
 
@@ -268,19 +366,33 @@ public class reports extends javax.swing.JFrame {
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(btnGen, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnView, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(51, Short.MAX_VALUE)
+                .addContainerGap(50, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
-                .addComponent(btnPrint)
-                .addGap(166, 166, 166))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGen)
+                    .addComponent(btnView))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSend))
+                .addGap(119, 119, 119))
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -304,9 +416,13 @@ public class reports extends javax.swing.JFrame {
         report_table.setModel(DbUtils.resultSetToTableModel(rs));
         seflag=1;
         date_pick_one.setDate(null);
-        btnSearch.setEnabled(true);
+        
         btnAll.setEnabled(true);
         btnSearch.setEnabled(true);
+        
+        btnGen.setEnabled(true);
+        btnView.setEnabled(false);
+        btnSend.setEnabled(false);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -322,7 +438,10 @@ public class reports extends javax.swing.JFrame {
         date_pick_to.setDate(null);
         btnSearch.setEnabled(true);
         btnAll.setEnabled(true);
-        btnSearch.setEnabled(true);
+        
+        btnGen.setEnabled(true);
+        btnView.setEnabled(false);
+        btnSend.setEnabled(false);
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -343,16 +462,26 @@ public class reports extends javax.swing.JFrame {
         report_table.setModel(DbUtils.resultSetToTableModel(rs));        //all
     }//GEN-LAST:event_btnAllActionPerformed
 
-    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+    private void btnGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenActionPerformed
         this.printReport();  
+        btnView.setEnabled(true);
+        btnSend.setEnabled(true);
+        btnGen.setEnabled(false);
         
+    }//GEN-LAST:event_btnGenActionPerformed
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        this.sendMail();        
+    }//GEN-LAST:event_btnSendActionPerformed
+
+    private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
         File myFile = new File("files//report.pdf");
         try {
             Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }//GEN-LAST:event_btnPrintActionPerformed
+    }//GEN-LAST:event_btnViewActionPerformed
 
     /**
      * @param args the command line arguments
@@ -391,8 +520,10 @@ public class reports extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAll;
-    private javax.swing.JButton btnPrint;
+    private javax.swing.JButton btnGen;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnSend;
+    private javax.swing.JButton btnView;
     private com.toedter.calendar.JDateChooser date_pick_fr;
     private com.toedter.calendar.JDateChooser date_pick_one;
     private com.toedter.calendar.JDateChooser date_pick_to;
@@ -406,5 +537,6 @@ public class reports extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable report_table;
     private javax.swing.JTextField search_id;
+    private javax.swing.JTextField txtEmail;
     // End of variables declaration//GEN-END:variables
 }
