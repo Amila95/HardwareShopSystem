@@ -206,6 +206,35 @@ public class DBOP1 {
          return null;
        }
        
+       //login part
+       
+       int checklog(String uname,String password){
+           String sql="SELECT * FROM `user` WHERE `uname`='"+uname+"' AND `password`='"+password+"'";
+           //System.out.println(sql);
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
+               
+               if (!rs.next()) {
+                  return 0;
+               }else{
+                   String type= rs.getString(3);
+                   if(type.equals("Admin")){
+                       return 1;
+                   }else if(type.equals("Cashier")){
+                       return 2;
+                   }
+                   
+                   
+               }
+   
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return 0;
+           
+       }
+       
        
      
      
