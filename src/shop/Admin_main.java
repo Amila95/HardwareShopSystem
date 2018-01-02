@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shop.Admin;
+package shop;
 
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -25,9 +26,24 @@ public class Admin_main extends javax.swing.JFrame {
      * Creates new form Admin_main
      */
     public Admin_main() {
+        
+        
+        this.setUndecorated(true);
+        this.setAlwaysOnTop(true);
+        this.setResizable(false);
+        this.setVisible(true);
         initComponents();
+        Toolkit tk=Toolkit.getDefaultToolkit();
+        
+        int xsize=(int) tk.getScreenSize().getWidth();
+        int ysize=(int) tk.getScreenSize().getHeight();
+        
+        this.setSize(xsize, ysize);
+        
         showDate();
         showTime();
+        
+        
     }
 
     /**
@@ -48,13 +64,14 @@ public class Admin_main extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         btnMonthlyReports = new javax.swing.JLabel();
         btnDailyReports = new javax.swing.JLabel();
+        btnExit = new javax.swing.JLabel();
         btnAddItems = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel2.setBackground(new java.awt.Color(193, 164, 164));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
@@ -69,7 +86,7 @@ public class Admin_main extends javax.swing.JFrame {
         lblDate.setText("Date");
         jPanel2.add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(24, 109, -1, -1));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shop/Admin/home2.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/home2.png"))); // NOI18N
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, -1));
 
         jSeparator2.setBackground(new java.awt.Color(153, 153, 153));
@@ -84,41 +101,61 @@ public class Admin_main extends javax.swing.JFrame {
         btnMonthlyReports.setBackground(new java.awt.Color(190, 190, 190));
         btnMonthlyReports.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         btnMonthlyReports.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnMonthlyReports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shop/Admin/home_Report.png"))); // NOI18N
-        btnMonthlyReports.setText("  Monthly Reports                    ");
+        btnMonthlyReports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/home_Add_Item.png"))); // NOI18N
+        btnMonthlyReports.setText(" Add Stock                              ...");
         btnMonthlyReports.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
         btnMonthlyReports.setOpaque(true);
         btnMonthlyReports.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnMonthlyReportsMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnMonthlyReportsMouseExited(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnMonthlyReportsMouseEntered(evt);
+            }
         });
-        jPanel2.add(btnMonthlyReports, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, 190, 25));
+        jPanel2.add(btnMonthlyReports, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, 190, 25));
 
         btnDailyReports.setBackground(new java.awt.Color(190, 190, 190));
         btnDailyReports.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         btnDailyReports.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnDailyReports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shop/Admin/home_Report.png"))); // NOI18N
-        btnDailyReports.setText("   Daily Reports                         ");
+        btnDailyReports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/home_Add_Item.png"))); // NOI18N
+        btnDailyReports.setText("  Reports                         ...");
         btnDailyReports.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
         btnDailyReports.setOpaque(true);
         btnDailyReports.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnDailyReportsMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnDailyReportsMouseExited(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnDailyReportsMouseEntered(evt);
+            }
         });
-        jPanel2.add(btnDailyReports, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 190, 25));
+        jPanel2.add(btnDailyReports, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 40, 190, 25));
+
+        btnExit.setBackground(new java.awt.Color(190, 190, 190));
+        btnExit.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        btnExit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/home_Add_Item.png"))); // NOI18N
+        btnExit.setText("Exit                                 ...");
+        btnExit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
+        btnExit.setOpaque(true);
+        btnExit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnExitMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnExitMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnExitMouseEntered(evt);
+            }
+        });
+        jPanel2.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 190, 25));
 
         btnAddItems.setBackground(new java.awt.Color(190, 190, 190));
         btnAddItems.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         btnAddItems.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnAddItems.setIcon(new javax.swing.ImageIcon(getClass().getResource("/shop/Admin/home_Add_Item.png"))); // NOI18N
+        btnAddItems.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/home_Add_Item.png"))); // NOI18N
         btnAddItems.setText("  Add Item                                  ");
         btnAddItems.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
         btnAddItems.setOpaque(true);
@@ -126,19 +163,50 @@ public class Admin_main extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnAddItemsMouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnAddItemsMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnAddItemsMouseExited(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnAddItemsMouseEntered(evt);
+            }
         });
-        jPanel2.add(btnAddItems, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 90, 190, 25));
+        jPanel2.add(btnAddItems, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 40, 190, 25));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 670, -1));
+        btnLogout.setBackground(new java.awt.Color(190, 190, 190));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        btnLogout.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/logout.png"))); // NOI18N
+        btnLogout.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
+        btnLogout.setOpaque(true);
+        btnLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLogoutMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnLogoutMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnLogoutMouseEntered(evt);
+            }
+        });
+        jPanel2.add(btnLogout, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 40, 90, -1));
 
         jPanel1.setBackground(new java.awt.Color(49, 58, 115));
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 670, 220));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -159,17 +227,43 @@ public class Admin_main extends javax.swing.JFrame {
          resetBtnColour(btnDailyReports);
     }//GEN-LAST:event_btnDailyReportsMouseExited
 
+    private void btnExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExitMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_btnExitMouseClicked
+
+    private void btnExitMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExitMouseEntered
+        setBtnColour(btnExit);
+    }//GEN-LAST:event_btnExitMouseEntered
+
+    private void btnExitMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExitMouseExited
+        resetBtnColour(btnExit);
+    }//GEN-LAST:event_btnExitMouseExited
+
     private void btnAddItemsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddItemsMouseClicked
         
     }//GEN-LAST:event_btnAddItemsMouseClicked
+
+    private void btnAddItemsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddItemsMouseExited
+        resetBtnColour(btnAddItems);
+    }//GEN-LAST:event_btnAddItemsMouseExited
 
     private void btnAddItemsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddItemsMouseEntered
         setBtnColour(btnAddItems);
     }//GEN-LAST:event_btnAddItemsMouseEntered
 
-    private void btnAddItemsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddItemsMouseExited
-        resetBtnColour(btnAddItems);
-    }//GEN-LAST:event_btnAddItemsMouseExited
+    private void btnLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMouseClicked
+        this.setVisible(false);
+        login frm=new login();
+        frm.setVisible(true);
+    }//GEN-LAST:event_btnLogoutMouseClicked
+
+    private void btnLogoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMouseExited
+        resetBtnColour(btnLogout);
+    }//GEN-LAST:event_btnLogoutMouseExited
+
+    private void btnLogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMouseEntered
+        setBtnColour(btnLogout);
+    }//GEN-LAST:event_btnLogoutMouseEntered
 
     private void showDate() {
         Date date = new Date();
@@ -256,6 +350,8 @@ public class Admin_main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnAddItems;
     private javax.swing.JLabel btnDailyReports;
+    private javax.swing.JLabel btnExit;
+    private javax.swing.JLabel btnLogout;
     private javax.swing.JLabel btnMonthlyReports;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
