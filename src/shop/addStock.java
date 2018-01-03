@@ -53,7 +53,7 @@ public class addStock extends javax.swing.JFrame {
         btnSearch = new javax.swing.JButton();
         btnAll = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Details"));

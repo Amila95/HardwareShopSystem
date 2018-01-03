@@ -14,6 +14,17 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
 import com.itextpdf.text.Element;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import static java.awt.print.Printable.NO_SUCH_PAGE;
+import static java.awt.print.Printable.PAGE_EXISTS;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
@@ -43,6 +55,7 @@ public class sales extends javax.swing.JFrame {
     double itemprice;
     int qt;
     double priceitem;
+    int itemcount = 0;
     
     Map<Integer, Integer> map = (Map<Integer, Integer>) new HashMap<Integer, Integer>();
     
@@ -70,99 +83,158 @@ public class sales extends javax.swing.JFrame {
         
     }
     
-    void printReport(Item I){
-        try {
-            //Item I = new Item();
-            Document d=new Document();
-            PdfWriter.getInstance(d, new FileOutputStream("report.pdf"));
+          public PageFormat getPageFormat(PrinterJob pj)
+{
+    
+    PageFormat pf = pj.defaultPage();
+    Paper paper = pf.getPaper();    
+
+    double middleHeight =8.0;  
+    double headerHeight = 2.0;                  
+    double footerHeight = 2.0;                  
+    double width = convert_CM_To_PPI(8);      //printer know only point per inch.default value is 72ppi
+    double height = convert_CM_To_PPI(headerHeight+middleHeight+footerHeight); 
+    paper.setSize(width, height);
+    paper.setImageableArea(                    
+        0,
+        10,
+        width,            
+        height - convert_CM_To_PPI(1)
+    );   //define boarder size    after that print area width is about 180 points
+            
+    pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
+    pf.setPaper(paper);    
+
+    return pf;
+}
+    
+    protected static double convert_CM_To_PPI(double cm) {            
+	        return toPPI(cm * 0.393600787);            
+}
+ 
+protected static double toPPI(double inch) {            
+	        return inch * 72d;            
+}
+
+
+
+
+
+
+public class BillPrintable implements Printable{
+    
+   
+    
+    
+  public int print(Graphics graphics, PageFormat pageFormat,int pageIndex) 
+  throws PrinterException 
+  {    
+      
+                
+        
+      int result = NO_SUCH_PAGE;    
+        if (pageIndex == 0) {                    
+        
+            Graphics2D g2d = (Graphics2D) graphics;                    
+
+            double width = pageFormat.getImageableWidth();                    
+           
+            g2d.translate((int) pageFormat.getImageableX(),(int) pageFormat.getImageableY()); 
+
+            ////////// code by alqama//////////////
+
+            FontMetrics metrics=g2d.getFontMetrics(new Font("Arial",Font.BOLD,7));
+        //    int idLength=metrics.stringWidth("000000");
+            //int idLength=metrics.stringWidth("00");
+            int idLength=metrics.stringWidth("000");
+            int amtLength=metrics.stringWidth("000000");
+            int qtyLength=metrics.stringWidth("00000");
+            int priceLength=metrics.stringWidth("000000");
+            int prodLength=(int)width - idLength - amtLength - qtyLength - priceLength-17;
+
+        //    int idPosition=0;
+        //    int productPosition=idPosition + idLength + 2;
+        //    int pricePosition=productPosition + prodLength +10;
+        //    int qtyPosition=pricePosition + priceLength + 2;
+        //    int amtPosition=qtyPosition + qtyLength + 2;
+            
+            int productPosition = 0;
+            int discountPosition= prodLength+5;
+            int pricePosition = discountPosition +idLength+10;
+            int qtyPosition=pricePosition + priceLength + 4;
+            int amtPosition=qtyPosition + qtyLength;
             
             
-            d.open();
-                Paragraph para0 = new Paragraph("--------------------------------------");
-                //para0.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para0);
-                Paragraph para2 = new Paragraph("--------------------------------------");
-                //para2.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para2);
-                Paragraph para1 = new Paragraph("Goble Care");
-                //para1.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para1);
-                Paragraph para3 = new Paragraph("--------------------------------------");
-                //para3.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para3);
-                Paragraph para4 = new Paragraph("NO:37,Kadana Road,Kadana");
-               // para4.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para4);
-                Paragraph para5 = new Paragraph("Tel: 075 0504648");
-                //para5.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para5);
-                Paragraph para6 = new Paragraph("--------------------------------------");
-                //para6.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para6);
-                Paragraph para7 = new Paragraph("--------------------------------------");
-                //para7.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para7);
+              
+        try{
+            /*Draw Header*/
+            int y=20;
+            int yShift = 10;
+            int headerRectHeight=15;
+            int headerRectHeighta=40;
+            
+            ///////////////// Product names Get ///////////
                 
+            ///////////////// Product price Get ///////////
                 
-                com.itextpdf.text.List list = new com.itextpdf.text.List();
-                list.add("Item name" +"     "+"Quntity"+"       "+"Price");
-                ResultSet rs = db.getbillitem(I.getBill_id());
+             g2d.setFont(new Font("Monospaced",Font.PLAIN,9));
+            g2d.drawString("-------------------------------------",12,y);y+=yShift;
+            g2d.drawString("      Restaurant Bill Receipt        ",12,y);y+=yShift;
+            g2d.drawString("-------------------------------------",12,y);y+=headerRectHeight;
+      
+            g2d.drawString("-------------------------------------",10,y);y+=yShift;
+            g2d.drawString(" Item Name    Qty             T.Price   ",10,y);y+=yShift;
+            g2d.drawString("-------------------------------------",10,y);y+=headerRectHeight;
+            //com.itextpdf.text.List list = new com.itextpdf.text.List();
+                //list.add("Item name" +"     "+"Quntity"+"       "+"Price");
+                /*ResultSet rs = db.getbillitem(I.getBill_id());
                 while(rs.next()) {
                     Double aitemprice = Double.parseDouble(rs.getString(5)); 
                     int qty = Integer.parseInt(rs.getString(3));
                     itemprice = aitemprice * qty ;
-                    list.add(rs.getString(4) +"     "+ rs.getString(3)+"        "+ itemprice );
+                    //list.add(rs.getString(4) +"     "+ rs.getString(3)+"        "+ itemprice );
                     //list.setAlignment(com.itextpdf.text.List.ALIGN_CENTER);
-                
-                }
-                //list.setAlignment(List.ALIGN_CENTER);
-                d.add(list);
-                Paragraph para8 = new Paragraph("--------------------------------------");
-                //para8.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para8);
-                Paragraph para9 = new Paragraph("TOTAL:"+"                  "+amont.getText());
-                //para9.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para9);
-                Paragraph para10 = new Paragraph("Discount:"+"                  "+discontvalue.getText());
-                //para10.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para10);
-                Paragraph para11 = new Paragraph("--------------------------------------");
-                //para11.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para11);
-                Paragraph para12 = new Paragraph("NET TOTAL:"+"                  "+price.getText());
-                //para12.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para12);
-                Paragraph para14 = new Paragraph("--------------------------------------");
-                //para14.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para14);
-                Paragraph para13 = new Paragraph("Cash:"+"                  "+cash.getText());
-                //para13.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para13);
-                Paragraph para15 = new Paragraph("--------------------------------------");
-                //para15.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para15);
-                Paragraph para16 = new Paragraph("***************************************");
-               // para16.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para16);
-                Paragraph para17 = new Paragraph("BALANCE:"+"                  "+change.getText());
-                //para17.setAlignment(Paragraph.ALIGN_CENTER);
-                d.add(para17);
-                
-                
-                
-                
-                
-                
+                    g2d.drawString(" "+rs.getString(4)+"                  "+itemprice+"  ",10,y);y+=yShift;
+                }*/
+                for(int i = 1; i <itemcount ; i++){
+                String item_name = (String) table.getValueAt(i, 0);
+                int qty = (int) table.getValueAt(i,2);
+                double price = (double) table.getValueAt(i,3);
+                g2d.drawString(" "+item_name+"    "+qty+"             "+price+"  ",10,y);y+=yShift;
 
-            d.close();
+       }
             
             
+            g2d.drawString("-------------------------------------",10,y);y+=yShift;
+            g2d.drawString(" Total amount:               ",10,y);y+=yShift;
+            g2d.drawString("-------------------------------------",10,y);y+=yShift;
+            g2d.drawString("          Free Home Delivery         ",10,y);y+=yShift;
+            g2d.drawString("             03111111111             ",10,y);y+=yShift;
+            g2d.drawString("*************************************",10,y);y+=yShift;
+            g2d.drawString("    THANKS TO VISIT OUR RESTUARANT   ",10,y);y+=yShift;
+            g2d.drawString("*************************************",10,y);y+=yShift;
+                   
+           
+             
+           
             
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//            g2d.setFont(new Font("Monospaced",Font.BOLD,10));
+//            g2d.drawString("Customer Shopping Invoice", 30,y);y+=yShift; 
+          
+
+    }
+    catch(Exception r){
+    r.printStackTrace();
+    }
+
+              result = PAGE_EXISTS;    
+          }    
+          return result;    
+      }
+
         
-        }
+   }
+
         
         
     
@@ -197,7 +269,7 @@ public class sales extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         print = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
         jLabel1.setText("Item ID");
@@ -430,6 +502,7 @@ public class sales extends javax.swing.JFrame {
         amont.setText(String.valueOf(amount));
         //Map<Integer, Integer> map = (Map<Integer, Integer>) new HashMap<Integer, Integer>();
         map.put(I.getItemID(), I.getQty());
+        itemcount += 1;
         
         
         
@@ -482,14 +555,23 @@ public class sales extends javax.swing.JFrame {
        db.setbillitem(I.getBill_id(),I.getItemID(),I.getQty());
         }
         
-            
+        PrinterJob pj = PrinterJob.getPrinterJob();        
+        pj.setPrintable(new BillPrintable(),getPageFormat(pj));
+        try {
+             pj.print();
+          
+        }
+         catch (PrinterException ex) {
+                 ex.printStackTrace();
+        }   
             
         
         
         
        
-        printReport(I);
+        //rintReport(I);
         //db.deletebill(I);
+        
        
         
         
@@ -533,6 +615,7 @@ public class sales extends javax.swing.JFrame {
                 Map.Entry<Integer, Integer> entry = it.next();
                 if(entry.getKey().equals(item_id)) {
                 it.remove();
+                itemcount -= 1;
       }
     }
             }

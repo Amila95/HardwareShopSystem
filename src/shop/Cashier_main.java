@@ -25,8 +25,8 @@ public class Cashier_main extends javax.swing.JFrame {
      * Creates new form Cashier_main
      */
     public Cashier_main() {
-         this.setUndecorated(true);
-        this.setAlwaysOnTop(true);
+        this.setUndecorated(true);
+        this.setAlwaysOnTop(false);
         this.setResizable(false);
         this.setVisible(true);
         initComponents();
@@ -110,7 +110,7 @@ public class Cashier_main extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator1 = new javax.swing.JSeparator();
         btnNewBill = new javax.swing.JLabel();
-        btnPastBill = new javax.swing.JLabel();
+        btnReport = new javax.swing.JLabel();
         btnExit = new javax.swing.JLabel();
         btnLogout = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -149,6 +149,9 @@ public class Cashier_main extends javax.swing.JFrame {
         btnNewBill.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
         btnNewBill.setOpaque(true);
         btnNewBill.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNewBillMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnNewBillMouseExited(evt);
             }
@@ -157,19 +160,22 @@ public class Cashier_main extends javax.swing.JFrame {
             }
         });
 
-        btnPastBill.setBackground(new java.awt.Color(190, 190, 190));
-        btnPastBill.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        btnPastBill.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnPastBill.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/home_Add_Item.png"))); // NOI18N
-        btnPastBill.setText("Past bill                                             ...");
-        btnPastBill.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
-        btnPastBill.setOpaque(true);
-        btnPastBill.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnReport.setBackground(new java.awt.Color(190, 190, 190));
+        btnReport.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        btnReport.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/home_Add_Item.png"))); // NOI18N
+        btnReport.setText("Reports                                        ...");
+        btnReport.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
+        btnReport.setOpaque(true);
+        btnReport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReportMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnPastBillMouseExited(evt);
+                btnReportMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnPastBillMouseEntered(evt);
+                btnReportMouseEntered(evt);
             }
         });
 
@@ -229,7 +235,7 @@ public class Cashier_main extends javax.swing.JFrame {
                         .addGap(82, 82, 82)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnNewBill, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPastBill, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(89, 89, 89)
                         .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -257,7 +263,7 @@ public class Cashier_main extends javax.swing.JFrame {
                         .addGap(30, 30, 30)
                         .addComponent(btnNewBill, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnPastBill, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnReport, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -307,13 +313,13 @@ public class Cashier_main extends javax.swing.JFrame {
         setBtnColour(btnNewBill);
     }//GEN-LAST:event_btnNewBillMouseEntered
 
-    private void btnPastBillMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPastBillMouseExited
-        resetBtnColour(btnPastBill);
-    }//GEN-LAST:event_btnPastBillMouseExited
+    private void btnReportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportMouseExited
+        resetBtnColour(btnReport);
+    }//GEN-LAST:event_btnReportMouseExited
 
-    private void btnPastBillMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPastBillMouseEntered
-        setBtnColour(btnPastBill);
-    }//GEN-LAST:event_btnPastBillMouseEntered
+    private void btnReportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportMouseEntered
+        setBtnColour(btnReport);
+    }//GEN-LAST:event_btnReportMouseEntered
 
     private void btnExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExitMouseClicked
         System.exit(0);
@@ -340,6 +346,16 @@ public class Cashier_main extends javax.swing.JFrame {
     private void btnLogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogoutMouseEntered
         setBtnColour(btnLogout);
     }//GEN-LAST:event_btnLogoutMouseEntered
+
+    private void btnNewBillMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNewBillMouseClicked
+        sales frm=new sales();
+        frm.setVisible(true);
+    }//GEN-LAST:event_btnNewBillMouseClicked
+
+    private void btnReportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportMouseClicked
+        reports frm=new reports();
+        frm.setVisible(true);
+    }//GEN-LAST:event_btnReportMouseClicked
 
     /**
      * @param args the command line arguments
@@ -380,7 +396,7 @@ public class Cashier_main extends javax.swing.JFrame {
     private javax.swing.JLabel btnExit;
     private javax.swing.JLabel btnLogout;
     private javax.swing.JLabel btnNewBill;
-    private javax.swing.JLabel btnPastBill;
+    private javax.swing.JLabel btnReport;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
