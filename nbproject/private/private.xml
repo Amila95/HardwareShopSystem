@@ -3,7 +3,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/home/pasindu/NetBeansProjects/HardwareShopSystem/src/shop/Admin_main.java</file>
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+            <file>file:/C:/Users/Acer/Favorites/Documents/NetBeansProjects/HardwareShopSystem/src/shop/reports.java</file>
+            <file>file:/C:/Users/Acer/Favorites/Documents/NetBeansProjects/HardwareShopSystem/src/shop/DBOP1.java</file>
+            <file>file:/C:/Users/Acer/Favorites/Documents/NetBeansProjects/HardwareShopSystem/src/shop/Item.java</file>
+            <file>file:/C:/Users/Acer/Favorites/Documents/NetBeansProjects/HardwareShopSystem/src/shop/sales.java</file>
+            <file>file:/C:/Users/Acer/Favorites/Documents/NetBeansProjects/HardwareShopSystem/src/shop/DBOP.java</file>
+            <file>file:/C:/Users/Acer/Favorites/Documents/NetBeansProjects/HardwareShopSystem/src/shop/login.java</file>
+=======
+=======
+>>>>>>> 79204e69a6775095a4b1ee45b605c681fbb7e49d
+            <file>file:/home/pasindu/NetBeansProjects/HardwareShopSystem/src/shop/reports.java</file>
+            <file>file:/home/pasindu/NetBeansProjects/HardwareShopSystem/src/shop/Admin/Admin_main.java</file>
+            <file>file:/home/pasindu/NetBeansProjects/HardwareShopSystem/src/shop/Admin/home_Logout_20px.png</file>
+            <file>file:/home/pasindu/NetBeansProjects/HardwareShopSystem/src/shop/DBOP1.java</file>
+            <file>file:/home/pasindu/NetBeansProjects/HardwareShopSystem/src/shop/Admin/Admin_test.java</file>
+<<<<<<< HEAD
+>>>>>>> 79204e69a6775095a4b1ee45b605c681fbb7e49d
+=======
+>>>>>>> 79204e69a6775095a4b1ee45b605c681fbb7e49d
+>>>>>>> master
         </group>
     </open-files>
 </project-private>
