@@ -89,13 +89,17 @@ public class DBOP {
             ex.printStackTrace();
         }
     }
-    void  payment(Item I){
+    ResultSet  payment(Item I){
+        String sql="INSERT INTO bill(amount,discount,total_price,cash,change_amount) VALUES ('"+I.getAmount()+"','"+I.getDiscount()+"','"+I.getTotal_price()+"','"+I.getCash()+"','"+I.getChange_amount()+"')";
     try{
         Statement s = Database.getStatement();
-        s.executeUpdate("INSERT INTO bill(amount,discount,total_price,cash,change_amount) VALUES ('"+I.getAmount()+"','"+I.getDiscount()+"','"+I.getTotal_price()+"','"+I.getCash()+"','"+I.getChange_amount()+"')");
+        s.executeUpdate(sql,Statement.RETURN_GENERATED_KEYS);
+        ResultSet rs = s.getGeneratedKeys();
+        return rs;
     }catch(Exception e){
         e.printStackTrace();
     }
+        return null;
     }
     
     ResultSet getlastid() {
@@ -123,6 +127,7 @@ public class DBOP {
     
     }
     void setbillitem(int bill_id, int item_id, int qty){
+        //System.out.println(bill_id+  item_id + qty);
         try{
             Statement s = Database.getStatement();
             s.executeUpdate("INSERT INTO bill_item (bill_id,Item_id,quantity) VALUES ('"+bill_id+"','"+item_id+"','"+qty+"')");
@@ -143,44 +148,30 @@ public class DBOP {
         return null;
     }
     
-    /*void bill(Item I){
-        try{
-        Statement s = Database.getStatement();
-        s.executeUpdate("INSERT INTO bill (id,qty) VALUES ('"+I.getItemID()+"','"+I.getQty()+"')");
-        }catch(Exception e){
-        e.printStackTrace();
+    
+    ResultSet getBillItems(int billid){
+        String sql="SELECT bill_item.bill_id,bill_item.item_id,bill_item.quantity,item.item_price,item.item_name FROM `bill_item` JOIN item ON bill_item.item_id=item.item_id WHERE `bill_id`='"+billid+"' ";
+        try {
+            Statement s = Database.getStatement();
+            ResultSet rs = s.executeQuery(sql);
+            return rs;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-    
-    void deletebill(Item I){
-    try{
-        String sql=" truncate bill ";
-             Statement s = Database.getStatement();
-             s.executeUpdate(sql);
-    }catch(Exception e){
-        e.printStackTrace();
-    }
-    }
-    ResultSet getprint(){
-    try{
-        Item I = new Item();
-        Statement s = Database.getStatement();
-        String pqr = ("SELECT item.item_name, item.item_price, bill.qty FROM item INNER JOIN bill ON bill.id=item.item_id  ");
-        //String sql="SELECT daily.item_id AS 'ItemID',item.item_name AS 'Name',`d_quantity` AS 'Sold Quantity' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"'";
-        
-        ResultSet rs = s.executeQuery(pqr);
-        return rs;
-        
-        
-    }catch(Exception e){
-        e.printStackTrace();
-    }
         return null;
-    }*/
+    }
     
-    //SELECT bill_item.bill_id,bill_item.item_id,bill_item.quantity ,item.item_name,item.item_price FROM bill_item INNER JOIN item ON bill_item.item_id=item.item_id WHERE bill_item.bill_id=1;
-    
-    
+    ResultSet getBill(int billid){
+        String sql="SELECT * FROM `bill` WHERE bill_id='"+billid+"'";
+        try {
+           Statement s = Database.getStatement();
+            ResultSet rs = s.executeQuery(sql);
+            return rs; 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
 }
     
