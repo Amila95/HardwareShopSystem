@@ -14,6 +14,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
 import com.itextpdf.text.Element;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -26,9 +27,12 @@ import static java.awt.print.Printable.NO_SUCH_PAGE;
 import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,7 +42,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -92,159 +98,23 @@ public class sales extends javax.swing.JFrame {
         
         this.setSize(xsize, ysize);
         
+        btnGen.setEnabled(false);
+        btnPrint.setEnabled(false);
+        
+        
+        
+        
+        
     }
     
-          public PageFormat getPageFormat(PrinterJob pj)
-{
-    
-    PageFormat pf = pj.defaultPage();
-    Paper paper = pf.getPaper();    
-
-    double middleHeight =8.0;  
-    double headerHeight = 2.0;                  
-    double footerHeight = 2.0;                  
-    double width = convert_CM_To_PPI(8);      //printer know only point per inch.default value is 72ppi
-    double height = convert_CM_To_PPI(headerHeight+middleHeight+footerHeight); 
-    paper.setSize(width, height);
-    paper.setImageableArea(                    
-        0,
-        10,
-        width,            
-        height - convert_CM_To_PPI(1)
-    );   //define boarder size    after that print area width is about 180 points
-            
-    pf.setOrientation(PageFormat.PORTRAIT);           //select orientation portrait or landscape but for this time portrait
-    pf.setPaper(paper);    
-
-    return pf;
-}
-    
-    protected static double convert_CM_To_PPI(double cm) {            
-	        return toPPI(cm * 0.393600787);            
-}
- 
-protected static double toPPI(double inch) {            
-	        return inch * 72d;            
-}
-
-
-
-
-
-
-public class BillPrintable implements Printable{
-    
-   
-    
-    
-  public int print(Graphics graphics, PageFormat pageFormat,int pageIndex) 
-  throws PrinterException 
-  {    
-      
-                
-        
-      int result = NO_SUCH_PAGE;    
-        if (pageIndex == 0) {                    
-        
-            Graphics2D g2d = (Graphics2D) graphics;                    
-
-            double width = pageFormat.getImageableWidth();                    
-           
-            g2d.translate((int) pageFormat.getImageableX(),(int) pageFormat.getImageableY()); 
-
-            ////////// code by alqama//////////////
-
-            FontMetrics metrics=g2d.getFontMetrics(new Font("Arial",Font.BOLD,7));
-        //    int idLength=metrics.stringWidth("000000");
-            //int idLength=metrics.stringWidth("00");
-            int idLength=metrics.stringWidth("000");
-            int amtLength=metrics.stringWidth("000000");
-            int qtyLength=metrics.stringWidth("00000");
-            int priceLength=metrics.stringWidth("000000");
-            int prodLength=(int)width - idLength - amtLength - qtyLength - priceLength-17;
-
-        //    int idPosition=0;
-        //    int productPosition=idPosition + idLength + 2;
-        //    int pricePosition=productPosition + prodLength +10;
-        //    int qtyPosition=pricePosition + priceLength + 2;
-        //    int amtPosition=qtyPosition + qtyLength + 2;
-            
-            int productPosition = 0;
-            int discountPosition= prodLength+5;
-            int pricePosition = discountPosition +idLength+10;
-            int qtyPosition=pricePosition + priceLength + 4;
-            int amtPosition=qtyPosition + qtyLength;
-            
-            
-              
-        try{
-            /*Draw Header*/
-            int y=20;
-            int yShift = 10;
-            int headerRectHeight=15;
-            int headerRectHeighta=40;
-            
-            ///////////////// Product names Get ///////////
-                
-            ///////////////// Product price Get ///////////
-                
-             g2d.setFont(new Font("Monospaced",Font.PLAIN,9));
-            g2d.drawString("-------------------------------------",12,y);y+=yShift;
-            g2d.drawString("      Restaurant Bill Receipt        ",12,y);y+=yShift;
-            g2d.drawString("-------------------------------------",12,y);y+=headerRectHeight;
-      
-            g2d.drawString("-------------------------------------",10,y);y+=yShift;
-            g2d.drawString(" Item Name    Qty             T.Price   ",10,y);y+=yShift;
-            g2d.drawString("-------------------------------------",10,y);y+=headerRectHeight;
-            //com.itextpdf.text.List list = new com.itextpdf.text.List();
-                //list.add("Item name" +"     "+"Quntity"+"       "+"Price");
-                /*ResultSet rs = db.getbillitem(I.getBill_id());
-                while(rs.next()) {
-                    Double aitemprice = Double.parseDouble(rs.getString(5)); 
-                    int qty = Integer.parseInt(rs.getString(3));
-                    itemprice = aitemprice * qty ;
-                    //list.add(rs.getString(4) +"     "+ rs.getString(3)+"        "+ itemprice );
-                    //list.setAlignment(com.itextpdf.text.List.ALIGN_CENTER);
-                    g2d.drawString(" "+rs.getString(4)+"                  "+itemprice+"  ",10,y);y+=yShift;
-                }*/
-                for(int i = 1; i <itemcount ; i++){
-                String item_name = (String) table.getValueAt(i, 0);
-                int qty = (int) table.getValueAt(i,2);
-                double price = (double) table.getValueAt(i,3);
-                g2d.drawString(" "+item_name+"    "+qty+"             "+price+"  ",10,y);y+=yShift;
-
-       }
-            
-            
-            g2d.drawString("-------------------------------------",10,y);y+=yShift;
-            g2d.drawString(" Total amount:               ",10,y);y+=yShift;
-            g2d.drawString("-------------------------------------",10,y);y+=yShift;
-            g2d.drawString("          Free Home Delivery         ",10,y);y+=yShift;
-            g2d.drawString("             03111111111             ",10,y);y+=yShift;
-            g2d.drawString("*************************************",10,y);y+=yShift;
-            g2d.drawString("    THANKS TO VISIT OUR RESTUARANT   ",10,y);y+=yShift;
-            g2d.drawString("*************************************",10,y);y+=yShift;
-                   
-           
-             
-           
-            
-//            g2d.setFont(new Font("Monospaced",Font.BOLD,10));
-//            g2d.drawString("Customer Shopping Invoice", 30,y);y+=yShift; 
           
 
-    }
-    catch(Exception r){
-    r.printStackTrace();
-    }
 
-              result = PAGE_EXISTS;    
-          }    
-          return result;    
-      }
 
-        
-   }
+
+
+
+
 
         
         
@@ -278,10 +148,13 @@ public class BillPrintable implements Printable{
         change = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        print = new javax.swing.JButton();
+        btnGen = new javax.swing.JButton();
+        btnPrint = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        bill = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 768));
@@ -372,18 +245,26 @@ public class BillPrintable implements Printable{
         jLabel6.setText("Change");
 
         jButton1.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
-        jButton1.setText("Cancel");
+        jButton1.setText("CANCEL");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        print.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
-        print.setText("Print");
-        print.addActionListener(new java.awt.event.ActionListener() {
+        btnGen.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
+        btnGen.setText("GENARATE");
+        btnGen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                printActionPerformed(evt);
+                btnGenActionPerformed(evt);
+            }
+        });
+
+        btnPrint.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
+        btnPrint.setText("PRINT");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
             }
         });
 
@@ -393,34 +274,35 @@ public class BillPrintable implements Printable{
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bff)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(bff)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(print, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(change, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cash, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(price, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(discontvalue, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(amont, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 108, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(cash)
+                    .addComponent(price)
+                    .addComponent(amont)
+                    .addComponent(discontvalue)
+                    .addComponent(change)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGen, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 121, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(37, 37, 37)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(amont, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bff)
                     .addComponent(discontvalue, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -436,11 +318,13 @@ public class BillPrintable implements Printable{
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(change, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(print))
-                .addGap(52, 52, 52))
+                .addGap(26, 26, 26)
+                .addComponent(btnGen)
+                .addGap(18, 18, 18)
+                .addComponent(btnPrint)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(35, 35, 35))
         );
 
         jPanel5.setBackground(new java.awt.Color(85, 85, 85));
@@ -482,6 +366,8 @@ public class BillPrintable implements Printable{
                 .addContainerGap(45, Short.MAX_VALUE))
         );
 
+        jScrollPane2.setViewportView(bill);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -489,22 +375,22 @@ public class BillPrintable implements Printable{
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(242, 242, 242)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ItemID, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(qty))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 615, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(ItemID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -515,21 +401,22 @@ public class BillPrintable implements Printable{
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(ItemID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(qty, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(ItemID, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)
+                                .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)))
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -579,63 +466,99 @@ public class BillPrintable implements Printable{
         Cash = Double.parseDouble(cash.getText());
         changeprice = Cash - total;
         change.setText(String.valueOf(changeprice));
+        btnGen.setEnabled(true);
         
     }//GEN-LAST:event_cashActionPerformed
 
-    private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
+    private void btnGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenActionPerformed
         Item I = new Item();
         I.setAmount(Double.parseDouble(amont.getText()));
         I.setTotal_price(Double.parseDouble(price.getText()));
         I.setDiscount(Double.parseDouble(discontvalue.getText()));
         I.setCash(Double.parseDouble(cash.getText()));
         I.setChange_amount(Double.parseDouble(change.getText()));
-        db.payment(I);
+        ResultSet rs=db.payment(I);
+        try {
+             
+            while(rs.next()){
+                I.setBill_id(rs.getInt(1));
+            }
+                
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         Set set = map.entrySet();
         Iterator iterator = set.iterator();
         while(iterator.hasNext()) {
-         Map.Entry mentry = (Map.Entry)iterator.next();
-         /*System.out.print("key is: "+ mentry.getKey() + " & Value is: ");
-         System.out.println(mentry.getValue());*/
-        I.setItemID((int) mentry.getKey());
-        I.setQty((int) mentry.getValue());
-        try {
-                ResultSet rs = db.getlastid();
-                while(rs.next()) {
-                    //System.out.println(rs.getString(1));
-                    I.setBill_id(Integer.parseInt(rs.getString(1)));
-                }
-                
-            } catch (Exception ex) {
-                
-            }
-        
-       db.settotalcount(I);
-       db.upadatedailypayment(I);
-       db.setbillitem(I.getBill_id(),I.getItemID(),I.getQty());
-        }
-        
-        PrinterJob pj = PrinterJob.getPrinterJob();        
-        pj.setPrintable(new BillPrintable(),getPageFormat(pj));
-        try {
-             pj.print();
-          
-        }
-         catch (PrinterException ex) {
-                 ex.printStackTrace();
-        }   
-            
-        
-        
-        
-       
-        //rintReport(I);
-        //db.deletebill(I);
-        
-       
-        
-        
-    }//GEN-LAST:event_printActionPerformed
+            Map.Entry mentry = (Map.Entry)iterator.next();
 
+            I.setItemID((int) mentry.getKey());
+            I.setQty((int) mentry.getValue());
+
+
+            db.settotalcount(I);
+            db.upadatedailypayment(I);
+            db.setbillitem(I.getBill_id(),I.getItemID(),I.getQty());
+        }
+        
+        
+        int billid=I.getBill_id();
+        this.getRecept(billid);
+        btnPrint.setEnabled(true);
+
+        
+        
+        
+    }//GEN-LAST:event_btnGenActionPerformed
+    
+    public void getRecept(int billid){
+        Bill_system recept=new Bill_system();
+        ResultSet rs=db.getBillItems(billid);
+        ResultSet rs1=db.getBill(billid);
+        String date=LocalDate.now().toString();
+        String time=LocalTime.now().toString();
+        recept.printTitle(billid,date+" Time: "+time);
+        try {
+            while(rs.next()){
+                String name=rs.getString(5);
+                int qty=rs.getInt(3);
+                double price=rs.getDouble(4)*qty;
+                recept.print(name, qty, price);
+            }
+            
+            while(rs1.next()){
+                double amount=rs1.getDouble(2);
+                double dis=rs1.getDouble(3);
+                double total=rs1.getDouble(4);
+                double cash=rs1.getDouble(5);
+                double blance=rs1.getDouble(6);
+
+                recept.printTotal(amount, dis, total, cash, blance);
+            
+            }
+            recept.printFinal();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        String output=recept.getOutput();
+        
+        bill.setContentType("text/html");
+        bill.setText(output);
+        
+        //bill.setText(output);
+        
+        try {
+            Document d=new Document();
+            PdfWriter.getInstance(d, new FileOutputStream("files//report1.pdf"));
+            d.open();
+                Paragraph para1 = new Paragraph(output);
+                d.add(para1);
+            d.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        }
+            
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         /*Item I = new Item();
         Set set = map.entrySet();
@@ -692,6 +615,19 @@ public class BillPrintable implements Printable{
         this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        try {
+            boolean complete = bill.print();
+            if (complete) {
+                JOptionPane.showMessageDialog(null, "Done Printing!");
+            }else{
+                JOptionPane.showMessageDialog(null, "Printing....");
+            }
+        } catch (PrinterException ex) {
+            Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnPrintActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -731,6 +667,9 @@ public class BillPrintable implements Printable{
     private javax.swing.JTextField ItemID;
     private javax.swing.JTextField amont;
     private javax.swing.JLabel bff;
+    private javax.swing.JTextPane bill;
+    private javax.swing.JButton btnGen;
+    private javax.swing.JButton btnPrint;
     private javax.swing.JTextField cash;
     private javax.swing.JTextField change;
     private javax.swing.JTextField discontvalue;
@@ -747,8 +686,8 @@ public class BillPrintable implements Printable{
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField price;
-    private javax.swing.JButton print;
     private javax.swing.JTextField qty;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
