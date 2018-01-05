@@ -49,9 +49,9 @@ public class login extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(800, 300));
         getContentPane().setLayout(null);
         getContentPane().add(uname);
-        uname.setBounds(412, 80, 250, 28);
+        uname.setBounds(412, 80, 250, 30);
         getContentPane().add(password);
-        password.setBounds(412, 140, 250, 28);
+        password.setBounds(412, 140, 250, 30);
 
         jButton1.setText("LOG");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -60,7 +60,7 @@ public class login extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(410, 200, 110, 30);
+        jButton1.setBounds(410, 200, 110, 23);
 
         jLabel1.setFont(new java.awt.Font("URW Palladio L", 1, 24)); // NOI18N
         jLabel1.setText("Password");
