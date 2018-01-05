@@ -12,6 +12,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 
 import java.awt.print.PrinterException;
 
@@ -153,6 +154,11 @@ public class sales extends javax.swing.JFrame {
                 ItemIDActionPerformed(evt);
             }
         });
+        ItemID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ItemIDKeyTyped(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         jLabel2.setText("Qty");
@@ -160,6 +166,11 @@ public class sales extends javax.swing.JFrame {
         qty.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 qtyActionPerformed(evt);
+            }
+        });
+        qty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                qtyKeyTyped(evt);
             }
         });
 
@@ -232,6 +243,11 @@ public class sales extends javax.swing.JFrame {
         discontvalue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 discontvalueActionPerformed(evt);
+            }
+        });
+        discontvalue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                discontvalueKeyTyped(evt);
             }
         });
 
@@ -708,6 +724,33 @@ public class sales extends javax.swing.JFrame {
     private void tableAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tableAncestorAdded
        
     }//GEN-LAST:event_tableAncestorAdded
+
+    private void ItemIDKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ItemIDKeyTyped
+        char vChar = evt.getKeyChar();
+                    if (!(Character.isDigit(vChar)
+                            || (vChar == KeyEvent.VK_BACK_SPACE)
+                            || (vChar == KeyEvent.VK_DELETE))) {
+                        evt.consume();
+                    }
+    }//GEN-LAST:event_ItemIDKeyTyped
+
+    private void qtyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_qtyKeyTyped
+        char vChar = evt.getKeyChar();
+                    if (!(Character.isDigit(vChar)
+                            || (vChar == KeyEvent.VK_BACK_SPACE)
+                            || (vChar == KeyEvent.VK_DELETE))) {
+                        evt.consume();
+                    }
+    }//GEN-LAST:event_qtyKeyTyped
+
+    private void discontvalueKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_discontvalueKeyTyped
+        char vChar = evt.getKeyChar();
+                    if ((Character.isLetter(vChar)
+                    ||(vChar == KeyEvent.VK_BACK_SPACE)
+                     || (vChar == KeyEvent.VK_DELETE))) {
+                        evt.consume();
+                    }
+    }//GEN-LAST:event_discontvalueKeyTyped
 
     /**
      * @param args the command line arguments
