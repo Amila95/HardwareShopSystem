@@ -139,7 +139,18 @@ public class DBOP1 {
        }
        
        //report genaring
-       
+       ResultSet checkStock(){
+           String sql="SELECT `item_id` AS 'ItemID' ,`item_name` AS 'Name', `item_price` AS '1x Price', `item_quantity` AS 'Available Qty' FROM `item`";
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
+               cursql=sql;
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return null;
+       }
        ResultSet getReport(String from,String to){
            String sql="SELECT daily.item_id  ,item.item_name AS 'Name', SUM(`d_quantity`) AS 'Sold Quantity' FROM `daily` INNER JOIN item on daily.item_id=item.item_id WHERE daily.date BETWEEN '"+from+"' AND '"+to+"' GROUP by `item_id`";
            try {
@@ -159,6 +170,47 @@ public class DBOP1 {
                Statement s = Database.getStatement();
                ResultSet rs = s.executeQuery(sql);
                cursql=sql;
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return null;
+       }
+       ResultSet getTodayReport(String date){
+           String sql="SELECT daily.item_id AS 'ItemID',item.item_name AS 'Name',`d_quantity` AS 'Sold Quantity',item.item_price AS '1X Price',d_quantity*item.item_price AS 'Total Price' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"'";
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
+               cursql=sql;
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return null;
+       }
+       
+       
+       ResultSet getOneReportTotal(String date){
+           String sql="SELECT SUM(d_quantity*item.item_price) AS 'Total' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"'";
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+           
+           return null;
+           
+       }
+       
+       
+       ResultSet getOneReportTotalBillPrice(String date){
+           String sql="SELECT SUM(`total_price`) FROM `bill` WHERE `datetime` LIKE '"+date+"%'";
+           
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
                return rs;
            } catch (Exception e) {
                e.printStackTrace();
@@ -189,8 +241,28 @@ public class DBOP1 {
                } catch (Exception e) {
                    e.printStackTrace();
                }
-           }else{
-               return null;
+           }else if(seflag==3){
+                String sql="SELECT daily.item_id AS 'ItemID',item.item_name AS 'Name',`d_quantity` AS 'Sold Quantity',item.item_price AS '1X Price',d_quantity*item.item_price AS 'Total Price' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"' AND item.item_name LIKE '%"+word+"%' OR daily.item_id LIKE '%"+word+"%'";
+               try {
+                    
+                    Statement s = Database.getStatement();
+                    ResultSet rs = s.executeQuery(sql);
+                    return rs;
+                   
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+           }else if(seflag==4){
+               String sql="SELECT `item_id` AS 'ItemID' ,`item_name` AS 'Name', `item_price` AS '1x Price', `item_quantity` AS 'Available Qty' FROM `item` WHERE item.item_name LIKE '%"+word+"%' OR item.item_id LIKE '%"+word+"%'";
+               try {
+                    
+                    Statement s = Database.getStatement();
+                    ResultSet rs = s.executeQuery(sql);
+                    return rs;
+                   
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
            }
          return null;
        }
@@ -210,7 +282,7 @@ public class DBOP1 {
        
        int checklog(String uname,String password){
            String sql="SELECT * FROM `user` WHERE `uname`='"+uname+"' AND `password`='"+password+"'";
-           //System.out.println(sql);
+           
            try {
                Statement s = Database.getStatement();
                ResultSet rs = s.executeQuery(sql);

@@ -9,6 +9,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -19,6 +20,8 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +33,11 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
 import javax.swing.JOptionPane;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 /**
  *
  * @author pasindu
@@ -69,6 +77,8 @@ public class reports extends javax.swing.JFrame {
         showDate();
         showTime(); 
         
+
+        
     }
     
     public void printReport(){
@@ -84,23 +94,90 @@ public class reports extends javax.swing.JFrame {
                 para1.setAlignment(Paragraph.ALIGN_CENTER);
                 d.add(para1);
                 if(seflag==2){
-                    d.add(new Paragraph("Date: "+date));
-                }else if(seflag==1){
-                    d.add(new Paragraph("From: "+from+" To: "+to));
+                        d.add(new Paragraph("Date: "+date));
+                        d.add(new Paragraph(" "));
+                        pt.addCell("ItemID");
+                        pt.addCell("Name");
+                        pt.addCell("Sold quantity");
+                    
+                    while(rs.next()) {
+                        pt.addCell(rs.getString(1));
+                        pt.addCell(rs.getString(2));
+                        pt.addCell(rs.getString(3));
+                        
+                    }
+                    d.add(pt);
                 }
                 
-                d.add(new Paragraph(" "));
-                pt.addCell("ItemID");
-                pt.addCell("Name");
-                pt.addCell("Sold quantity");
-                while(rs.next()) {
-                   pt.addCell(rs.getString(1));
-                   pt.addCell(rs.getString(2));
-                   pt.addCell(rs.getString(3));
-
+                else if(seflag==1){
+                        d.add(new Paragraph("From: "+from+" To: "+to));
+                        d.add(new Paragraph(" "));
+                        pt.addCell("ItemID");
+                        pt.addCell("Name");
+                        pt.addCell("Sold quantity");
+                    
+                    while(rs.next()) {
+                        pt.addCell(rs.getString(1));
+                        pt.addCell(rs.getString(2));
+                        pt.addCell(rs.getString(3));
+                        
+                    }
+                    d.add(pt);
                 }
-                d.add(pt);
+                
+               
+                else if(seflag==3){
+                        String time1=LocalTime.now().toString();
+                        d.add(new Paragraph("Date: "+date+" Time: "+time1));
+                        d.add(new Paragraph(" "));
+                        pt.addCell("ItemID");
+                        pt.addCell("Name");
+                        pt.addCell("Sold quantity");
+                        pt.addCell("1x Price");
+                        pt.addCell("Total Price");
+                    while(rs.next()) {
+                        pt.addCell(rs.getString(1));
+                        pt.addCell(rs.getString(2));
+                        pt.addCell(rs.getString(3));
+                        pt.addCell(rs.getString(4));
+                        pt.addCell(rs.getString(5));
 
+                    }
+                d.add(pt);
+                    ResultSet rs1=db1.getOneReportTotal(date);
+                    d.add(new Paragraph(" "));
+                    double price=0,price1=0;
+                    while(rs1.next()){
+                        
+                        price=rs1.getDouble(1);
+                    }
+                    ResultSet rs2=db1.getOneReportTotalBillPrice(date);
+                    while(rs2.next()){
+                        price1=rs2.getDouble(1);
+                    }
+                    double discounts=price-price1;
+                    d.add(new Paragraph("Total Price : "+ price ));
+                    d.add(new Paragraph("Discounts : " + discounts));
+                    d.add(new Paragraph("Total Income : "+ price1 ));
+
+                }else if(seflag==4){
+                    String date1=LocalDate.now().toString();
+                    String time1=LocalTime.now().toString();
+                    d.add(new Paragraph("Date: "+date1+" Time: "+time1));
+                        d.add(new Paragraph(" "));
+                        pt.addCell("ItemID");
+                        pt.addCell("Name");
+                        pt.addCell("1x Price");
+                        pt.addCell("Available Qty");
+                    while(rs.next()) {
+                        pt.addCell(rs.getString(1));
+                        pt.addCell(rs.getString(2));
+                        pt.addCell(rs.getString(3));
+                        pt.addCell(rs.getString(4));
+
+                    }
+                d.add(pt);
+                }
             d.close();
             
             
@@ -135,7 +212,7 @@ public class reports extends javax.swing.JFrame {
         message.setRecipients(Message.RecipientType.TO,
         InternetAddress.parse(email));//u will send to
         String file="",fileName="";
-        if(seflag==2){
+        if(seflag==2 || seflag==3){
             message.setSubject("Report: Date: "+date);
             file = "files//report.pdf";
             fileName = date+".pdf";
@@ -143,6 +220,12 @@ public class reports extends javax.swing.JFrame {
             message.setSubject("Report: From: "+from+" To: "+to);
             file = "files//report.pdf";
             fileName = from+"_"+to+".pdf";
+        }else if(seflag==4){
+            String date1=LocalDate.now().toString();
+            String time1=LocalTime.now().toString();
+            message.setSubject("Report: Stock Check: "+date1+" "+time1);
+            file = "files//report.pdf";
+            fileName = "stock_check_"+date1+"_"+time1+".pdf";
         }
             
         message.setText("Email with an attachment");
@@ -176,6 +259,18 @@ public class reports extends javax.swing.JFrame {
     }catch (MessagingException e) {
         e.printStackTrace();
     }
+    }
+    public void addColoredText(JTextPane pane, String text, Color color) {
+        StyledDocument doc = pane.getStyledDocument();
+
+        Style style = pane.addStyle("Color Style", null);
+        StyleConstants.setForeground(style, color);
+        try {
+            doc.insertString(doc.getLength(), text, style);
+        } 
+        catch (BadLocationException e) {
+            e.printStackTrace();
+        }           
     }
 
     /**
@@ -218,9 +313,12 @@ public class reports extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtReport = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1024, 768));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(62, 62, 62)));
 
@@ -269,7 +367,7 @@ public class reports extends javax.swing.JFrame {
                     .addComponent(date_pick_to, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(62, 62, 62)));
@@ -511,25 +609,52 @@ public class reports extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         jLabel4.setText("One day report");
 
+        jButton4.setFont(new java.awt.Font("Waree", 0, 14)); // NOI18N
+        jButton4.setText("CHECK STOCK");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setFont(new java.awt.Font("Waree", 0, 14)); // NOI18N
+        jButton5.setText("GET TODAY REPORT");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        txtReport.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
+        jScrollPane2.setViewportView(txtReport);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addGap(53, 53, 53)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(53, 53, 53))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -540,18 +665,24 @@ public class reports extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(144, 144, 144))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
 
         pack();
@@ -640,6 +771,66 @@ public class reports extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        ResultSet rs=db1.checkStock();
+        report_table.setModel(DbUtils.resultSetToTableModel(rs));
+        seflag=4;
+        btnSearch.setEnabled(true);
+        btnAll.setEnabled(true);
+        btnGen.setEnabled(true);
+        
+        date_pick_fr.setDate(null);
+        date_pick_to.setDate(null);
+        date_pick_one.setDate(null);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Date date1 = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd"); 
+        date= df.format(date1);
+        
+        
+        ResultSet rs=db1.getTodayReport(date);
+        report_table.setModel(DbUtils.resultSetToTableModel(rs));
+        seflag=3;
+        date_pick_fr.setDate(null);
+        date_pick_to.setDate(null);
+        btnSearch.setEnabled(true);
+        btnAll.setEnabled(true);
+        
+        btnGen.setEnabled(true);
+        btnView.setEnabled(false);
+        btnSend.setEnabled(false);
+        
+        date_pick_fr.setDate(null);
+        date_pick_to.setDate(null);
+        date_pick_one.setDate(null);
+        
+        
+        //genatate other info
+        try {
+            double price=0,price1=0;
+            ResultSet rs1 = db1.getOneReportTotal(date);
+            while (rs1.next()) {
+
+                price = rs1.getDouble(1);
+                
+            }
+            ResultSet rs2 = db1.getOneReportTotalBillPrice(date);
+            while (rs2.next()) {
+                price1 = rs2.getDouble(1);
+                
+            }
+            Double discount=price-price1;
+            
+            addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.RED);
+            addColoredText(txtReport, "Discounts : " + discount+"\n", Color.RED);
+            addColoredText(txtReport, "Total Income : " + price1+"\n", Color.RED);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -710,6 +901,8 @@ public class reports extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -723,6 +916,7 @@ public class reports extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lblDate;
@@ -730,5 +924,6 @@ public class reports extends javax.swing.JFrame {
     private javax.swing.JTable report_table;
     private javax.swing.JTextField search_id;
     private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextPane txtReport;
     // End of variables declaration//GEN-END:variables
 }

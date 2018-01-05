@@ -364,6 +364,11 @@ public class addStock extends javax.swing.JFrame {
                 stock_tableMouseClicked(evt);
             }
         });
+        stock_table.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                stock_tableKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(stock_table);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -489,6 +494,10 @@ public class addStock extends javax.swing.JFrame {
         this.setVisible(false);
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void stock_tableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stock_tableKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stock_tableKeyPressed
 
     /**
      * @param args the command line arguments
