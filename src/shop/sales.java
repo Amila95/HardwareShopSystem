@@ -77,6 +77,7 @@ public class sales extends javax.swing.JFrame {
         price.setText("");
         cash.setText("");
         change.setText("");
+        bill.setText("");
         
         table.setModel(new DefaultTableModel(null,new String [] {
                 "Item Name", "Price", "Qty", "Total"
@@ -155,6 +156,7 @@ public class sales extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         bill = new javax.swing.JTextPane();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1024, 768));
@@ -368,6 +370,13 @@ public class sales extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(bill);
 
+        jButton4.setText("change");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -376,7 +385,6 @@ public class sales extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -386,7 +394,10 @@ public class sales extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(jLabel2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -409,8 +420,10 @@ public class sales extends javax.swing.JFrame {
                                 .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(29, 29, 29)
                         .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -628,6 +641,47 @@ public class sales extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnPrintActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        DefaultTableModel model = (DefaultTableModel)table.getModel();
+        try{
+            int item_id;
+            int pastqty;
+            double item_price;
+            int SelectedRowIndex = table.getSelectedRow();
+            
+            String item_name = (String) table.getValueAt(SelectedRowIndex, 0);
+            int qty = (int) table.getValueAt(SelectedRowIndex, 2);
+            ResultSet rs = db.getitemid(item_name);
+            try{
+            while(rs.next()){
+                item_id = Integer.parseInt(rs.getString(1));
+                item_price = Double.parseDouble(rs.getString(2));
+                //amount = amount - item_price*qty ;
+                //amont.setText(String.valueOf(amount));
+                //Set set = map.entrySet();
+                //map.remove(table.getValueAt(SelectedRowIndex, item_id));
+                for(Iterator<Map.Entry<Integer, Integer>> it = map.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<Integer, Integer> entry = it.next();
+                if(entry.getKey().equals(item_id)) {
+                pastqty = entry.getValue();
+                amount = amount + item_price*qty - item_price*pastqty;
+                amont.setText(String.valueOf(amount));
+                model.setValueAt(amount,SelectedRowIndex, 3);
+                
+                
+      }
+    }
+            }
+            
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -676,6 +730,7 @@ public class sales extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
