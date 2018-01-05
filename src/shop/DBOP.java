@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,20 +19,37 @@ import java.time.LocalDateTime;
  */
 public class DBOP {
     
-    void seachitem(Item I){
+    /*void seachitem(Item I){
     try{
         Statement s = Database.getStatement();
         String pqr = ("SELECT * FROM item WHERE item_id ='"+I.getItemID()+"'");
         ResultSet rs = s.executeQuery(pqr);
-        while(rs.next()){
+        if(rs.next()){
             I.setName(rs.getString("item_name"));
             I.setPrice(Integer.parseInt(rs.getString("item_price")));
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Input Worng Item ID", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     catch(Exception ex){
             ex.printStackTrace();
             }
+    }*/
+    
+    ResultSet seachitem(Item I){
+    try{
+        Statement s = Database.getStatement();
+        String pqr = ("SELECT * FROM item WHERE item_id ='"+I.getItemID()+"'");
+        ResultSet rs = s.executeQuery(pqr);
+        return rs;
     }
+    catch(Exception ex){
+            ex.printStackTrace();
+            }
+        return null;
+    } 
+    
     void settotalcount(Item I){
     try{
         Statement s = Database.getStatement();

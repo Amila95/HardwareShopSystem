@@ -6,45 +6,31 @@
 package shop;
 
 import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.List;
+
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
+
 import com.itextpdf.text.pdf.PdfWriter;
-import java.awt.Desktop;
-import java.io.File;
-import com.itextpdf.text.Element;
-import java.awt.ComponentOrientation;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+
 import java.awt.Toolkit;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.Printable;
-import static java.awt.print.Printable.NO_SUCH_PAGE;
-import static java.awt.print.Printable.PAGE_EXISTS;
+
 import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
-import java.io.FileNotFoundException;
+
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.swing.JFrame;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.StyledDocument;
+
 
 /**
  *
@@ -447,9 +433,41 @@ public class sales extends javax.swing.JFrame {
         
         I.setItemID(Integer.parseInt(ItemID.getText().toString()));
         I.setQty(Integer.parseInt(qty.getText().toString()));
-        db.seachitem(I);
+        //db.seachitem(I);
         //db.settotalcount(I);
-        DefaultTableModel model = (DefaultTableModel)table.getModel();
+        ResultSet rs = db.seachitem(I);
+        try {
+            if(rs.next()){
+                I.setName(rs.getString("item_name"));
+                I.setPrice(Integer.parseInt(rs.getString("item_price")));
+                DefaultTableModel model = (DefaultTableModel)table.getModel();
+                Object[] row;
+                this.itemtotal = (I.getPrice()* I.getQty());
+                row = new Object[4];
+                row[0] = I.getName();
+                row[1]= I.getPrice();
+                row[2] = I.getQty();
+                row[3] = itemtotal;
+                model.addRow(row);
+                amount = amount + I.getPrice()*I.getQty();
+                amont.setText(String.valueOf(amount));
+                //Map<Integer, Integer> map = (Map<Integer, Integer>) new HashMap<Integer, Integer>();
+                 map.put(I.getItemID(), I.getQty());
+                itemcount += 1;
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Input Worng Item ID", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
+        
+        
+        /*DefaultTableModel model = (DefaultTableModel)table.getModel();
         Object[] row;
         this.itemtotal = (I.getPrice()* I.getQty());
         row = new Object[4];
@@ -462,7 +480,9 @@ public class sales extends javax.swing.JFrame {
         amont.setText(String.valueOf(amount));
         //Map<Integer, Integer> map = (Map<Integer, Integer>) new HashMap<Integer, Integer>();
         map.put(I.getItemID(), I.getQty());
-        itemcount += 1;
+        itemcount += 1;*/
+        ItemID.setText("");
+        qty.setText("");
         
         
         
