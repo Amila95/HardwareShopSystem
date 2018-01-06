@@ -18,7 +18,9 @@ public class Database {
         public static Statement getStatement(){
         try{
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/shop","root","");
-            //Connection con = DriverManager.getConnection("jdbc:mysql://35.196.115.129:3306/shop","root","");
+            //Connection con = DriverManager.getConnection("jdbc:sqlite:shop.sql");
+
+            
             Statement stat = con.createStatement();
             return stat;
         }catch(Exception e){

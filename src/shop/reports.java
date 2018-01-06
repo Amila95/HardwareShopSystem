@@ -14,9 +14,13 @@ import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,8 +36,10 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -45,7 +51,7 @@ import javax.swing.text.StyledDocument;
 public class reports extends javax.swing.JFrame {
     DBOP1 db1 = new DBOP1();
     public int seflag=0;
-    public String from="",to="",date="";
+    public String from="",to="",date="",filename="";
     public String email="pasindurohana@gmail.com";
     
     /**
@@ -72,6 +78,7 @@ public class reports extends javax.swing.JFrame {
         btnSend.setEnabled(false);
         
         txtEmail.setText(email);
+        lblTitle.setText("");
 
 
         showDate();
@@ -93,42 +100,46 @@ public class reports extends javax.swing.JFrame {
                 Paragraph para1 = new Paragraph("Report");
                 para1.setAlignment(Paragraph.ALIGN_CENTER);
                 d.add(para1);
-                if(seflag==2){
-                        d.add(new Paragraph("Date: "+date));
-                        d.add(new Paragraph(" "));
-                        pt.addCell("ItemID");
-                        pt.addCell("Name");
-                        pt.addCell("Sold quantity");
-                    
-                    while(rs.next()) {
-                        pt.addCell(rs.getString(1));
-                        pt.addCell(rs.getString(2));
-                        pt.addCell(rs.getString(3));
-                        
-                    }
-                    d.add(pt);
-                }
-                
-                else if(seflag==1){
+                           
+                if(seflag==1){
                         d.add(new Paragraph("From: "+from+" To: "+to));
                         d.add(new Paragraph(" "));
                         pt.addCell("ItemID");
                         pt.addCell("Name");
                         pt.addCell("Sold quantity");
-                    
-                    while(rs.next()) {
+                        pt.addCell("1x Price");
+                        pt.addCell("Total Price");
+                    while (rs.next()) {
                         pt.addCell(rs.getString(1));
                         pt.addCell(rs.getString(2));
                         pt.addCell(rs.getString(3));
-                        
+                        pt.addCell(rs.getString(4));
+                        pt.addCell(rs.getString(5));
+
                     }
                     d.add(pt);
+                    
+                    ResultSet rs1=db1.getPeriodReportTotal(from,to);
+                    d.add(new Paragraph(" "));
+                    double price=0,price1=0;
+                    while(rs1.next()){
+                        
+                        price=rs1.getDouble(1);
+                    }
+                    ResultSet rs2=db1.getPeriodReportTotalBillPrice(from,to);
+                    while(rs2.next()){
+                        price1=rs2.getDouble(1);
+                    }
+                    double discounts=price-price1;
+                    d.add(new Paragraph("Total Price : "+ price ));
+                    d.add(new Paragraph("Discounts : " + discounts));
+                    d.add(new Paragraph("Total Income : "+ price1 ));
                 }
                 
                
-                else if(seflag==3){
-                        String time1=LocalTime.now().toString();
-                        d.add(new Paragraph("Date: "+date+" Time: "+time1));
+                else if(seflag==3 || seflag==2){
+                        
+                        d.add(new Paragraph("Date: "+date));
                         d.add(new Paragraph(" "));
                         pt.addCell("ItemID");
                         pt.addCell("Name");
@@ -317,6 +328,7 @@ public class reports extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtReport = new javax.swing.JTextPane();
+        lblTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -472,7 +484,7 @@ public class reports extends javax.swing.JFrame {
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(62, 62, 62)));
 
         btnGen.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
-        btnGen.setText("GENARATE");
+        btnGen.setText("SAVE");
         btnGen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenActionPerformed(evt);
@@ -628,6 +640,9 @@ public class reports extends javax.swing.JFrame {
         txtReport.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         jScrollPane2.setViewportView(txtReport);
 
+        lblTitle.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
+        lblTitle.setText("Title");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -644,7 +659,7 @@ public class reports extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
                         .addGap(53, 53, 53))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -653,7 +668,10 @@ public class reports extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblTitle)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -661,7 +679,9 @@ public class reports extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lblTitle))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -699,14 +719,42 @@ public class reports extends javax.swing.JFrame {
         ResultSet rs=db1.getReport(from, to);
         report_table.setModel(DbUtils.resultSetToTableModel(rs));
         seflag=1;
+        txtReport.setText("");
         date_pick_one.setDate(null);
         
         btnAll.setEnabled(true);
         btnSearch.setEnabled(true);
         
         btnGen.setEnabled(true);
-        btnView.setEnabled(false);
-        btnSend.setEnabled(false);
+        btnView.setEnabled(true);
+        btnSend.setEnabled(true);
+        
+        //genatate other info
+        lblTitle.setText("Report: From: "+from+" To: "+to);
+        filename= "report_"+from+"_"+to+".pdf";
+        try {
+            double price=0,price1=0;
+            ResultSet rs1 = db1.getPeriodReportTotal(from,to);
+            while (rs1.next()) {
+
+                price = rs1.getDouble(1);
+                
+            }
+            ResultSet rs2 = db1.getPeriodReportTotalBillPrice(from,to);
+            while (rs2.next()) {
+                price1 = rs2.getDouble(1);
+                
+            }
+            Double discount=price-price1;
+            
+            addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.BLACK);
+            addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        this.printReport();  
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -715,9 +763,10 @@ public class reports extends javax.swing.JFrame {
         Date c=date_pick_one.getDate();
         date=df.format(c);
         
-        ResultSet rs=db1.getOneReport(date);
+        ResultSet rs=db1.getTodayReport(date);  
         report_table.setModel(DbUtils.resultSetToTableModel(rs));
         seflag=2;
+        txtReport.setText("");
         date_pick_fr.setDate(null);
         date_pick_to.setDate(null);
         btnSearch.setEnabled(true);
@@ -726,6 +775,32 @@ public class reports extends javax.swing.JFrame {
         btnGen.setEnabled(true);
         btnView.setEnabled(false);
         btnSend.setEnabled(false);
+        
+        lblTitle.setText("Report: Date "+date);
+        filename= "report_"+date+".pdf";
+
+        try {
+            double price=0,price1=0;
+            ResultSet rs1 = db1.getOneReportTotal(date);
+            while (rs1.next()) {
+
+                price = rs1.getDouble(1);
+                
+            }
+            ResultSet rs2 = db1.getOneReportTotalBillPrice(date);
+            while (rs2.next()) {
+                price1 = rs2.getDouble(1);
+                
+            }
+            Double discount=price-price1;
+            
+            addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.BLACK);
+            addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.printReport();  
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -747,10 +822,11 @@ public class reports extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAllActionPerformed
 
     private void btnGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenActionPerformed
-        this.printReport();  
-        btnView.setEnabled(true);
-        btnSend.setEnabled(true);
-        btnGen.setEnabled(false);
+        
+        
+        
+        
+        this.saveFile(new File("files//report.pdf"),filename);
         
     }//GEN-LAST:event_btnGenActionPerformed
 
@@ -772,6 +848,14 @@ public class reports extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Date date1 = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd"); 
+        date= df.format(date1);
+        Date date2 = new Date();
+        SimpleDateFormat df1 = new SimpleDateFormat("hh:mm:ss a"); // use HH for het time in 24 hour format
+        String time= df1.format(date2);
+        
+        
         ResultSet rs=db1.checkStock();
         report_table.setModel(DbUtils.resultSetToTableModel(rs));
         seflag=4;
@@ -779,9 +863,14 @@ public class reports extends javax.swing.JFrame {
         btnAll.setEnabled(true);
         btnGen.setEnabled(true);
         
+        txtReport.setText("");
         date_pick_fr.setDate(null);
         date_pick_to.setDate(null);
         date_pick_one.setDate(null);
+        filename= "stock_report_"+date+".pdf";
+        lblTitle.setText("Stock Report: "+date+"_"+time);
+        
+        this.printReport();  
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -793,14 +882,16 @@ public class reports extends javax.swing.JFrame {
         ResultSet rs=db1.getTodayReport(date);
         report_table.setModel(DbUtils.resultSetToTableModel(rs));
         seflag=3;
+        
+        txtReport.setText("");
         date_pick_fr.setDate(null);
         date_pick_to.setDate(null);
         btnSearch.setEnabled(true);
         btnAll.setEnabled(true);
         
         btnGen.setEnabled(true);
-        btnView.setEnabled(false);
-        btnSend.setEnabled(false);
+        btnView.setEnabled(true);
+        btnSend.setEnabled(true);
         
         date_pick_fr.setDate(null);
         date_pick_to.setDate(null);
@@ -808,6 +899,8 @@ public class reports extends javax.swing.JFrame {
         
         
         //genatate other info
+        lblTitle.setText("Report: Date "+date);
+        filename= "report_"+date+".pdf";
         try {
             double price=0,price1=0;
             ResultSet rs1 = db1.getOneReportTotal(date);
@@ -823,14 +916,37 @@ public class reports extends javax.swing.JFrame {
             }
             Double discount=price-price1;
             
-            addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.RED);
-            addColoredText(txtReport, "Discounts : " + discount+"\n", Color.RED);
-            addColoredText(txtReport, "Total Income : " + price1+"\n", Color.RED);
+            addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.BLACK);
+            addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        this.printReport();  
     }//GEN-LAST:event_jButton5ActionPerformed
-
+    public void saveFile(File file,String name) {
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setSelectedFile(new File(name));
+            
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "PDF file", "pdf");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showSaveDialog(null);
+            String path="";
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                path= chooser.getSelectedFile().getAbsolutePath();
+                File dest = new File(path); //any location
+                Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            
+            
+            
+        }
+         catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -921,6 +1037,7 @@ public class reports extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblTime;
+    private javax.swing.JLabel lblTitle;
     private javax.swing.JTable report_table;
     private javax.swing.JTextField search_id;
     private javax.swing.JTextField txtEmail;

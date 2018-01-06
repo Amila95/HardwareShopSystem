@@ -30,7 +30,7 @@ public class Admin_main extends javax.swing.JFrame {
         
         this.setUndecorated(true);
         this.setAlwaysOnTop(false);
-        this.setResizable(false);
+        this.setResizable(true);
         this.setVisible(true);
         initComponents();
         Toolkit tk=Toolkit.getDefaultToolkit();

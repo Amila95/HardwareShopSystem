@@ -152,7 +152,7 @@ public class DBOP1 {
          return null;
        }
        ResultSet getReport(String from,String to){
-           String sql="SELECT daily.item_id  ,item.item_name AS 'Name', SUM(`d_quantity`) AS 'Sold Quantity' FROM `daily` INNER JOIN item on daily.item_id=item.item_id WHERE daily.date BETWEEN '"+from+"' AND '"+to+"' GROUP by `item_id`";
+           String sql="SELECT bill_item.item_id AS 'ItemID',item.item_name AS 'Name',SUM(bill_item.quantity) AS 'Sold Qty',bill_item.cur_1x_price AS '1X Price',SUM(bill_item.cur_1x_price*bill_item.quantity) AS 'Total' FROM `bill_item` JOIN bill ON bill_item.bill_id=bill.bill_id JOIN item on bill_item.item_id=item.item_id WHERE bill.datetime BETWEEN '"+from+"' AND '"+to+"' GROUP BY bill_item.item_id,bill_item.cur_1x_price";
            try {
                Statement s = Database.getStatement();
                ResultSet rs = s.executeQuery(sql);
@@ -164,20 +164,9 @@ public class DBOP1 {
          return null;
        }
        
-       ResultSet getOneReport(String date){
-           String sql="SELECT daily.item_id AS 'ItemID',item.item_name AS 'Name',`d_quantity` AS 'Sold Quantity' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"'";
-           try {
-               Statement s = Database.getStatement();
-               ResultSet rs = s.executeQuery(sql);
-               cursql=sql;
-               return rs;
-           } catch (Exception e) {
-               e.printStackTrace();
-           }
-         return null;
-       }
+      
        ResultSet getTodayReport(String date){
-           String sql="SELECT daily.item_id AS 'ItemID',item.item_name AS 'Name',`d_quantity` AS 'Sold Quantity',item.item_price AS '1X Price',d_quantity*item.item_price AS 'Total Price' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"'";
+           String sql="SELECT bill_item.item_id AS 'ItemID',item.item_name AS 'Name',SUM(bill_item.quantity) AS 'Sold Qty',bill_item.cur_1x_price AS '1X Price',SUM(bill_item.cur_1x_price*bill_item.quantity) AS 'Total' FROM `bill_item` JOIN bill ON bill_item.bill_id=bill.bill_id JOIN item on bill_item.item_id=item.item_id WHERE bill.datetime LIKE '"+date+"%' GROUP BY bill_item.item_id,bill_item.cur_1x_price";
            try {
                Statement s = Database.getStatement();
                ResultSet rs = s.executeQuery(sql);
@@ -191,7 +180,7 @@ public class DBOP1 {
        
        
        ResultSet getOneReportTotal(String date){
-           String sql="SELECT SUM(d_quantity*item.item_price) AS 'Total' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"'";
+           String sql="SELECT SUM(bill_item.cur_1x_price*bill_item.quantity) AS 'Total' FROM `bill_item` JOIN bill ON bill_item.bill_id=bill.bill_id JOIN item on bill_item.item_id=item.item_id WHERE bill.datetime LIKE '"+date+"%' ";
            try {
                Statement s = Database.getStatement();
                ResultSet rs = s.executeQuery(sql);
@@ -218,10 +207,34 @@ public class DBOP1 {
          return null;
        }
        
+       ResultSet getPeriodReportTotal(String from,String to){
+           String sql="SELECT SUM(bill_item.cur_1x_price*bill_item.quantity) AS 'Total' FROM `bill_item` JOIN bill ON bill_item.bill_id=bill.bill_id JOIN item on bill_item.item_id=item.item_id WHERE bill.datetime BETWEEN '"+from+"' AND '"+to+"'";
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return null;
+       }
+       
+       ResultSet getPeriodReportTotalBillPrice(String from,String to){
+           String sql="SELECT SUM(`total_price`) FROM `bill` WHERE `datetime` BETWEEN '"+from+"' AND '"+to+"'";
+             try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return null;
+       }
+       
        ResultSet reportSearch(int seflag,String word,String from,String to,String date){
            
            if (seflag==1) {
-               String sql="SELECT daily.item_id,item.item_name AS 'Name', SUM(`d_quantity`) AS 'Sold Quantity' FROM `daily` INNER JOIN item on daily.item_id=item.item_id WHERE daily.date BETWEEN '"+from+"' AND '"+to+"' AND item.item_name LIKE '%"+word+"%' OR daily.item_id LIKE '%"+word+"%' GROUP by `item_id`";
+               String sql="SELECT bill_item.item_id AS 'ItemID',item.item_name AS 'Name',SUM(bill_item.quantity) AS 'Sold Qty',bill_item.cur_1x_price AS '1X Price',SUM(bill_item.cur_1x_price*bill_item.quantity) AS 'Total' FROM `bill_item` JOIN bill ON bill_item.bill_id=bill.bill_id JOIN item on bill_item.item_id=item.item_id WHERE bill.datetime BETWEEN '"+from+"' AND '"+to+"' AND bill_item.bill_id LIKE '%"+word+"%' OR item.item_name LIKE '%"+word+"%' GROUP BY bill_item.item_id,bill_item.cur_1x_price";
                try {
                     
                     Statement s = Database.getStatement();
@@ -230,19 +243,8 @@ public class DBOP1 {
                } catch (Exception e) {
                    e.printStackTrace();
                }
-           }else if (seflag==2) {
-               String sql="SELECT daily.item_id AS 'ItemID',item.item_name AS 'Name',`d_quantity` AS 'Sold Quantity' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"' AND item.item_name LIKE '%"+word+"%' OR daily.item_id LIKE '%"+word+"%'";
-               try {
-                    
-                    Statement s = Database.getStatement();
-                    ResultSet rs = s.executeQuery(sql);
-                    return rs;
-                   
-               } catch (Exception e) {
-                   e.printStackTrace();
-               }
-           }else if(seflag==3){
-                String sql="SELECT daily.item_id AS 'ItemID',item.item_name AS 'Name',`d_quantity` AS 'Sold Quantity',item.item_price AS '1X Price',d_quantity*item.item_price AS 'Total Price' FROM `daily` INNER JOIN item ON daily.item_id=item.item_id WHERE `date`= '"+date+"' AND item.item_name LIKE '%"+word+"%' OR daily.item_id LIKE '%"+word+"%'";
+           }else if (seflag==2 || seflag==3) {
+               String sql="SELECT bill_item.item_id AS 'ItemID',item.item_name AS 'Name',SUM(bill_item.quantity) AS 'Sold Qty',bill_item.cur_1x_price AS '1X Price',SUM(bill_item.cur_1x_price*bill_item.quantity) AS 'Total' FROM `bill_item` JOIN bill ON bill_item.bill_id=bill.bill_id JOIN item on bill_item.item_id=item.item_id WHERE bill.datetime LIKE '"+date+"%' AND bill_item.bill_id LIKE '%"+word+"%' OR item.item_name LIKE '%"+word+"%' GROUP BY bill_item.item_id,bill_item.cur_1x_price";
                try {
                     
                     Statement s = Database.getStatement();

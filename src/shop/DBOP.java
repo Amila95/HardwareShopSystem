@@ -144,11 +144,11 @@ public class DBOP {
         return null;
     
     }
-    void setbillitem(int bill_id, int item_id, int qty){
+    void setbillitem(int bill_id, int item_id, int qty,double curprice){
         //System.out.println(bill_id+  item_id + qty);
         try{
             Statement s = Database.getStatement();
-            s.executeUpdate("INSERT INTO bill_item (bill_id,Item_id,quantity) VALUES ('"+bill_id+"','"+item_id+"','"+qty+"')");
+            s.executeUpdate("INSERT INTO bill_item (bill_id,Item_id,quantity,cur_1x_price) VALUES ('"+bill_id+"','"+item_id+"','"+qty+"','"+curprice+"')");
         }catch(Exception e){
             e.printStackTrace();
         }

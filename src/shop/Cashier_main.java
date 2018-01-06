@@ -19,6 +19,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,9 +39,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -48,7 +52,7 @@ import javax.swing.Timer;
 public class Cashier_main extends javax.swing.JFrame {
     DBOP1 db1=new DBOP1();
     String email="pasindurohana@gmail.com";
-    String date="";
+    String date="",filename="";
     /**
      * Creates new form Cashier_main
      */
@@ -71,6 +75,7 @@ public class Cashier_main extends javax.swing.JFrame {
         btnView.setEnabled(false);
         btnSend.setEnabled(false);
         txtEmail.setText(email);
+        btnSave.setEnabled(false);
         
     }
     
@@ -213,6 +218,7 @@ public class Cashier_main extends javax.swing.JFrame {
         btnView = new javax.swing.JButton();
         txtEmail = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
@@ -331,6 +337,14 @@ public class Cashier_main extends javax.swing.JFrame {
             }
         });
 
+        btnSave.setFont(new java.awt.Font("URW Palladio L", 0, 12)); // NOI18N
+        btnSave.setText("SAVE");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -338,13 +352,14 @@ public class Cashier_main extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(date_pick_one, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(date_pick_one, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtEmail)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(0, 137, Short.MAX_VALUE)
-                                .addComponent(btnGen, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnGen, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(19, 19, 19)
+                                .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -357,9 +372,10 @@ public class Cashier_main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(date_pick_one, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnView)
                     .addComponent(btnGen)
-                    .addComponent(btnView))
+                    .addComponent(btnSave))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -513,11 +529,11 @@ public class Cashier_main extends javax.swing.JFrame {
         DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
         Date c=date_pick_one.getDate();
         date=df.format(c);
-
+        filename="report_"+date+".pdf";
         try {
             Document d=new Document();
             PdfWriter.getInstance(d, new FileOutputStream("files//report.pdf"));
-            ResultSet rs=db1.getOneReport(date);
+            ResultSet rs=db1.getTodayReport(date);
             int colno = rs.getMetaData().getColumnCount();
             
              PdfPTable pt=new PdfPTable(colno);
@@ -525,25 +541,44 @@ public class Cashier_main extends javax.swing.JFrame {
                 Paragraph para1 = new Paragraph("Report");
                 para1.setAlignment(Paragraph.ALIGN_CENTER);
                 d.add(para1);
-                d.add(new Paragraph("Date: "+date));
                 
-                
+                d.add(new Paragraph("Date: " + date));
                 d.add(new Paragraph(" "));
                 pt.addCell("ItemID");
                 pt.addCell("Name");
                 pt.addCell("Sold quantity");
-                while(rs.next()) {
-                   pt.addCell(rs.getString(1));
-                   pt.addCell(rs.getString(2));
-                   pt.addCell(rs.getString(3));
+                pt.addCell("1x Price");
+                pt.addCell("Total Price");
+                while (rs.next()) {
+                    pt.addCell(rs.getString(1));
+                    pt.addCell(rs.getString(2));
+                    pt.addCell(rs.getString(3));
+                    pt.addCell(rs.getString(4));
+                    pt.addCell(rs.getString(5));
 
                 }
                 d.add(pt);
+                ResultSet rs1 = db1.getOneReportTotal(date);
+                d.add(new Paragraph(" "));
+                double price = 0, price1 = 0;
+                while (rs1.next()) {
+
+                    price = rs1.getDouble(1);
+                }
+                ResultSet rs2 = db1.getOneReportTotalBillPrice(date);
+                while (rs2.next()) {
+                    price1 = rs2.getDouble(1);
+                }
+                double discounts = price - price1;
+                d.add(new Paragraph("Total Price : " + price));
+                d.add(new Paragraph("Discounts : " + discounts));
+                d.add(new Paragraph("Total Income : " + price1));
 
             d.close();
             
             btnView.setEnabled(true);
             btnSend.setEnabled(true);
+            btnSave.setEnabled(true);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -572,6 +607,33 @@ public class Cashier_main extends javax.swing.JFrame {
         this.sendMail();
     }//GEN-LAST:event_btnSendActionPerformed
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        this.saveFile(new File("files//report.pdf"),filename);
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    public void saveFile(File file,String name) {
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setSelectedFile(new File(name));
+            
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "PDF file", "pdf");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showSaveDialog(null);
+            String path="";
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                path= chooser.getSelectedFile().getAbsolutePath();
+                File dest = new File(path); //any location
+                Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            
+            
+            
+        }
+         catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -612,6 +674,7 @@ public class Cashier_main extends javax.swing.JFrame {
     private javax.swing.JButton btnGen;
     private javax.swing.JLabel btnLogout;
     private javax.swing.JLabel btnNewBill;
+    private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSend;
     private javax.swing.JButton btnView;
     private com.toedter.calendar.JDateChooser date_pick_one;

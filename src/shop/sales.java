@@ -64,9 +64,9 @@ public class sales extends javax.swing.JFrame {
         price.setText("");
         cash.setText("");
         change.setText("");
-        
+        bill.setText("");
         table.setModel(new DefaultTableModel(null,new String [] {
-                "Item Name", "Price", "Qty", "Total"
+                "ItemId","Item Name", "Price", "Qty", "Total"
             }));
     }
     
@@ -183,14 +183,14 @@ public class sales extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Item Name", "Price", "Qty", "Total"
+                "ID", "Item Name", "Price", "Qty", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                true, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -261,7 +261,7 @@ public class sales extends javax.swing.JFrame {
         jLabel6.setText("Change");
 
         jButton1.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
-        jButton1.setText("CANCEL");
+        jButton1.setText("NEW BILL");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -454,16 +454,19 @@ public class sales extends javax.swing.JFrame {
         ResultSet rs = db.seachitem(I);
         try {
             if(rs.next()){
+                
+                I.setItemID(Integer.parseInt(rs.getString("item_id")));
                 I.setName(rs.getString("item_name"));
-                I.setPrice(Integer.parseInt(rs.getString("item_price")));
+                I.setPrice(Double.parseDouble(rs.getString("item_price")));
                 DefaultTableModel model = (DefaultTableModel)table.getModel();
                 Object[] row;
                 this.itemtotal = (I.getPrice()* I.getQty());
-                row = new Object[4];
-                row[0] = I.getName();
-                row[1]= I.getPrice();
-                row[2] = I.getQty();
-                row[3] = itemtotal;
+                row = new Object[5];
+                row[0] = I.getItemID();
+                row[1] = I.getName();
+                row[2]= I.getPrice();
+                row[3] = I.getQty();
+                row[4] = itemtotal;
                 model.addRow(row);
                 amount = amount + I.getPrice()*I.getQty();
                 amont.setText(String.valueOf(amount));
@@ -537,25 +540,42 @@ public class sales extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        Set set = map.entrySet();
-        Iterator iterator = set.iterator();
-        while(iterator.hasNext()) {
-            Map.Entry mentry = (Map.Entry)iterator.next();
+//        Set set = map.entrySet();
+//        Iterator iterator = set.iterator();
+//        while(iterator.hasNext()) {
+//            Map.Entry mentry = (Map.Entry)iterator.next();
+//
+//            I.setItemID((int) mentry.getKey());
+//            I.setQty((int) mentry.getValue());
+//
+//
+//            db.settotalcount(I);
+//            db.upadatedailypayment(I);
+//            db.setbillitem(I.getBill_id(),I.getItemID(),I.getQty());
+//        }
 
-            I.setItemID((int) mentry.getKey());
-            I.setQty((int) mentry.getValue());
+            for (int count = 0; count < table.getRowCount(); count++) {
+                String ItemID = (table.getValueAt(count, 0).toString());
+                String curPrice = (table.getValueAt(count, 2).toString());;
+                String Qty = (table.getValueAt(count, 3).toString());
 
+                I.setItemID(Integer.parseInt(ItemID));
+                I.setPrice(Double.parseDouble(curPrice));
+                I.setQty(Integer.parseInt(Qty));
 
-            db.settotalcount(I);
-            db.upadatedailypayment(I);
-            db.setbillitem(I.getBill_id(),I.getItemID(),I.getQty());
-        }
+                db.settotalcount(I);
+                db.upadatedailypayment(I);
+                db.setbillitem(I.getBill_id(), I.getItemID(), I.getQty(), I.getPrice());
+
+             }
+        
         
         
         int billid=I.getBill_id();
         this.getRecept(billid);
         btnPrint.setEnabled(true);
 
+        
         
         
         

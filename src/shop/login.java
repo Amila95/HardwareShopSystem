@@ -60,7 +60,7 @@ public class login extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(410, 200, 110, 23);
+        jButton1.setBounds(410, 200, 110, 30);
 
         jLabel1.setFont(new java.awt.Font("URW Palladio L", 1, 24)); // NOI18N
         jLabel1.setText("Password");
@@ -96,6 +96,7 @@ public class login extends javax.swing.JFrame {
         switch (db1.checklog(uname, pwd)) {
             case 1:
                 {
+                    this.setVisible(false);
                     Admin_main frm=new Admin_main();
                     frm.setVisible(true);
                     //view admin interface
@@ -103,6 +104,7 @@ public class login extends javax.swing.JFrame {
                 }
             case 2:
                 {
+                    this.setVisible(false);
                     Cashier_main frm=new Cashier_main();
                     frm.setVisible(true);
                     //view cashiyer interface
