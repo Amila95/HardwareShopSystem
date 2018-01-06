@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -180,14 +181,28 @@ public class reports extends javax.swing.JFrame {
                         pt.addCell("Name");
                         pt.addCell("1x Price");
                         pt.addCell("Available Qty");
+                        pt.addCell("Price x Qty");
                     while(rs.next()) {
                         pt.addCell(rs.getString(1));
                         pt.addCell(rs.getString(2));
                         pt.addCell(rs.getString(3));
                         pt.addCell(rs.getString(4));
+                        pt.addCell(rs.getString(5));
 
                     }
                 d.add(pt);
+                 ResultSet rs1=db1.getSumStock();
+                 d.add(new Paragraph(" "));
+                    try {
+                        while(rs1.next()){
+
+                            double total=rs1.getDouble(1);
+                            d.add(new Paragraph("Total Price : "+ total ));
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                
                 }
             d.close();
             
@@ -848,6 +863,7 @@ public class reports extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        txtReport.setText("");
         Date date1 = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd"); 
         date= df.format(date1);
@@ -857,16 +873,30 @@ public class reports extends javax.swing.JFrame {
         
         
         ResultSet rs=db1.checkStock();
+        
         report_table.setModel(DbUtils.resultSetToTableModel(rs));
+        ResultSet rs1=db1.getSumStock();
+        try {
+            while(rs1.next()){
+                
+                double total=rs1.getDouble(1);
+                addColoredText(txtReport, "\nTotal Price : " +total+"\n", Color.BLACK);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
         seflag=4;
         btnSearch.setEnabled(true);
         btnAll.setEnabled(true);
         btnGen.setEnabled(true);
         
-        txtReport.setText("");
+        
         date_pick_fr.setDate(null);
         date_pick_to.setDate(null);
         date_pick_one.setDate(null);
+        
+        btnView.setEnabled(true);
+        btnSend.setEnabled(true);
         filename= "stock_report_"+date+".pdf";
         lblTitle.setText("Stock Report: "+date+"_"+time);
         

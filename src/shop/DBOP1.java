@@ -140,7 +140,7 @@ public class DBOP1 {
        
        //report genaring
        ResultSet checkStock(){
-           String sql="SELECT `item_id` AS 'ItemID' ,`item_name` AS 'Name', `item_price` AS '1x Price', `item_quantity` AS 'Available Qty' FROM `item`";
+           String sql="SELECT `item_id` AS 'ItemID' ,`item_name` AS 'Name', `item_price` AS '1x Price', `item_quantity` AS 'Available Qty', item_price*item_quantity AS 'Price x Qty' FROM `item`";
            try {
                Statement s = Database.getStatement();
                ResultSet rs = s.executeQuery(sql);
@@ -151,6 +151,19 @@ public class DBOP1 {
            }
          return null;
        }
+       
+       ResultSet getSumStock(){
+           String sql="SELECT SUM(item_price*item_quantity) AS 'Total' FROM `item`";
+           try {
+               Statement s = Database.getStatement();
+               ResultSet rs = s.executeQuery(sql);
+               return rs;
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+         return null;
+       }
+       
        ResultSet getReport(String from,String to){
            String sql="SELECT bill_item.item_id AS 'ItemID',item.item_name AS 'Name',SUM(bill_item.quantity) AS 'Sold Qty',bill_item.cur_1x_price AS '1X Price',SUM(bill_item.cur_1x_price*bill_item.quantity) AS 'Total' FROM `bill_item` JOIN bill ON bill_item.bill_id=bill.bill_id JOIN item on bill_item.item_id=item.item_id WHERE bill.datetime BETWEEN '"+from+"' AND '"+to+"' GROUP BY bill_item.item_id,bill_item.cur_1x_price";
            try {
@@ -255,7 +268,7 @@ public class DBOP1 {
                    e.printStackTrace();
                }
            }else if(seflag==4){
-               String sql="SELECT `item_id` AS 'ItemID' ,`item_name` AS 'Name', `item_price` AS '1x Price', `item_quantity` AS 'Available Qty' FROM `item` WHERE item.item_name LIKE '%"+word+"%' OR item.item_id LIKE '%"+word+"%'";
+               String sql="SELECT `item_id` AS 'ItemID' ,`item_name` AS 'Name', `item_price` AS '1x Price', `item_quantity` AS 'Available Qty', item_price*item_quantity AS 'Price x Qty' FROM `item` WHERE item.item_name LIKE '%"+word+"%' OR item.item_id LIKE '%"+word+"%'";
                try {
                     
                     Statement s = Database.getStatement();
