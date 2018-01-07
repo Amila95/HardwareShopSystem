@@ -87,7 +87,7 @@ public class sales extends javax.swing.JFrame {
         
         btnGen.setEnabled(false);
         btnPrint.setEnabled(false);
-        
+        discontvalue.setText("0");
         
         
         
@@ -122,7 +122,7 @@ public class sales extends javax.swing.JFrame {
         qty = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        gtbremove = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         cash = new javax.swing.JTextField();
@@ -218,11 +218,11 @@ public class sales extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(table);
 
-        jButton2.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
-        jButton2.setText("Remove Item");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        gtbremove.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
+        gtbremove.setText("Remove Item");
+        gtbremove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                gtbremoveActionPerformed(evt);
             }
         });
 
@@ -402,7 +402,7 @@ public class sales extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(qty, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(gtbremove, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -426,7 +426,7 @@ public class sales extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(gtbremove)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -454,7 +454,8 @@ public class sales extends javax.swing.JFrame {
         ResultSet rs = db.seachitem(I);
         try {
             if(rs.next()){
-                
+                int currentqty = Integer.parseInt(rs.getString("item_quantity"));
+                if((currentqty - I.getQty())>= 0){
                 I.setItemID(Integer.parseInt(rs.getString("item_id")));
                 I.setName(rs.getString("item_name"));
                 I.setPrice(Double.parseDouble(rs.getString("item_price")));
@@ -473,6 +474,10 @@ public class sales extends javax.swing.JFrame {
                 //Map<Integer, Integer> map = (Map<Integer, Integer>) new HashMap<Integer, Integer>();
                  map.put(I.getItemID(), I.getQty());
                 itemcount += 1;
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Stock is empty", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
             else{
                 JOptionPane.showMessageDialog(null, "Input Worng Item ID", "Error", JOptionPane.ERROR_MESSAGE);
@@ -513,13 +518,21 @@ public class sales extends javax.swing.JFrame {
         discount = Double.parseDouble(discontvalue.getText());
         total = amount - amount*discount/100;
         price.setText(String.valueOf(total));
+        gtbremove.setEnabled(false);
     }//GEN-LAST:event_discontvalueActionPerformed
 
     private void cashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashActionPerformed
         Cash = Double.parseDouble(cash.getText());
-        changeprice = Cash - total;
-        change.setText(String.valueOf(changeprice));
-        btnGen.setEnabled(true);
+        Double currentamount = Double.parseDouble(price.getText());
+        if((Cash - currentamount )>= 0){
+            changeprice = Cash - total;
+            change.setText(String.valueOf(changeprice));
+            btnGen.setEnabled(true);
+            gtbremove.setEnabled(false);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Cannot do payment", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
     }//GEN-LAST:event_cashActionPerformed
 
@@ -642,18 +655,20 @@ public class sales extends javax.swing.JFrame {
         db.cansalepayment(I);
         }*/
         this.cleardata();
+        discontvalue.setText("0");
+        gtbremove.setEnabled(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void gtbremoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gtbremoveActionPerformed
         DefaultTableModel model = (DefaultTableModel)table.getModel();
         try{
             int item_id;
             double item_price;
             int SelectedRowIndex = table.getSelectedRow();
             
-            String item_name = (String) table.getValueAt(SelectedRowIndex, 0);
-            int qty = (int) table.getValueAt(SelectedRowIndex, 2);
+            String item_name = (String) table.getValueAt(SelectedRowIndex, 1);
+            int qty = (int) table.getValueAt(SelectedRowIndex, 3);
             ResultSet rs = db.getitemid(item_name);
             try{
             while(rs.next()){
@@ -679,7 +694,7 @@ public class sales extends javax.swing.JFrame {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_gtbremoveActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.setVisible(false);
@@ -817,8 +832,8 @@ public class sales extends javax.swing.JFrame {
     private javax.swing.JTextField cash;
     private javax.swing.JTextField change;
     private javax.swing.JTextField discontvalue;
+    private javax.swing.JButton gtbremove;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
