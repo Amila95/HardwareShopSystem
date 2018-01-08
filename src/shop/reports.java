@@ -724,7 +724,8 @@ public class reports extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
         Date c=date_pick_fr.getDate();
         Date d=date_pick_to.getDate();
         from=df.format(c);
@@ -766,15 +767,21 @@ public class reports extends javax.swing.JFrame {
             addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
             addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "please select a date","Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
         
-        this.printReport();  
+        this.printReport(); 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "please select a date","Error", JOptionPane.ERROR_MESSAGE);
+        }
+         
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        try {
+           DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
         Date c=date_pick_one.getDate();
         date=df.format(c);
         
@@ -814,8 +821,14 @@ public class reports extends javax.swing.JFrame {
             addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "please select a date","Error", JOptionPane.ERROR_MESSAGE);
         }
-        this.printReport();  
+        this.printReport();   
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "please select a date","Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
