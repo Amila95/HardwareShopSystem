@@ -5,6 +5,8 @@
  */
 package shop;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+import java.awt.HeadlessException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,8 +30,10 @@ public class DBOP1 {
             JOptionPane.showMessageDialog(null, "Item Added!");
            
         }
-        catch(Exception ex){
-                ex.printStackTrace();
+        catch(MySQLIntegrityConstraintViolationException ex){
+            JOptionPane.showMessageDialog(null, "please enter valid inputs");
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null, "please enter valid inputs");
         }
     }
      
@@ -41,9 +45,14 @@ public class DBOP1 {
              Statement s = Database.getStatement();
              s.executeUpdate(sql);
              JOptionPane.showMessageDialog(null, "Successfully updated!");
-         } catch (Exception e) {
-             e.printStackTrace();
-         }
+             
+         
+         } 
+         
+         catch (Exception e) {
+             System.out.println(e);
+             JOptionPane.showMessageDialog(null, "please enter valid inputs");
+            }
 
      }
      
