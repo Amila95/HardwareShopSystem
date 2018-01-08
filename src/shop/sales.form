@@ -42,11 +42,7 @@
                           <Component id="qty" min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-<<<<<<< HEAD
-                  <Component id="gtbremove" alignment="0" min="-2" pref="164" max="-2" attributes="0"/>
-=======
                   <Component id="btnRemove" alignment="0" min="-2" pref="164" max="-2" attributes="0"/>
->>>>>>> f9088ce2d7c41f2ab84362d4f9c6eee186a64a72
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
@@ -75,11 +71,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="357" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-<<<<<<< HEAD
-                      <Component id="gtbremove" min="-2" max="-2" attributes="0"/>
-=======
                       <Component id="btnRemove" min="-2" max="-2" attributes="0"/>
->>>>>>> f9088ce2d7c41f2ab84362d4f9c6eee186a64a72
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -105,12 +97,8 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="ItemID">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=" "/>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ItemIDActionPerformed"/>
-        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="ItemIDKeyPressed"/>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="ItemIDKeyTyped"/>
       </Events>
     </Component>
@@ -125,7 +113,6 @@
     <Component class="javax.swing.JTextField" name="qty">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="qtyActionPerformed"/>
-        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="qtyKeyPressed"/>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="qtyKeyTyped"/>
       </Events>
     </Component>
@@ -208,11 +195,7 @@
         </Component>
       </SubComponents>
     </Container>
-<<<<<<< HEAD
-    <Component class="javax.swing.JButton" name="gtbremove">
-=======
     <Component class="javax.swing.JButton" name="btnRemove">
->>>>>>> f9088ce2d7c41f2ab84362d4f9c6eee186a64a72
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Waree" size="18" style="0"/>
@@ -220,11 +203,7 @@
         <Property name="text" type="java.lang.String" value="Remove Item"/>
       </Properties>
       <Events>
-<<<<<<< HEAD
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gtbremoveActionPerformed"/>
-=======
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoveActionPerformed"/>
->>>>>>> f9088ce2d7c41f2ab84362d4f9c6eee186a64a72
       </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel1">
@@ -340,7 +319,6 @@
           <Events>
             <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="discontvalueInputMethodTextChanged"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="discontvalueActionPerformed"/>
-            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="discontvalueKeyPressed"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="discontvalueKeyTyped"/>
           </Events>
         </Component>
@@ -381,7 +359,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jButton1KeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnGen">
@@ -393,7 +370,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenActionPerformed"/>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="btnGenKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnPrint">
@@ -405,7 +381,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPrintActionPerformed"/>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="btnPrintKeyTyped"/>
           </Events>
         </Component>
       </SubComponents>

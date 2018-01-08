@@ -31,15 +31,9 @@ public class DBOP1 {
            
         }
         catch(MySQLIntegrityConstraintViolationException ex){
-<<<<<<< HEAD
-            JOptionPane.showMessageDialog(null, "please enter valid inputs");
-        }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "please enter valid inputs");
-=======
             JOptionPane.showMessageDialog(null, "please enter valid inputs","Error", JOptionPane.ERROR_MESSAGE);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "please enter valid inputs","Error", JOptionPane.ERROR_MESSAGE);
->>>>>>> f9088ce2d7c41f2ab84362d4f9c6eee186a64a72
         }
     }
      
@@ -57,11 +51,7 @@ public class DBOP1 {
          
          catch (Exception e) {
              System.out.println(e);
-<<<<<<< HEAD
-             JOptionPane.showMessageDialog(null, "please enter valid inputs");
-=======
              JOptionPane.showMessageDialog(null, "Sorry you cannot update this item.please enter valid inputs","Error", JOptionPane.ERROR_MESSAGE);
->>>>>>> f9088ce2d7c41f2ab84362d4f9c6eee186a64a72
             }
 
      }
