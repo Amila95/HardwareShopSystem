@@ -688,6 +688,7 @@ public class sales extends javax.swing.JFrame {
         this.cleardata();
         discontvalue.setText("0");
         gtbremove.setEnabled(true);
+        amount = 0;
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -914,7 +915,7 @@ public class sales extends javax.swing.JFrame {
         discontvalue.setText("0");
         gtbremove.setEnabled(true);
         ItemID.requestFocusInWindow();
-        
+        amount = 0;
     }//GEN-LAST:event_jButton1KeyTyped
 
     /**
