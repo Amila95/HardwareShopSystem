@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import net.proteanit.sql.DbUtils;
 
@@ -477,17 +478,27 @@ public class addStock extends javax.swing.JFrame {
         int ovalue=Integer.parseInt(stock_cur.getText());
         int avalue=Integer.parseInt(stock_ch.getText());
         int value= ovalue+avalue;
-        db1.addStock(id,value);
-        this.Get_Data();
-        stock_cur.setText(Integer.toString(value));
+        if(value<0){
+            JOptionPane.showMessageDialog(null, "Sorry! you don't have enough qty!");
+        }else{
+            db1.addStock(id,value);
+            this.Get_Data();
+            stock_cur.setText(Integer.toString(value));
+        }
+        
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
         String id=stock_id.getText();
         int value=Integer.parseInt(stock_ch.getText());
-        db1.addStock(id,value);
-        this.Get_Data();
-        stock_cur.setText(Integer.toString(value));
+        if(value<0){
+            JOptionPane.showMessageDialog(null, "Sorry! Item qty should be greater than 0");
+        }else{
+            db1.addStock(id,value);
+            this.Get_Data();
+            stock_cur.setText(Integer.toString(value));
+        }
+        
     }//GEN-LAST:event_btnChangeActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
