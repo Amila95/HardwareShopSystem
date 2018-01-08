@@ -46,6 +46,8 @@ public class addItem extends javax.swing.JFrame {
         showDate();
         showTime();
         
+        
+        
     }
     
     public void resetFields(){
@@ -253,6 +255,7 @@ public class addItem extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        item_table.setRowHeight(22);
         item_table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 item_tableMouseClicked(evt);
@@ -450,6 +453,8 @@ public class addItem extends javax.swing.JFrame {
         String table_click= item_table.getModel().getValueAt(row, 0).toString();
         preid = table_click;
         ResultSet rs = db1.showItems(table_click);
+        
+        
       
         try {
             if (rs.next()) {
@@ -466,6 +471,8 @@ public class addItem extends javax.swing.JFrame {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        
+        
             
         
     }//GEN-LAST:event_item_tableMouseClicked

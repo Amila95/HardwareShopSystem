@@ -57,6 +57,7 @@ public class sales extends javax.swing.JFrame {
      * Creates new form sales
      */
     void cleardata(){
+        amount=0;
         ItemID.setText("");
         qty.setText("");
         amont.setText("");
@@ -652,13 +653,11 @@ public class sales extends javax.swing.JFrame {
             double item_price;
             int SelectedRowIndex = table.getSelectedRow();
             
-            String item_name = (String) table.getValueAt(SelectedRowIndex, 0);
-            int qty = (int) table.getValueAt(SelectedRowIndex, 2);
-            ResultSet rs = db.getitemid(item_name);
-            try{
-            while(rs.next()){
-                item_id = Integer.parseInt(rs.getString(1));
-                item_price = Double.parseDouble(rs.getString(2));
+            item_id =  (int) table.getValueAt(SelectedRowIndex, 0) ;
+            int qty = (int) table.getValueAt(SelectedRowIndex, 3);
+               
+                
+                item_price = (double) table.getValueAt(SelectedRowIndex, 2);
                 amount = amount - item_price*qty ;
                 amont.setText(String.valueOf(amount));
                 //Set set = map.entrySet();
@@ -667,14 +666,14 @@ public class sales extends javax.swing.JFrame {
                 Map.Entry<Integer, Integer> entry = it.next();
                 if(entry.getKey().equals(item_id)) {
                 it.remove();
+                
+                
                 itemcount -= 1;
-      }
+      
     }
             }
             model.removeRow(SelectedRowIndex);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+            
             
         }catch(Exception e){
             e.printStackTrace();
