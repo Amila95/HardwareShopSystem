@@ -110,7 +110,8 @@ public class sales extends javax.swing.JFrame {
         
         table.setEnabled(true);
         btnRemove.setEnabled(false);
-        
+        discontvalue.setText("0");
+        ItemID.requestFocusInWindow();
         
     }
     
@@ -175,6 +176,9 @@ public class sales extends javax.swing.JFrame {
             }
         });
         ItemID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ItemIDKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 ItemIDKeyTyped(evt);
             }
@@ -256,6 +260,13 @@ public class sales extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         jLabel5.setText("Cash");
 
+        cash.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                cashInputMethodTextChanged(evt);
+            }
+        });
         cash.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cashActionPerformed(evt);
@@ -272,10 +283,10 @@ public class sales extends javax.swing.JFrame {
         jLabel3.setText("Amount");
 
         discontvalue.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 discontvalueInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         discontvalue.addActionListener(new java.awt.event.ActionListener() {
@@ -292,8 +303,20 @@ public class sales extends javax.swing.JFrame {
         bff.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         bff.setText("Discount");
 
+        price.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                priceActionPerformed(evt);
+            }
+        });
+
         jLabel4.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         jLabel4.setText("Total Price");
+
+        change.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                changeKeyPressed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         jLabel6.setText("Change");
@@ -305,6 +328,11 @@ public class sales extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });
 
         btnGen.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         btnGen.setText("GENARATE");
@@ -313,12 +341,22 @@ public class sales extends javax.swing.JFrame {
                 btnGenActionPerformed(evt);
             }
         });
+        btnGen.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnGenKeyPressed(evt);
+            }
+        });
 
         btnPrint.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         btnPrint.setText("PRINT");
         btnPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPrintActionPerformed(evt);
+            }
+        });
+        btnPrint.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnPrintKeyPressed(evt);
             }
         });
 
@@ -525,6 +563,15 @@ public class sales extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if(!price.getText().equals("")){
+            total = amount - amount*discount/100;
+            double ch=Cash-total;
+            change.setText(String.valueOf(ch));
+            price.setText(String.valueOf(total));
+            cash.setText("");
+            change.setText("");
+        }
+        
         ItemID.requestFocusInWindow();
         
         
@@ -565,15 +612,22 @@ public class sales extends javax.swing.JFrame {
             change.setText(String.valueOf(ch));
         }
         cash.requestFocusInWindow();
+        
     }//GEN-LAST:event_discontvalueActionPerformed
 
     private void cashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashActionPerformed
         Cash = Double.parseDouble(cash.getText());
         changeprice = Cash - total;
-        change.setText(String.valueOf(changeprice));
-        btnGen.setEnabled(true);
-        
-        change.requestFocusInWindow();
+        if(changeprice<0){
+            JOptionPane.showMessageDialog(null, "Can't do payment", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            
+            change.setText(String.valueOf(changeprice));
+            btnGen.setEnabled(true);
+            btnGen.requestFocusInWindow();
+        }
+       
     }//GEN-LAST:event_cashActionPerformed
 
     private void btnGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenActionPerformed
@@ -623,6 +677,12 @@ public class sales extends javax.swing.JFrame {
              }
         
         
+        amont.setEnabled(false);
+        discontvalue.setEnabled(false);
+        price.setEnabled(false);
+        cash.setEnabled(false);
+        change.setEnabled(false);
+        table.setEnabled(false);
         
         int billid=I.getBill_id();
         this.getRecept(billid);
@@ -694,7 +754,16 @@ public class sales extends javax.swing.JFrame {
         I.setQty((int) mentry.getValue());
         db.cansalepayment(I);
         }*/
+        ItemID.requestFocusInWindow();
         this.cleardata();
+        amont.setEnabled(true);
+        discontvalue.setEnabled(true);
+        price.setEnabled(true);
+        cash.setEnabled(true);
+        change.setEnabled(true);
+        table.setEnabled(true);
+        ItemID.setEnabled(true);
+        qty.setEditable(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -730,6 +799,13 @@ public class sales extends javax.swing.JFrame {
         }catch(Exception e){
             e.printStackTrace();
         }
+        if(!price.getText().equals("")){
+            total = amount - amount*discount/100;
+            double ch=Cash-total;
+            change.setText(String.valueOf(ch));
+            price.setText(String.valueOf(total));
+        }
+        
         btnRemove.setEnabled(false);
     }//GEN-LAST:event_btnRemoveActionPerformed
 
@@ -835,6 +911,113 @@ public class sales extends javax.swing.JFrame {
     private void amontKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_amontKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_amontKeyTyped
+
+    private void ItemIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ItemIDKeyPressed
+        if(evt.getKeyCode() == 32){
+            discontvalue.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_ItemIDKeyPressed
+
+    private void btnGenKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnGenKeyPressed
+        Item I = new Item();
+        I.setAmount(Double.parseDouble(amont.getText()));
+        I.setTotal_price(Double.parseDouble(price.getText()));
+        I.setDiscount(Double.parseDouble(discontvalue.getText()));
+        I.setCash(Double.parseDouble(cash.getText()));
+        I.setChange_amount(Double.parseDouble(change.getText()));
+        ResultSet rs=db.payment(I);
+        try {
+             
+            while(rs.next()){
+                I.setBill_id(rs.getInt(1));
+            }
+                
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+//        Set set = map.entrySet();
+//        Iterator iterator = set.iterator();
+//        while(iterator.hasNext()) {
+//            Map.Entry mentry = (Map.Entry)iterator.next();
+//
+//            I.setItemID((int) mentry.getKey());
+//            I.setQty((int) mentry.getValue());
+//
+//
+//            db.settotalcount(I);
+//            db.upadatedailypayment(I);
+//            db.setbillitem(I.getBill_id(),I.getItemID(),I.getQty());
+//        }
+
+            for (int count = 0; count < table.getRowCount(); count++) {
+                String ItemID = (table.getValueAt(count, 0).toString());
+                String curPrice = (table.getValueAt(count, 2).toString());;
+                String Qty = (table.getValueAt(count, 3).toString());
+
+                I.setItemID(Integer.parseInt(ItemID));
+                I.setPrice(Double.parseDouble(curPrice));
+                I.setQty(Integer.parseInt(Qty));
+
+                db.settotalcount(I);
+                db.upadatedailypayment(I);
+                db.setbillitem(I.getBill_id(), I.getItemID(), I.getQty(), I.getPrice());
+
+             }
+        
+        
+        
+        int billid=I.getBill_id();
+        this.getRecept(billid);
+        btnPrint.setEnabled(true);
+        btnGen.setEnabled(false);
+        amont.setEnabled(false);
+        discontvalue.setEnabled(false);
+        price.setEnabled(false);
+        cash.setEnabled(false);
+        change.setEnabled(false);
+        table.setEnabled(false);
+        ItemID.setEnabled(false);
+        qty.setEnabled(false);
+        
+    }//GEN-LAST:event_btnGenKeyPressed
+
+    private void changeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_changeKeyPressed
+        btnGen.requestFocusInWindow();
+    }//GEN-LAST:event_changeKeyPressed
+
+    private void btnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnPrintKeyPressed
+       try {
+            boolean complete = bill.print();
+            if (complete) {
+                JOptionPane.showMessageDialog(null, "Done Printing!");
+            }else{
+                JOptionPane.showMessageDialog(null, "Printing....");
+            }
+        } catch (PrinterException ex) {
+            Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+              
+        jButton1.requestFocusInWindow();
+    }//GEN-LAST:event_btnPrintKeyPressed
+
+    private void jButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyPressed
+        this.cleardata();
+        amont.setEnabled(true);
+        discontvalue.setEnabled(true);
+        price.setEnabled(true);
+        cash.setEnabled(true);
+        change.setEnabled(true);
+        
+        ItemID.requestFocusInWindow();
+    }//GEN-LAST:event_jButton1KeyPressed
+
+    private void priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_priceActionPerformed
+
+    private void cashInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_cashInputMethodTextChanged
+        
+    }//GEN-LAST:event_cashInputMethodTextChanged
     
     /**
      * @param args the command line arguments
