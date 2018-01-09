@@ -31,9 +31,9 @@ public class DBOP1 {
            
         }
         catch(MySQLIntegrityConstraintViolationException ex){
-            JOptionPane.showMessageDialog(null, "please enter valid inputs","Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "please enter valid inputs.Check your itemID","Error", JOptionPane.ERROR_MESSAGE);
         }catch(SQLException ex){
-            JOptionPane.showMessageDialog(null, "please enter valid inputs","Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "please enter valid inputs.Check your itemID","Error", JOptionPane.ERROR_MESSAGE);
         }
     }
      
@@ -50,8 +50,8 @@ public class DBOP1 {
          } 
          
          catch (Exception e) {
-             System.out.println(e);
-             JOptionPane.showMessageDialog(null, "Sorry you cannot update this item.please enter valid inputs","Error", JOptionPane.ERROR_MESSAGE);
+             
+             JOptionPane.showMessageDialog(null, "Sorry you cannot update this item. please enter valid inputs!","Error", JOptionPane.ERROR_MESSAGE);
             }
 
      }
@@ -63,7 +63,7 @@ public class DBOP1 {
              ResultSet rs = s.executeQuery(sql);
              return rs;
          } catch (Exception e) {
-             e.printStackTrace();
+             
              JOptionPane.showMessageDialog(null, "please enter valid inputs");
          }
          return null;
@@ -76,8 +76,8 @@ public class DBOP1 {
              s.executeUpdate(sql);
              JOptionPane.showMessageDialog(null, "Successfully Deleted!");
          } catch (Exception e) {
-             e.printStackTrace();
-             JOptionPane.showMessageDialog(null, "Sorry you cannot delete this item.!","Error", JOptionPane.ERROR_MESSAGE);
+            
+             JOptionPane.showMessageDialog(null, "Sorry you cannot delete this item.(Item may be use for past bills,reports,etc) !","Error", JOptionPane.ERROR_MESSAGE);
          }
      }
      

@@ -8,6 +8,7 @@ package shop;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -109,6 +110,12 @@ public class addItem extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(62, 62, 62)));
 
+        item_price.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                item_priceKeyTyped(evt);
+            }
+        });
+
         item_title.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 item_titleActionPerformed(evt);
@@ -118,6 +125,11 @@ public class addItem extends javax.swing.JFrame {
         item_id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 item_idActionPerformed(evt);
+            }
+        });
+        item_id.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                item_idKeyTyped(evt);
             }
         });
 
@@ -437,15 +449,25 @@ public class addItem extends javax.swing.JFrame {
     }//GEN-LAST:event_item_titleActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        Item I = new Item();
+        try {
+            Item I = new Item();
         
-        I.setItemID(Integer.parseInt(item_id.getText().toString()));
-        I.setName((item_title.getText().toString())); 
-        I.setPrice(Double.parseDouble(item_price.getText().toString()));
+            I.setItemID(Integer.parseInt(item_id.getText().toString()));
+            I.setName((item_title.getText().toString())); 
+            I.setPrice(Double.parseDouble(item_price.getText().toString()));
+
+            db1.addItem(I);
+            this.resetFields();
+            this.Get_Data(); 
         
-        db1.addItem(I);
-        this.resetFields();
-        this.Get_Data();
+        } catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Item price may be wrong!","Error", JOptionPane.ERROR_MESSAGE);
+             
+        }
+        
+        
+        
+       
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void item_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_item_tableMouseClicked
@@ -486,7 +508,7 @@ public class addItem extends javax.swing.JFrame {
         String oid= preid;
         String nid= item_id.getText();
         String name=item_title.getText();
-        Double price=Double.parseDouble(item_price.getText().toString());
+        Double price=Double.parseDouble(item_price.getText());
         //System.out.println(oid+nid+name+price);
         db1.updateItem(oid, nid, name, price);
         this.Get_Data();
@@ -521,6 +543,19 @@ public class addItem extends javax.swing.JFrame {
         this.setVisible(false);
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void item_idKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_item_idKeyTyped
+        char vChar = evt.getKeyChar();
+                    if (!(Character.isDigit(vChar)
+                            || (vChar == KeyEvent.VK_BACK_SPACE)
+                            || (vChar == KeyEvent.VK_DELETE))) {
+                        evt.consume();
+                    }        // TODO add your handling code here:
+    }//GEN-LAST:event_item_idKeyTyped
+
+    private void item_priceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_item_priceKeyTyped
+          // TODO add your handling code here:
+    }//GEN-LAST:event_item_priceKeyTyped
 
     /**
      * @param args the command line arguments
