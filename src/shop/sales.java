@@ -261,15 +261,20 @@ public class sales extends javax.swing.JFrame {
         jLabel5.setText("Cash");
 
         cash.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 cashInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         cash.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cashActionPerformed(evt);
+            }
+        });
+        cash.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cashKeyReleased(evt);
             }
         });
 
@@ -283,10 +288,10 @@ public class sales extends javax.swing.JFrame {
         jLabel3.setText("Amount");
 
         discontvalue.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 discontvalueInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         discontvalue.addActionListener(new java.awt.event.ActionListener() {
@@ -295,6 +300,9 @@ public class sales extends javax.swing.JFrame {
             }
         });
         discontvalue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                discontvalueKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 discontvalueKeyTyped(evt);
             }
@@ -704,7 +712,8 @@ public class sales extends javax.swing.JFrame {
         cash.setEnabled(false);
         change.setEnabled(false);
         table.setEnabled(false);
-        
+        ItemID.setEnabled(false);
+        qty.setEnabled(false);
         int billid=I.getBill_id();
         this.getRecept(billid);
         btnPrint.setEnabled(true);
@@ -775,6 +784,9 @@ public class sales extends javax.swing.JFrame {
         I.setQty((int) mentry.getValue());
         db.cansalepayment(I);
         }*/
+        this.cleardata();
+        ItemID.setEnabled(true);
+        qty.setEnabled(true);
         ItemID.requestFocusInWindow();
         this.cleardata();
         amont.setEnabled(true);
@@ -784,8 +796,8 @@ public class sales extends javax.swing.JFrame {
         change.setEnabled(true);
         table.setEnabled(true);
         ItemID.setEnabled(true);
-        qty.setEditable(true);
-        
+        qty.setEnabled(true);
+        discontvalue.setText("0");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
@@ -817,9 +829,7 @@ public class sales extends javax.swing.JFrame {
             model.removeRow(SelectedRowIndex);
             
             
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        
         if((!price.getText().equals("")) && (!change.getText().equals("")))  {
             total = amount - amount*discount/100;
             double ch=Cash-total;
@@ -832,6 +842,9 @@ public class sales extends javax.swing.JFrame {
         }
         
         btnRemove.setEnabled(false);
+        }catch(ArrayIndexOutOfBoundsException e){
+            JOptionPane.showMessageDialog(null, "Now You Can't remove item.If you want remove one pleace go to new bill", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -1038,13 +1051,19 @@ public class sales extends javax.swing.JFrame {
 
     private void jButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyPressed
         this.cleardata();
+        ItemID.setEnabled(true);
+        qty.setEnabled(true);
+        ItemID.requestFocusInWindow();
+        this.cleardata();
         amont.setEnabled(true);
         discontvalue.setEnabled(true);
         price.setEnabled(true);
         cash.setEnabled(true);
         change.setEnabled(true);
-        
-        ItemID.requestFocusInWindow();
+        table.setEnabled(true);
+        ItemID.setEnabled(true);
+        qty.setEnabled(true);
+        discontvalue.setText("0");
     }//GEN-LAST:event_jButton1KeyPressed
 
     private void priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceActionPerformed
@@ -1054,6 +1073,18 @@ public class sales extends javax.swing.JFrame {
     private void cashInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_cashInputMethodTextChanged
         
     }//GEN-LAST:event_cashInputMethodTextChanged
+
+    private void discontvalueKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_discontvalueKeyReleased
+        price.setText("");
+        cash.setText("");
+        change.setText("");
+        btnGen.setEnabled(false);
+    }//GEN-LAST:event_discontvalueKeyReleased
+
+    private void cashKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cashKeyReleased
+        change.setText("");
+        btnGen.setEnabled(false);
+    }//GEN-LAST:event_cashKeyReleased
     
     /**
      * @param args the command line arguments
