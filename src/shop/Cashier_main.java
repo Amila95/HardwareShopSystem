@@ -51,7 +51,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Cashier_main extends javax.swing.JFrame {
     DBOP1 db1=new DBOP1();
-    String email="pasindurohana@gmail.com";
+    String email="rndistributors1@gmail.com";
     String date="",filename="";
     /**
      * Creates new form Cashier_main
@@ -103,8 +103,8 @@ public class Cashier_main extends javax.swing.JFrame {
     }
     
     public void sendMail(){
-        final String username = "nuvan200@gmail.com"; //ur email
-        final String password = "vikum200";
+        final String username = "rndistributors2@gmail.com"; //ur email
+        final String password = "rndis123!";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", true);
@@ -121,7 +121,7 @@ public class Cashier_main extends javax.swing.JFrame {
     try {
         email=txtEmail.getText();
         Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("nuvan200@gmail.com"));//ur email
+        message.setFrom(new InternetAddress("rndistributors2@gmail.com"));//ur email
         message.setRecipients(Message.RecipientType.TO,
         InternetAddress.parse(email));//u will send to
         String file="",fileName="";
@@ -530,7 +530,8 @@ public class Cashier_main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNewBillMouseClicked
 
     private void btnGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenActionPerformed
-        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        try{
+          DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
         Date c=date_pick_one.getDate();
         date=df.format(c);
         filename="report_"+date+".pdf";
@@ -586,7 +587,11 @@ public class Cashier_main extends javax.swing.JFrame {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }  
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "please select a date","Error", JOptionPane.ERROR_MESSAGE);
         }
+        
         
         
 

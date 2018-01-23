@@ -53,7 +53,7 @@ public class reports extends javax.swing.JFrame {
     DBOP1 db1 = new DBOP1();
     public int seflag=0;
     public String from="",to="",date="",filename="";
-    public String email="pasindurohana@gmail.com";
+    public String email="rndistributors1@gmail.com";
     
     /**
      * Creates new form reports
@@ -216,8 +216,8 @@ public class reports extends javax.swing.JFrame {
     }
     
     public void sendMail(){
-    final String username = "nuvan200@gmail.com"; //ur email
-    final String password = "vikum200";
+    final String username = "rndistributors2@gmail.com"; //ur email
+    final String password = "rndis123!";
 
     Properties props = new Properties();
     props.put("mail.smtp.auth", true);
@@ -234,7 +234,7 @@ public class reports extends javax.swing.JFrame {
     try {
         email=txtEmail.getText();
         Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("nuvan200@gmail.com"));//ur email
+        message.setFrom(new InternetAddress("rndistributors2@gmail.com"));//ur email
         message.setRecipients(Message.RecipientType.TO,
         InternetAddress.parse(email));//u will send to
         String file="",fileName="";
@@ -795,8 +795,8 @@ public class reports extends javax.swing.JFrame {
         btnAll.setEnabled(true);
         
         btnGen.setEnabled(true);
-        btnView.setEnabled(false);
-        btnSend.setEnabled(false);
+        btnView.setEnabled(true);
+        btnSend.setEnabled(true);
         
         lblTitle.setText("Report: Date "+date);
         filename= "report_"+date+".pdf";

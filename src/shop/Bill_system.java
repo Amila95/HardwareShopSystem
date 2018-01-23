@@ -39,13 +39,13 @@ public class Bill_system {
                     "    <table>\n" ;
        
        output+="<tr>\n" +
-"        <td colspan=\"3\" style=\"text-align: center;\"> GlobalCare Hardware</td>\n" +
+"        <td colspan=\"3\" style=\"text-align: center;\"> GLOBAL CARE Detergent Products</td>\n" +
 "      </tr>\n" +
 "      <tr>\n" +
-"        <td colspan=\"3\" style=\"text-align: center;\"> No:7/21 , Thunmulla junction, Colombo 7</td>\n" +
+"        <td colspan=\"3\" style=\"text-align: center;\"> No:302 , Nagoda, Kandana</td>\n" +
 "      </tr>\n" +
 "      <tr>\n" +
-"        <td colspan=\"3\" style=\"text-align: center;\"> Tel : 0712840598 / 0718724879</td>\n" +
+"        <td colspan=\"3\" style=\"text-align: center;\"> Tel : 011 20551366 / rndistributors1@gmail.com</td>\n" +
 "      </tr>";
        
        output+="<tr>\n" +
