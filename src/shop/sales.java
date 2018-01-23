@@ -567,7 +567,8 @@ public class sales extends javax.swing.JFrame {
                     row[4] = itemtotal;
                     model.addRow(row);
                     amount = amount + I.getPrice()*I.getQty();
-                    amont.setText(String.valueOf(amount));
+                    amont.setText(String.format("%.2f",amount));
+                    //amont.setText(String.valueOf(amount));
 
                     map.put(I.getItemID(), I.getQty());
                     itemcount += 1;
@@ -594,25 +595,7 @@ public class sales extends javax.swing.JFrame {
         else{
         ItemID.requestFocusInWindow();
         
-        
-        
-        
-        
-        
-        /*DefaultTableModel model = (DefaultTableModel)table.getModel();
-        Object[] row;
-        this.itemtotal = (I.getPrice()* I.getQty());
-        row = new Object[4];
-        row[0] = I.getName();
-        row[1]= I.getPrice();
-        row[2] = I.getQty();
-        row[3] = itemtotal;
-        model.addRow(row);
-        amount = amount + I.getPrice()*I.getQty();
-        amont.setText(String.valueOf(amount));
-        //Map<Integer, Integer> map = (Map<Integer, Integer>) new HashMap<Integer, Integer>();
-        map.put(I.getItemID(), I.getQty());
-        itemcount += 1;*/
+      
         ItemID.setText("");
         qty.setText("");
         }
@@ -623,10 +606,12 @@ public class sales extends javax.swing.JFrame {
     }//GEN-LAST:event_qtyActionPerformed
 
     private void discontvalueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discontvalueActionPerformed
+        try{
         if(discontvalue.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Please Enter Discount,If Not given Discount enter 0", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else{
+           
         discount = Double.parseDouble(discontvalue.getText());
         total = amount - amount*discount/100;
         price.setText(String.valueOf(total));
@@ -637,10 +622,14 @@ public class sales extends javax.swing.JFrame {
         }
         cash.requestFocusInWindow();
         }
+        }catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Your Input Is Worng", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
     }//GEN-LAST:event_discontvalueActionPerformed
 
     private void cashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashActionPerformed
+       try{
         if(cash.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Please Enter the Cash Payment", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -651,11 +640,13 @@ public class sales extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Can't do payment", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else{
-            
-            change.setText(String.valueOf(changeprice));
+            change.setText(String.format("%.2f",changeprice));
             btnGen.setEnabled(true);
             btnGen.requestFocusInWindow();
         }
+        }
+       }catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Your Input Is Worng", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_cashActionPerformed
 
