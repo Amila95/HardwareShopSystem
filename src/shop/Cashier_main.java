@@ -160,7 +160,7 @@ public class Cashier_main extends javax.swing.JFrame {
 
             
     }catch (MessagingException e) {
-        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Check your network connection!","Error", JOptionPane.ERROR_MESSAGE);  
     }
     }
     
@@ -601,7 +601,7 @@ public class Cashier_main extends javax.swing.JFrame {
         try {
             Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Can't open!","Error", JOptionPane.ERROR_MESSAGE);  
         }        
     }//GEN-LAST:event_btnViewActionPerformed
 
@@ -610,11 +610,17 @@ public class Cashier_main extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        
         this.sendMail();
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        this.saveFile(new File("files//report.pdf"),filename);
+        try{
+          this.saveFile(new File("files//report.pdf"),filename);
+        }catch(Exception e){
+          JOptionPane.showMessageDialog(null, "Can't save!","Error", JOptionPane.ERROR_MESSAGE);  
+        }
+        
     }//GEN-LAST:event_btnSaveActionPerformed
 
     public void saveFile(File file,String name) {
