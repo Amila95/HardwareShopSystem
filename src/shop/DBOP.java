@@ -144,7 +144,7 @@ public class DBOP {
         return null;
     
     }
-    void setbillitem(int bill_id, int item_id, int qty,double curprice){
+    void setbillitem(int bill_id, String item_id, int qty,double curprice){
         //System.out.println(bill_id+  item_id + qty);
         try{
             Statement s = Database.getStatement();

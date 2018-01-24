@@ -15,7 +15,7 @@ import javax.swing.JTextField;
  * @author Acer
  */
 public class Item {
-    private int itemID;
+    private String itemID;
     private String name;
     private double price;
     private int qty;
@@ -35,14 +35,14 @@ public class Item {
     /**
      * @return the itemID
      */
-    public int getItemID() {
+    public String getItemID() {
         return itemID;
     }
 
     /**
      * @param itemID the itemID to set
      */
-    public void setItemID(int itemID) {
+    public void setItemID(String itemID) {
         this.itemID = itemID;
     }
 

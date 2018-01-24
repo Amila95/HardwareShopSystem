@@ -188,7 +188,7 @@ public class addItem extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
-                .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 69, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -450,7 +450,7 @@ public class addItem extends javax.swing.JFrame {
         try {
             Item I = new Item();
         
-            I.setItemID(Integer.parseInt(item_id.getText().toString()));
+            I.setItemID(item_id.getText());
             I.setName((item_title.getText().toString())); 
             I.setPrice(Double.parseDouble(item_price.getText().toString()));
 

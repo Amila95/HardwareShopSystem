@@ -51,7 +51,7 @@ public class sales extends javax.swing.JFrame {
     double priceitem;
     int itemcount = 0;
     
-    Map<Integer, Integer> map = (Map<Integer, Integer>) new HashMap<Integer, Integer>();
+    Map<String, Integer> map = (Map<String, Integer>) new HashMap<String, Integer>();
     
     /**
      * Creates new form sales
@@ -541,7 +541,7 @@ public class sales extends javax.swing.JFrame {
         else{
         Item I = new Item();
         
-        I.setItemID(Integer.parseInt(ItemID.getText().toString()));
+        I.setItemID(ItemID.getText());
         I.setQty(Integer.parseInt(qty.getText().toString()));
         //db.seachitem(I);
         //db.settotalcount(I);
@@ -549,7 +549,7 @@ public class sales extends javax.swing.JFrame {
         try {
             if(rs.next()){
                 
-                I.setItemID(Integer.parseInt(rs.getString("item_id")));
+                I.setItemID(rs.getString("item_id"));
                 I.setName(rs.getString("item_name"));
                 I.setPrice(Double.parseDouble(rs.getString("item_price")));
                 int curqty=rs.getInt(4);
@@ -688,7 +688,7 @@ public class sales extends javax.swing.JFrame {
                 String curPrice = (table.getValueAt(count, 2).toString());;
                 String Qty = (table.getValueAt(count, 3).toString());
 
-                I.setItemID(Integer.parseInt(ItemID));
+                I.setItemID(ItemID);
                 I.setPrice(Double.parseDouble(curPrice));
                 I.setQty(Integer.parseInt(Qty));
 
@@ -796,11 +796,11 @@ public class sales extends javax.swing.JFrame {
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         DefaultTableModel model = (DefaultTableModel)table.getModel();
         try{
-            int item_id;
+            String item_id;
             double item_price;
             int SelectedRowIndex = table.getSelectedRow();
             
-            item_id =  (int) table.getValueAt(SelectedRowIndex, 0) ;
+            item_id =  (String) table.getValueAt(SelectedRowIndex, 0) ;
             int qty = (int) table.getValueAt(SelectedRowIndex, 3);
                
                 
@@ -809,8 +809,8 @@ public class sales extends javax.swing.JFrame {
                 amont.setText(String.valueOf(amount));
                 //Set set = map.entrySet();
                 //map.remove(table.getValueAt(SelectedRowIndex, item_id));
-                for(Iterator<Map.Entry<Integer, Integer>> it = map.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry<Integer, Integer> entry = it.next();
+                for(Iterator<Map.Entry<String, Integer>> it = map.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<String, Integer> entry = it.next();
                 if(entry.getKey().equals(item_id)) {
                 it.remove();
                 
@@ -860,7 +860,7 @@ public class sales extends javax.swing.JFrame {
     private void tableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyPressed
       DefaultTableModel model = (DefaultTableModel)table.getModel();
         try{
-            int item_id;
+            String item_id;
             int pastqty;
             double item_price;
             double items_prices;
@@ -871,14 +871,14 @@ public class sales extends javax.swing.JFrame {
             ResultSet rs = db.getitemid(item_name);
             try{
             while(rs.next()){
-                item_id = Integer.parseInt(rs.getString(1));
+                item_id = rs.getString(1);
                 item_price = Double.parseDouble(rs.getString(2));
                 //amount = amount - item_price*qty ;
                 //amont.setText(String.valueOf(amount));
                 //Set set = map.entrySet();
                 //map.remove(table.getValueAt(SelectedRowIndex, item_id));
-                for(Iterator<Map.Entry<Integer, Integer>> it = map.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry<Integer, Integer> entry = it.next();
+                for(Iterator<Map.Entry<String, Integer>> it = map.entrySet().iterator(); it.hasNext(); ) {
+                Map.Entry<String, Integer> entry = it.next();
                 if(entry.getKey().equals(item_id)) {
                 pastqty = entry.getValue();
                 items_prices = item_price*qty;
@@ -914,12 +914,12 @@ public class sales extends javax.swing.JFrame {
     }//GEN-LAST:event_tableAncestorAdded
 
     private void ItemIDKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ItemIDKeyTyped
-        char vChar = evt.getKeyChar();
+        /*char vChar = evt.getKeyChar();
                     if (!(Character.isDigit(vChar)
                             || (vChar == KeyEvent.VK_BACK_SPACE)
                             || (vChar == KeyEvent.VK_DELETE))) {
                         evt.consume();
-                    }
+                    }*/
     }//GEN-LAST:event_ItemIDKeyTyped
 
     private void qtyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_qtyKeyTyped
@@ -996,7 +996,7 @@ public class sales extends javax.swing.JFrame {
                 String curPrice = (table.getValueAt(count, 2).toString());;
                 String Qty = (table.getValueAt(count, 3).toString());
 
-                I.setItemID(Integer.parseInt(ItemID));
+                I.setItemID(ItemID);
                 I.setPrice(Double.parseDouble(curPrice));
                 I.setQty(Integer.parseInt(Qty));
 
