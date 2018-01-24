@@ -16,25 +16,47 @@ public class Bill_system {
     
     public void printTitle(int billno,String date) {
        output+= "<html>\n" +
-                    "  <head>\n" +
-                    "\n" +
-                    "    <title></title>\n" +
-                    "    <style>\n" +
-                    "table {\n" +
-                    "    font-family: arial, sans-serif;\n" +
-                    "    border-collapse: collapse;\n" +
-                    "    width: 100%;\n" +
-                    "}\n" +
-                    "\n" +
-                    "td, th {\n" +
-                    "    /*border: 1px solid #dddddd;*/\n" +
-                    "    text-align: left;\n" +
-                    "}\n" +
-                    "\n" +
-                    "\n" +
-                    "</style>\n" +
-                    "  </head>\n" +
-                    "  <body>\n";
+"  <head>\n" +
+"\n" +
+"    <title></title>\n" +
+"    <style>\n" +
+"html, body {\n" +
+"                width: 287.244094488px;\n" +
+"                height: 1122.519685039px;\n" +
+"                margin: 0;\n" +
+"                padding: 0;\n" +
+"\n" +
+"            }\n" +
+"\n" +
+"table {\n" +
+"    font-family: arial, sans-serif;\n" +
+"    font-size:  7px;\n" +
+"    border-collapse: collapse;\n" +
+"    width: 100%;\n" +
+"\n" +
+"}\n" +
+"\n" +
+"td, th {\n" +
+"    /*border: 1px solid #dddddd;*/\n" +
+"    text-align: left;\n" +
+"\n" +
+"}\n" +
+"\n" +
+"tr td {\n" +
+"    padding-top: 0.02em;\n" +
+"}\n" +
+"tr:nth-child(4) td {\n" +
+"    padding-top: 0;\n" +
+"}\n" +
+"\n" +
+"hr{\n" +
+"  margin-bottom: 1px;\n" +
+"}\n" +
+"\n" +
+"\n" +
+"</style>\n" +
+"  </head>\n" +
+"  <body>";
        output+=
                     "    <table>\n" ;
        
@@ -45,7 +67,7 @@ public class Bill_system {
 "        <td colspan=\"3\" style=\"text-align: center;\"> No:302 , Nagoda, Kandana</td>\n" +
 "      </tr>\n" +
 "      <tr>\n" +
-"        <td colspan=\"3\" style=\"text-align: center;\"> Tel : 011 20551366 / rndistributors1@gmail.com</td>\n" +
+"        <td colspan=\"3\" style=\"text-align: center;\"> Tel : 011 2051366 / rndistributors1@gmail.com</td>\n" +
 "      </tr>";
        
        output+="<tr>\n" +
@@ -69,7 +91,7 @@ public class Bill_system {
        output+=
                     "      <tr>\n" +
                     "        <th>Item</th>\n" +
-                    "        <th>Qty</th>\n" +
+                    "        <th style=\"text-align: right;\">Qty</th>\n" +
                     "        <th style=\"text-align: right;\">Price</th>\n" +
                     "      </tr>\n" +
                     "      <tr>\n" +
@@ -83,7 +105,7 @@ public class Bill_system {
     public void print(String name, int qty, double price) {
        output+="<tr>\n" +
 "        <td>"+name+"</td>\n" +
-"        <td>"+qty+"</td>\n" +
+"        <td style=\"text-align: right;\">"+qty+"</td>\n" +
 "        <td style=\"text-align: right;\">"+price+"</td>\n" +
 "\n" +
 "      </tr>";
@@ -158,15 +180,7 @@ public class Bill_system {
     }
     
     public void printFinal(){
-        output+="  <tr>\n" +
-"        <td colspan=\"3\" style=\"text-align: center;\"></td>\n" +
-"      </tr>\n" +
-"      <tr>\n" +
-"        <td colspan=\"3\" style=\"text-align: center;\"></td>\n" +
-"      </tr>\n" +
-"      <tr>\n" +
-"        <td colspan=\"3\" style=\"text-align: center;\"> Thank You Visit Again!</td>\n" +
-"      </tr>";
+        output+=" <td colspan=\"3\" style=\"text-align: center;\"> Thank You Visit Again!</td>";
         
         output+="</table>\n" +
 "  </body>\n" +

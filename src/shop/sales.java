@@ -261,10 +261,10 @@ public class sales extends javax.swing.JFrame {
         jLabel5.setText("Cash");
 
         cash.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 cashInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         cash.addActionListener(new java.awt.event.ActionListener() {
@@ -288,10 +288,10 @@ public class sales extends javax.swing.JFrame {
         jLabel3.setText("Amount");
 
         discontvalue.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 discontvalueInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         discontvalue.addActionListener(new java.awt.event.ActionListener() {
@@ -466,6 +466,7 @@ public class sales extends javax.swing.JFrame {
                 .addContainerGap(45, Short.MAX_VALUE))
         );
 
+        bill.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         jScrollPane2.setViewportView(bill);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -614,7 +615,8 @@ public class sales extends javax.swing.JFrame {
            
         discount = Double.parseDouble(discontvalue.getText());
         total = amount - amount*discount/100;
-        price.setText(String.valueOf(total));
+        price.setText(String.format("%.2f",total));
+        //price.setText(String.valueOf(total));
         
         if(!cash.getText().equals("")){
             double ch=Cash-total;
@@ -748,7 +750,7 @@ public class sales extends javax.swing.JFrame {
         
         bill.setContentType("text/html");
         bill.setText(output);
-        
+        System.out.print(output);
         //bill.setText(output);
         
         try {
