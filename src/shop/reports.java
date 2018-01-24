@@ -283,7 +283,7 @@ public class reports extends javax.swing.JFrame {
 
             
     }catch (MessagingException e) {
-        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Check your network connection!","Error", JOptionPane.ERROR_MESSAGE);
     }
     }
     public void addColoredText(JTextPane pane, String text, Color color) {
@@ -851,15 +851,19 @@ public class reports extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAllActionPerformed
 
     private void btnGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenActionPerformed
+        try{
+            this.saveFile(new File("files//report.pdf"),filename);
+   
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Can't save!","Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         
-        
-        
-        this.saveFile(new File("files//report.pdf"),filename);
         
     }//GEN-LAST:event_btnGenActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        
         this.sendMail();        
     }//GEN-LAST:event_btnSendActionPerformed
 
@@ -868,7 +872,7 @@ public class reports extends javax.swing.JFrame {
         try {
             Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Can't open!","Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnViewActionPerformed
 
