@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Copies;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -261,10 +264,10 @@ public class sales extends javax.swing.JFrame {
         jLabel5.setText("Cash");
 
         cash.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 cashInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         cash.addActionListener(new java.awt.event.ActionListener() {
@@ -288,10 +291,10 @@ public class sales extends javax.swing.JFrame {
         jLabel3.setText("Amount");
 
         discontvalue.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 discontvalueInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         discontvalue.addActionListener(new java.awt.event.ActionListener() {
@@ -420,11 +423,11 @@ public class sales extends javax.swing.JFrame {
                     .addComponent(change, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(btnGen)
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
                 .addComponent(btnPrint)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addGap(35, 35, 35))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jPanel5.setBackground(new java.awt.Color(85, 85, 85));
@@ -750,19 +753,10 @@ public class sales extends javax.swing.JFrame {
         
         bill.setContentType("text/html");
         bill.setText(output);
-        System.out.print(output);
+        //System.out.print(output);
         //bill.setText(output);
         
-        try {
-            Document d=new Document();
-            PdfWriter.getInstance(d, new FileOutputStream("files//report1.pdf"));
-            d.open();
-                Paragraph para1 = new Paragraph(output);
-                d.add(para1);
-            d.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
         }
             
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -845,16 +839,20 @@ public class sales extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
-        try {
-            boolean complete = bill.print();
-            if (complete) {
-                JOptionPane.showMessageDialog(null, "Done Printing!");
-            }else{
-                JOptionPane.showMessageDialog(null, "Printing....");
-            }
-        } catch (PrinterException ex) {
-            Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            
+//            boolean complete = bill.print();
+//            if (complete) {
+//                JOptionPane.showMessageDialog(null, "Done Printing!");
+//            }else{
+//                JOptionPane.showMessageDialog(null, "Printing....");
+//            }
+//        } catch (PrinterException ex) {
+//            Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+             DirectPrint lt = new DirectPrint();
+             lt.printString(bill);
+             
     }//GEN-LAST:event_btnPrintActionPerformed
 
     private void tableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyPressed
@@ -1033,7 +1031,7 @@ public class sales extends javax.swing.JFrame {
             if (complete) {
                 JOptionPane.showMessageDialog(null, "Done Printing!");
             }else{
-                JOptionPane.showMessageDialog(null, "Printing....");
+                
             }
         } catch (PrinterException ex) {
             Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);

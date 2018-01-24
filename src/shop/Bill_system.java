@@ -22,7 +22,7 @@ public class Bill_system {
 "    <style>\n" +
 "html, body {\n" +
 "                width: 287.244094488px;\n" +
-"                height: 1122.519685039px;\n" +
+"                height: 100%;\n" +
 "                margin: 0;\n" +
 "                padding: 0;\n" +
 "\n" +
