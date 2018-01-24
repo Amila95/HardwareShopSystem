@@ -52,8 +52,7 @@ public class Admin_main extends javax.swing.JFrame {
         showDate();
         showTime();
         
-        jLabel4.setText("");
-        jLabel2.setText("");
+        
         
         
     }
@@ -322,10 +321,6 @@ public class Admin_main extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("lbl");
-
-        jLabel4.setText("lbl");
-
         jLabel5.setFont(new java.awt.Font("Waree", 0, 14)); // NOI18N
         jLabel5.setText("Backup");
 
@@ -356,7 +351,7 @@ public class Admin_main extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(320, 320, 320)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -387,7 +382,7 @@ public class Admin_main extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3))
@@ -537,6 +532,7 @@ public class Admin_main extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -545,7 +541,8 @@ public class Admin_main extends javax.swing.JFrame {
             //jLabel1.setText("wait");
             Runtime runtime = Runtime.getRuntime();
 
-            p=runtime.exec("C:/wamp64/bin/mysql/mysql5.7.14/bin/mysqldump.exe -uroot --add-drop-database -B shop -r"+path);
+           // p=runtime.exec("C:/wamp64/bin/mysql/mysql5.7.14/bin/mysqldump.exe -uroot --add-drop-database -B shop -r"+path);
+            p=runtime.exec("C:/xampp/mysql/bin/mysqldump.exe -uroot --add-drop-database -B shop -r"+path);
             //:\\wamp\\bin\\mysql\\mysql5.6.17\\bin\\mysqldump.exe -v -v -v
             //mysqldump -h localhost -u [root] -p[] -c --add-drop-table --add-locks --all --quick --lock-tables [vehical] > sqldump.sql
             int processComplete = p.waitFor();
@@ -578,8 +575,8 @@ public class Admin_main extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String dbUserName = "root";// username
         String dbPassword = "";//Password
-
-        String[] restoreCmd = new String[]{"C:/wamp64/bin/mysql/mysql5.7.14/bin/mysql.exe ", "--user=" + dbUserName, "--password=" + dbPassword, "-e", "source " + path};
+        String[] restoreCmd = new String[]{"C:/xampp/mysql/bin/mysql.exe ", "--user=" + dbUserName, "--password=" + dbPassword, "-e", "source " + path};
+        //String[] restoreCmd = new String[]{"C:/wamp64/bin/mysql/mysql5.7.14/bin/mysql.exe ", "--user=" + dbUserName, "--password=" + dbPassword, "-e", "source " + path};
         Process runtimProcess;
         try {
             runtimProcess = Runtime.getRuntime().exec(restoreCmd);
