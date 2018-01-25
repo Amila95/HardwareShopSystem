@@ -851,7 +851,7 @@ public class sales extends javax.swing.JFrame {
             aset.add(new Copies(1));
             
             //MessageFormat mf = new MessageFormat("page - {0}");
-            boolean complete = bill.print(null, null, false, printService[2], aset, false);
+            boolean complete = bill.print(null, null, true, printService[2], aset, false);
             if (complete) {
                 JOptionPane.showMessageDialog(null, "Done Printing!");
             }else{
