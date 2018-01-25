@@ -37,7 +37,7 @@ public class Admin_main extends javax.swing.JFrame {
     public Admin_main() {
         
         
-        this.setUndecorated(true);
+        this.setUndecorated(false);
         this.setAlwaysOnTop(false);
         this.setResizable(true);
         this.setVisible(true);
@@ -99,6 +99,7 @@ public class Admin_main extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1152, 864));
 
         jPanel2.setBackground(new java.awt.Color(194, 254, 149));
+        jPanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         jLabel3.setText("Admin");

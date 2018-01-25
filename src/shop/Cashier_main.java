@@ -57,7 +57,7 @@ public class Cashier_main extends javax.swing.JFrame {
      * Creates new form Cashier_main
      */
     public Cashier_main() {
-        this.setUndecorated(true);
+        this.setUndecorated(false);
         this.setAlwaysOnTop(false);
         this.setResizable(true);
         this.setVisible(true);
@@ -224,7 +224,7 @@ public class Cashier_main extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1152, 864));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel1.setBackground(new java.awt.Color(85, 85, 85));
         jPanel1.setPreferredSize(new java.awt.Dimension(1000, 170));
