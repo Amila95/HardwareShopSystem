@@ -15,10 +15,12 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
 import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 
 import java.io.FileOutputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -28,9 +30,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.PrintService;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.PageRanges;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -264,10 +268,10 @@ public class sales extends javax.swing.JFrame {
         jLabel5.setText("Cash");
 
         cash.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 cashInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         cash.addActionListener(new java.awt.event.ActionListener() {
@@ -291,10 +295,10 @@ public class sales extends javax.swing.JFrame {
         jLabel3.setText("Amount");
 
         discontvalue.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 discontvalueInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         discontvalue.addActionListener(new java.awt.event.ActionListener() {
@@ -839,19 +843,25 @@ public class sales extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
-//        try {
-//            
-//            boolean complete = bill.print();
-//            if (complete) {
-//                JOptionPane.showMessageDialog(null, "Done Printing!");
-//            }else{
-//                JOptionPane.showMessageDialog(null, "Printing....");
-//            }
-//        } catch (PrinterException ex) {
-//            Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-             DirectPrint lt = new DirectPrint();
-             lt.printString(bill);
+        try {
+            PrintService[] printService = PrinterJob.lookupPrintServices(); ;
+            
+            PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+            
+            aset.add(new Copies(1));
+            
+            //MessageFormat mf = new MessageFormat("page - {0}");
+            boolean complete = bill.print(null, null, false, printService[2], aset, false);
+            if (complete) {
+                JOptionPane.showMessageDialog(null, "Done Printing!");
+            }else{
+                JOptionPane.showMessageDialog(null, "Printing....");
+            }
+        } catch (PrinterException ex) {
+            Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//             DirectPrint lt = new DirectPrint();
+//             lt.printString(bill);
              
     }//GEN-LAST:event_btnPrintActionPerformed
 
