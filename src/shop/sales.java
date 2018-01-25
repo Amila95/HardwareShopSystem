@@ -241,12 +241,12 @@ public class sales extends javax.swing.JFrame {
         });
         table.setRowHeight(22);
         table.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                tableAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                tableAncestorAdded(evt);
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
         });
         table.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -861,7 +861,7 @@ public class sales extends javax.swing.JFrame {
             Media med[] = (Media[])printService1.getSupportedAttributeValues(Media.class, null, null);
     
             
-            aset.add(new MediaPrintableArea(0f, 0f, 76, 1000, MediaPrintableArea.MM));      
+            aset.add(new MediaPrintableArea(0f, 0f, 76, 3276, MediaPrintableArea.MM));      
             
             //MessageFormat mf = new MessageFormat("page - {0}");
             boolean complete = bill.print(null, null, false, printService[3], aset, false);
