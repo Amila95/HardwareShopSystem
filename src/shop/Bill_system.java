@@ -29,8 +29,8 @@ public class Bill_system {
 "            }\n" +
 "\n" +
 "table {\n" +
-"    font-family: arial, sans-serif;\n" +
-"    font-size:  7px;\n" +
+"    font-family: \"Times New Roman\", Times, serif;\n" +
+"    font-size:  8px;\n" +
 "    border-collapse: collapse;\n" +
 "    width: 100%;\n" +
 "\n" +
@@ -43,20 +43,20 @@ public class Bill_system {
 "}\n" +
 "\n" +
 "tr td {\n" +
-"    padding-top: 0.02em;\n" +
-"}\n" +
-"tr:nth-child(4) td {\n" +
-"    padding-top: 0;\n" +
-"}\n" +
 "\n" +
-"hr{\n" +
-"  margin-bottom: 1px;\n" +
+"    padding-top: 0px;\n" +
+"    padding-bottom: 0px;\n" +
+"\n" +
+"}\n" +
+"hr {\n" +
+"  padding-top: 0px;\n" +
+"  padding-bottom: 0px;\n" +
 "}\n" +
 "\n" +
 "\n" +
 "</style>\n" +
 "  </head>\n" +
-"  <body>";
+"  <body> ";
        output+=
                     "    <table>\n" ;
        
