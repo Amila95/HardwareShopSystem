@@ -30,7 +30,7 @@ public class Bill_system {
 "\n" +
 "table {\n" +
 "    font-family: \"Times New Roman\", Times, serif;\n" +
-"    font-size:  8px;\n" +
+"    font-size:  15px;\n" +
 "    border-collapse: collapse;\n" +
 "    width: 100%;\n" +
 "\n" +
@@ -56,7 +56,7 @@ public class Bill_system {
 "\n" +
 "</style>\n" +
 "  </head>\n" +
-"  <body> ";
+"  <body>";
        output+=
                     "    <table>\n" ;
        
