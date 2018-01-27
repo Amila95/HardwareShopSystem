@@ -241,12 +241,12 @@ public class sales extends javax.swing.JFrame {
         });
         table.setRowHeight(22);
         table.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 tableAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
         });
         table.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -864,7 +864,7 @@ public class sales extends javax.swing.JFrame {
             aset.add(new MediaPrintableArea(0f, 0f, 76, 3276, MediaPrintableArea.MM));      
             
             //MessageFormat mf = new MessageFormat("page - {0}");
-            boolean complete = bill.print(null, null, false, printService[3], aset, false);
+            boolean complete = bill.print(null, null, true, printService[0], aset, true);
             if (complete) {
                 JOptionPane.showMessageDialog(null, "Done Printing!");
             }else{
@@ -1049,16 +1049,30 @@ public class sales extends javax.swing.JFrame {
     }//GEN-LAST:event_changeKeyPressed
 
     private void btnPrintKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnPrintKeyPressed
-       try {
-            boolean complete = bill.print();
+        try {
+            PrintService printService1 = PrintServiceLookup.lookupDefaultPrintService();
+            PrintService[] printService = PrinterJob.lookupPrintServices(); ;
+            //Object med[] = (Media[]) printService.getSupportedAttributeValues(Media.class, null, null);
+            PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+            aset.add(MediaTray.SIDE);;
+            aset.add(new Copies(1));
+            aset.add(MediaSizeName.ISO_B8);
+            Media med[] = (Media[])printService1.getSupportedAttributeValues(Media.class, null, null);
+    
+            
+            aset.add(new MediaPrintableArea(0f, 0f, 76, 3276, MediaPrintableArea.MM));      
+            
+            //MessageFormat mf = new MessageFormat("page - {0}");
+            boolean complete = bill.print(null, null, true, printService[3], aset, true);
             if (complete) {
                 JOptionPane.showMessageDialog(null, "Done Printing!");
             }else{
-                
+                JOptionPane.showMessageDialog(null, "Printing....");
             }
         } catch (PrinterException ex) {
             Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
         }
+
               
         jButton1.requestFocusInWindow();
     }//GEN-LAST:event_btnPrintKeyPressed

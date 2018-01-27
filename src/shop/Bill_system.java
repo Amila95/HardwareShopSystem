@@ -64,7 +64,7 @@ public class Bill_system {
 "        <td colspan=\"3\" style=\"text-align: center;\"> GLOBAL CARE Detergent Products</td>\n" +
 "      </tr>\n" +
 "      <tr>\n" +
-"        <td colspan=\"3\" style=\"text-align: center;\"> No:302 , Nagoda, Kandana</td>\n" +
+"        <td colspan=\"3\" style=\"text-align: center;\"> NO:50/B/1,Church Road, Kadana</td>\n" +
 "      </tr>\n" +
 "      <tr>\n" +
 "        <td colspan=\"3\" style=\"text-align: center;\"> Tel : 011 2051366 / rndistributors1@gmail.com</td>\n" +

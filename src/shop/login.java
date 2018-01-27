@@ -25,6 +25,7 @@ public class login extends javax.swing.JFrame {
         this.setVisible(true);
         
         initComponents();
+        uname.requestFocusInWindow();
     }
 
     /**
@@ -50,17 +51,23 @@ public class login extends javax.swing.JFrame {
         getContentPane().setLayout(null);
         getContentPane().add(uname);
         uname.setBounds(412, 80, 250, 30);
+
+        password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordActionPerformed(evt);
+            }
+        });
         getContentPane().add(password);
         password.setBounds(412, 140, 250, 30);
 
-        jButton1.setText("LOG");
+        jButton1.setText("Log In");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(410, 200, 110, 30);
+        jButton1.setBounds(410, 200, 110, 23);
 
         jLabel1.setFont(new java.awt.Font("URW Palladio L", 1, 24)); // NOI18N
         jLabel1.setText("Password");
@@ -120,6 +127,33 @@ public class login extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         System.exit(0);        // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+        String uname= this.uname.getText();
+        String pwd= this.password.getText();
+        
+        switch (db1.checklog(uname, pwd)) {
+            case 1:
+                {
+                    this.setVisible(false);
+                    Admin_main frm=new Admin_main();
+                    frm.setVisible(true);
+                    //view admin interface
+                    break;
+                }
+            case 2:
+                {
+                    this.setVisible(false);
+                    Cashier_main frm=new Cashier_main();
+                    frm.setVisible(true);
+                    //view cashiyer interface
+                    break;
+                }
+            default:
+                JOptionPane.showMessageDialog(null, "Login Failed..Try again !","Access denied",JOptionPane.ERROR_MESSAGE);
+                break;
+        }
+    }//GEN-LAST:event_passwordActionPerformed
 
     /**
      * @param args the command line arguments

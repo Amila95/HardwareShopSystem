@@ -92,11 +92,8 @@ public class Admin_main extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1152, 864));
 
         jPanel2.setBackground(new java.awt.Color(194, 254, 149));
 
@@ -335,25 +332,15 @@ public class Admin_main extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(320, 320, 320)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)))
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel4Layout.createSequentialGroup()
-                                    .addGap(68, 68, 68)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel4Layout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGap(13, 13, 13))))))
-                .addContainerGap(128, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(108, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(149, 149, 149)
@@ -369,10 +356,7 @@ public class Admin_main extends javax.swing.JFrame {
                         .addComponent(jButton1)
                         .addGap(9, 9, 9)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4)
                             .addComponent(jButton2)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -380,14 +364,12 @@ public class Admin_main extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton4)
                 .addContainerGap())
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
@@ -540,16 +522,21 @@ public class Admin_main extends javax.swing.JFrame {
             Runtime runtime = Runtime.getRuntime();
 
            // p=runtime.exec("C:/wamp64/bin/mysql/mysql5.7.14/bin/mysqldump.exe -uroot --add-drop-database -B shop -r"+path);
-            p=runtime.exec("C:/xampp/mysql/bin/mysqldump.exe -uroot --add-drop-database -B shop -r"+path);
+            p=runtime.exec("C:/xampp/mysql/bin/mysqldump.exe -uroot -ps.w.nugera1973 --add-drop-database -B shop -r"+path);
             //:\\wamp\\bin\\mysql\\mysql5.6.17\\bin\\mysqldump.exe -v -v -v
             //mysqldump -h localhost -u [root] -p[] -c --add-drop-table --add-locks --all --quick --lock-tables [vehical] > sqldump.sql
             int processComplete = p.waitFor();
             if (processComplete==0) {
                 //JOptionPane.showMessageDialog(null, "DTF Successfull save file in " + path);
-                jLabel1.setText("Backup Created Succuss");
+                JOptionPane.showMessageDialog(null, "Backup Created Succuss","Succuss", JOptionPane.INFORMATION_MESSAGE);
+                //jLabel1.setText("Backup Created Succuss");
+                jTextField1.setText("");
             }else{
-                jLabel1.setText("Can't Create backup");
+                JOptionPane.showMessageDialog(null, "Can't Create backup","Error", JOptionPane.ERROR_MESSAGE);
+                //jLabel1.setText("Can't Create backup");
+                jTextField1.setText("");
             }
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -572,7 +559,7 @@ public class Admin_main extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         String dbUserName = "root";// username
-        String dbPassword = "";//Password
+        String dbPassword = "s.w.nugera1973";//Password
         String[] restoreCmd = new String[]{"C:/xampp/mysql/bin/mysql.exe ", "--user=" + dbUserName, "--password=" + dbPassword, "-e", "source " + path};
         //String[] restoreCmd = new String[]{"C:/wamp64/bin/mysql/mysql5.7.14/bin/mysql.exe ", "--user=" + dbUserName, "--password=" + dbPassword, "-e", "source " + path};
         Process runtimProcess;
@@ -581,9 +568,13 @@ public class Admin_main extends javax.swing.JFrame {
             int proceCom = runtimProcess.waitFor();
 
             if (proceCom==0) {
-                jLabel2.setText("Restored Succuss");
+                //jLabel2.setText("Restored Succuss");
+                JOptionPane.showMessageDialog(null, "Restored Succuss","Succuss", JOptionPane.INFORMATION_MESSAGE);
+                jTextField2.setText("");
             }else{
-                jLabel2.setText("Can't Restored");
+                JOptionPane.showMessageDialog(null, "Can't Restored","Error", JOptionPane.ERROR_MESSAGE);
+                //jLabel2.setText("Can't Restored");
+                jTextField2.setText("");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -688,8 +679,6 @@ public class Admin_main extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
