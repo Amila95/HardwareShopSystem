@@ -626,8 +626,11 @@ public class sales extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please Enter Discount,If Not given Discount enter 0", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else{
-           
-        discount = Double.parseDouble(discontvalue.getText());
+            String dis = discontvalue.getText();
+        if(dis.indexOf('%') >= 0){ 
+        String[] parts = dis.split("%");
+        String part1 = parts[0];
+        discount = Double.parseDouble(part1);
         total = amount - amount*discount/100;
         price.setText(String.format("%.2f",total));
         //price.setText(String.valueOf(total));
@@ -637,6 +640,17 @@ public class sales extends javax.swing.JFrame {
             change.setText(String.valueOf(ch));
         }
         cash.requestFocusInWindow();
+          }else{
+            discount = Double.parseDouble(discontvalue.getText());
+            total = amount - discount;
+            price.setText(String.format("%.2f",total));
+            if(!cash.getText().equals("")){
+            double ch=Cash-total;
+            change.setText(String.valueOf(ch));
+        }
+        cash.requestFocusInWindow();
+            
+        }
         }
         }catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Your Input Is Worng", "Error", JOptionPane.ERROR_MESSAGE);
@@ -868,7 +882,7 @@ public class sales extends javax.swing.JFrame {
             if (complete) {
                 JOptionPane.showMessageDialog(null, "Done Printing!");
             }else{
-                JOptionPane.showMessageDialog(null, "Printing....");
+                JOptionPane.showMessageDialog(null, "Cancel Printing!");
             }
         } catch (PrinterException ex) {
             Logger.getLogger(sales.class.getName()).log(Level.SEVERE, null, ex);
@@ -953,12 +967,12 @@ public class sales extends javax.swing.JFrame {
     }//GEN-LAST:event_qtyKeyTyped
 
     private void discontvalueKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_discontvalueKeyTyped
-        char vChar = evt.getKeyChar();
+  /*      char vChar = evt.getKeyChar();
                     if ((Character.isLetter(vChar)
                     ||(vChar == KeyEvent.VK_BACK_SPACE)
                      || (vChar == KeyEvent.VK_DELETE))) {
                         evt.consume();
-                    }
+                    }*/
     }//GEN-LAST:event_discontvalueKeyTyped
 
     private void discontvalueInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_discontvalueInputMethodTextChanged
