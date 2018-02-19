@@ -190,11 +190,11 @@ public class sales extends javax.swing.JFrame {
             }
         });
         ItemID.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ItemIDKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 ItemIDKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ItemIDKeyPressed(evt);
             }
         });
 
@@ -580,13 +580,29 @@ public class sales extends javax.swing.JFrame {
                     row[2]= I.getPrice();
                     row[3] = I.getQty();
                     row[4] = itemtotal;
-                    model.addRow(row);
-                    amount = amount + I.getPrice()*I.getQty();
-                    amont.setText(String.format("%.2f",amount));
-                    //amont.setText(String.valueOf(amount));
+                    
+                    int nRow = model.getRowCount(), nCol = model.getColumnCount();
+                    int flag=1;
+                    for(int i=0;i<nRow;i++){
+                        String id= (String) model.getValueAt(i, 0);
+                        if(id.equals(I.getItemID())){
+                            flag=0;
+                        }
+                    }
+                    if(flag==1){
+                        model.addRow(row); 
+                        amount = amount + I.getPrice()*I.getQty();
+                        amont.setText(String.format("%.2f",amount));
+                        //amont.setText(String.valueOf(amount));
 
-                    map.put(I.getItemID(), I.getQty());
-                    itemcount += 1;
+                        map.put(I.getItemID(), I.getQty());
+                        itemcount += 1;
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Item is alreaday in the bill. please remove it", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    
+                    
+                   
                 }
                 
             }
