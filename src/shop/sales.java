@@ -275,10 +275,10 @@ public class sales extends javax.swing.JFrame {
         jLabel5.setText("Cash");
 
         cash.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 cashInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         cash.addActionListener(new java.awt.event.ActionListener() {
@@ -302,10 +302,10 @@ public class sales extends javax.swing.JFrame {
         jLabel3.setText("Amount");
 
         discontvalue.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 discontvalueInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         discontvalue.addActionListener(new java.awt.event.ActionListener() {

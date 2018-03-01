@@ -30,7 +30,7 @@ public class Bill_system {
 "\n" +
 "table {\n" +
 "    font-family: \"Times New Roman\", Times, serif;\n" +
-"    font-size:  10px;\n" +
+"    font-size:  7px;\n" +
 "    border-collapse: collapse;\n" +
 "    width: 100%;\n" +
 "\n" +
@@ -64,7 +64,7 @@ public class Bill_system {
 "        <td colspan=\"3\" style=\"text-align: center;\"> GLOBAL CARE Detergent Products</td>\n" +
 "      </tr>\n" +
 "      <tr>\n" +
-"        <td colspan=\"3\" style=\"text-align: center;\"> NO:50/B/1,Church Road, Kadana</td>\n" +
+"        <td colspan=\"3\" style=\"text-align: center;\"> NO:300/B,Negambo Road, Welisara,Ragama</td>\n" +
 "      </tr>\n" +
 "      <tr>\n" +
 "        <td colspan=\"3\" style=\"text-align: center;\"> Tel : 011 2051366 / rndistributors1@gmail.com</td>\n" +
