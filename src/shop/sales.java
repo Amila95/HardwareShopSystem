@@ -735,23 +735,24 @@ public class sales extends javax.swing.JFrame {
                 String curPrice = (table.getValueAt(count, 2).toString());
                 String Qty = (table.getValueAt(count, 3).toString());
                 double curCost = 0;
-                ResultSet rs1=db1.getCurCost(ItmID);
+                ResultSet rs1= db1.getCurCost(ItmID);
                 try {
              
-                    while(rs.next()){
-                        curCost = rs1.getDouble(1);
-                        //System.out.println(curCost);
+                    while(rs1.next()){
+                        curCost = rs1.getDouble("item_cost");
+                        break;
+                        
                     }
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 
-                
+                I.setUnitCost(curCost);
                 I.setItemID(ItmID);
                 I.setPrice(Double.parseDouble(curPrice));
                 I.setQty(Integer.parseInt(Qty));
-                I.setUnitCost(curCost);
+                
                 
                 db.settotalcount(I);
                 db.upadatedailypayment(I);
@@ -1066,23 +1067,24 @@ public class sales extends javax.swing.JFrame {
                 String curPrice = (table.getValueAt(count, 2).toString());
                 String Qty = (table.getValueAt(count, 3).toString());
                 double curCost = 0;
-                ResultSet rs1=db1.getCurCost(ItmID);
+                ResultSet rs1= db1.getCurCost(ItmID);
                 try {
              
-                    while(rs.next()){
-                        curCost = rs1.getDouble(1);
-                        //System.out.println(curCost);
+                    while(rs1.next()){
+                        curCost = rs1.getDouble("item_cost");
+                        break;
+                        
                     }
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 
-                
+                I.setUnitCost(curCost);
                 I.setItemID(ItmID);
                 I.setPrice(Double.parseDouble(curPrice));
                 I.setQty(Integer.parseInt(Qty));
-                I.setUnitCost(curCost);
+                
                 
                 db.settotalcount(I);
                 db.upadatedailypayment(I);

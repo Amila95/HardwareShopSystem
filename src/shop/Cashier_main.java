@@ -585,8 +585,8 @@ public class Cashier_main extends javax.swing.JFrame {
                     d.add(new Paragraph("Total Price : "+ price ));
                     d.add(new Paragraph("Discounts : " + discounts));
                     d.add(new Paragraph("Total Income : "+ price1 ));
-                    d.add(new Paragraph("Total Cost : "+ totalcost ));
-                    d.add(new Paragraph("Profit : "+ profit ));
+                    //d.add(new Paragraph("Total Cost : "+ totalcost ));
+                    //d.add(new Paragraph("Profit : "+ profit ));
 
             d.close();
             
