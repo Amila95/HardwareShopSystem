@@ -394,6 +394,7 @@ public class DBOP1 {
        }
        ResultSet getCurCost(String id){
            String sql="SELECT `item_cost` FROM `item` WHERE `item_id`='"+id+"'";
+           //System.out.println(sql);
              try {
                Statement s = Database.getStatement();
                ResultSet rs = s.executeQuery(sql);

@@ -701,7 +701,9 @@ public class sales extends javax.swing.JFrame {
         Item I = new Item();
         I.setAmount(Double.parseDouble(amont.getText()));
         I.setTotal_price(Double.parseDouble(price.getText()));
-        I.setDiscount(Double.parseDouble(discontvalue.getText()));
+        double discount= Double.parseDouble(amont.getText())- Double.parseDouble(price.getText());
+        I.setDiscount(discount);
+        System.out.println(discount);
         I.setCash(Double.parseDouble(cash.getText()));
         I.setChange_amount(Double.parseDouble(change.getText()));
         ResultSet rs=db.payment(I);
@@ -729,15 +731,16 @@ public class sales extends javax.swing.JFrame {
 //        }
 
             for (int count = 0; count < table.getRowCount(); count++) {
-                String ItemID = (table.getValueAt(count, 0).toString());
+                String ItmID = (table.getValueAt(count, 0).toString());
                 String curPrice = (table.getValueAt(count, 2).toString());
                 String Qty = (table.getValueAt(count, 3).toString());
-                String curCost = null;
-                ResultSet rs1=db1.getCurCost(ItemID);
+                double curCost = 0;
+                ResultSet rs1=db1.getCurCost(ItmID);
                 try {
              
                     while(rs.next()){
-                        curCost = rs1.getString(1);
+                        curCost = rs1.getDouble(1);
+                        //System.out.println(curCost);
                     }
 
                 } catch (Exception ex) {
@@ -745,10 +748,10 @@ public class sales extends javax.swing.JFrame {
                 }
                 
                 
-                I.setItemID(ItemID);
+                I.setItemID(ItmID);
                 I.setPrice(Double.parseDouble(curPrice));
                 I.setQty(Integer.parseInt(Qty));
-                I.setUnitCost(Double.parseDouble(curCost));
+                I.setUnitCost(curCost);
                 
                 db.settotalcount(I);
                 db.upadatedailypayment(I);
@@ -1029,7 +1032,9 @@ public class sales extends javax.swing.JFrame {
         Item I = new Item();
         I.setAmount(Double.parseDouble(amont.getText()));
         I.setTotal_price(Double.parseDouble(price.getText()));
-        I.setDiscount(Double.parseDouble(discontvalue.getText()));
+        double discount= Double.parseDouble(amont.getText())- Double.parseDouble(price.getText());
+        I.setDiscount(discount);
+        System.out.println(discount);
         I.setCash(Double.parseDouble(cash.getText()));
         I.setChange_amount(Double.parseDouble(change.getText()));
         ResultSet rs=db.payment(I);
@@ -1057,15 +1062,16 @@ public class sales extends javax.swing.JFrame {
 //        }
 
             for (int count = 0; count < table.getRowCount(); count++) {
-                String ItemID = (table.getValueAt(count, 0).toString());
+                String ItmID = (table.getValueAt(count, 0).toString());
                 String curPrice = (table.getValueAt(count, 2).toString());
                 String Qty = (table.getValueAt(count, 3).toString());
-                String curCost = null;
-                ResultSet rs1=db1.getCurCost(ItemID);
+                double curCost = 0;
+                ResultSet rs1=db1.getCurCost(ItmID);
                 try {
              
-                    while(rs1.next()){
-                        curCost = rs1.getString(1);
+                    while(rs.next()){
+                        curCost = rs1.getDouble(1);
+                        //System.out.println(curCost);
                     }
 
                 } catch (Exception ex) {
@@ -1073,10 +1079,10 @@ public class sales extends javax.swing.JFrame {
                 }
                 
                 
-                I.setItemID(ItemID);
+                I.setItemID(ItmID);
                 I.setPrice(Double.parseDouble(curPrice));
                 I.setQty(Integer.parseInt(Qty));
-                I.setUnitCost(Double.parseDouble(curCost));
+                I.setUnitCost(curCost);
                 
                 db.settotalcount(I);
                 db.upadatedailypayment(I);
@@ -1097,6 +1103,8 @@ public class sales extends javax.swing.JFrame {
         this.getRecept(billid);
         btnPrint.setEnabled(true);
         btnGen.setEnabled(false);
+        
+        
         
         
         
