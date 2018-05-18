@@ -54,6 +54,7 @@ import sun.print.SunAlternateMedia;
 public class sales extends javax.swing.JFrame {
     
     DBOP db = new DBOP();
+    DBOP1 db1 = new DBOP1();
     static double amount = 0;
     double discount = 0;
     double itemtotal = 0;
@@ -275,10 +276,10 @@ public class sales extends javax.swing.JFrame {
         jLabel5.setText("Cash");
 
         cash.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 cashInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         cash.addActionListener(new java.awt.event.ActionListener() {
@@ -302,10 +303,10 @@ public class sales extends javax.swing.JFrame {
         jLabel3.setText("Amount");
 
         discontvalue.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 discontvalueInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         discontvalue.addActionListener(new java.awt.event.ActionListener() {
@@ -729,16 +730,29 @@ public class sales extends javax.swing.JFrame {
 
             for (int count = 0; count < table.getRowCount(); count++) {
                 String ItemID = (table.getValueAt(count, 0).toString());
-                String curPrice = (table.getValueAt(count, 2).toString());;
+                String curPrice = (table.getValueAt(count, 2).toString());
                 String Qty = (table.getValueAt(count, 3).toString());
+                String curCost = null;
+                ResultSet rs1=db1.getCurCost(ItemID);
+                try {
+             
+                    while(rs.next()){
+                        curCost = rs1.getString(1);
+                    }
 
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
+                
                 I.setItemID(ItemID);
                 I.setPrice(Double.parseDouble(curPrice));
                 I.setQty(Integer.parseInt(Qty));
-
+                I.setUnitCost(Double.parseDouble(curCost));
+                
                 db.settotalcount(I);
                 db.upadatedailypayment(I);
-                db.setbillitem(I.getBill_id(), I.getItemID(), I.getQty(), I.getPrice());
+                db.setbillitem(I.getBill_id(), I.getItemID(), I.getQty(), I.getPrice(),I.getUnitCost());
 
              }
         
@@ -1044,25 +1058,33 @@ public class sales extends javax.swing.JFrame {
 
             for (int count = 0; count < table.getRowCount(); count++) {
                 String ItemID = (table.getValueAt(count, 0).toString());
-                String curPrice = (table.getValueAt(count, 2).toString());;
+                String curPrice = (table.getValueAt(count, 2).toString());
                 String Qty = (table.getValueAt(count, 3).toString());
+                String curCost = null;
+                ResultSet rs1=db1.getCurCost(ItemID);
+                try {
+             
+                    while(rs1.next()){
+                        curCost = rs1.getString(1);
+                    }
 
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
+                
                 I.setItemID(ItemID);
                 I.setPrice(Double.parseDouble(curPrice));
                 I.setQty(Integer.parseInt(Qty));
-
+                I.setUnitCost(Double.parseDouble(curCost));
+                
                 db.settotalcount(I);
                 db.upadatedailypayment(I);
-                db.setbillitem(I.getBill_id(), I.getItemID(), I.getQty(), I.getPrice());
+                db.setbillitem(I.getBill_id(), I.getItemID(), I.getQty(), I.getPrice(),I.getUnitCost());
 
              }
         
         
-        
-        int billid=I.getBill_id();
-        this.getRecept(billid);
-        btnPrint.setEnabled(true);
-        btnGen.setEnabled(false);
         amont.setEnabled(false);
         discontvalue.setEnabled(false);
         price.setEnabled(false);
@@ -1071,6 +1093,12 @@ public class sales extends javax.swing.JFrame {
         table.setEnabled(false);
         ItemID.setEnabled(false);
         qty.setEnabled(false);
+        int billid=I.getBill_id();
+        this.getRecept(billid);
+        btnPrint.setEnabled(true);
+        btnGen.setEnabled(false);
+        
+        
         
     }//GEN-LAST:event_btnGenKeyPressed
 

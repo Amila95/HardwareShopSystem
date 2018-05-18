@@ -89,7 +89,7 @@ public class reports extends javax.swing.JFrame {
         
     }
     
-    public void printReport(){
+        public void printReport(){
         try {
             Document d=new Document();
             PdfWriter.getInstance(d, new FileOutputStream("files//report.pdf"));
@@ -108,21 +108,25 @@ public class reports extends javax.swing.JFrame {
                         pt.addCell("ItemID");
                         pt.addCell("Name");
                         pt.addCell("Sold quantity");
-                        pt.addCell("1x Price");
+                        pt.addCell("1x Unit Price");
                         pt.addCell("Total Price");
+                        pt.addCell("1x Unit Cost");
+                        pt.addCell("Total Cost");
                     while (rs.next()) {
                         pt.addCell(rs.getString(1));
                         pt.addCell(rs.getString(2));
                         pt.addCell(rs.getString(3));
                         pt.addCell(rs.getString(4));
                         pt.addCell(rs.getString(5));
+                        pt.addCell(rs.getString(6));
+                        pt.addCell(rs.getString(7));
 
                     }
                     d.add(pt);
                     
                     ResultSet rs1=db1.getPeriodReportTotal(from,to);
                     d.add(new Paragraph(" "));
-                    double price=0,price1=0;
+                    double price=0,price1=0,totalcost=0;
                     while(rs1.next()){
                         
                         price=rs1.getDouble(1);
@@ -132,9 +136,18 @@ public class reports extends javax.swing.JFrame {
                         price1=rs2.getDouble(1);
                     }
                     double discounts=price-price1;
+                    ResultSet rs3 = db1.getPeriodReportTotalCost(from,to);
+                    while (rs3.next()) {
+                        totalcost = rs3.getDouble(1);
+
+                    }
+            
+                    double profit = price1-totalcost;
                     d.add(new Paragraph("Total Price : "+ price ));
                     d.add(new Paragraph("Discounts : " + discounts));
                     d.add(new Paragraph("Total Income : "+ price1 ));
+                    d.add(new Paragraph("Total Cost : "+ totalcost ));
+                    d.add(new Paragraph("Profit : "+ profit ));
                 }
                 
                
@@ -145,20 +158,24 @@ public class reports extends javax.swing.JFrame {
                         pt.addCell("ItemID");
                         pt.addCell("Name");
                         pt.addCell("Sold quantity");
-                        pt.addCell("1x Price");
+                        pt.addCell("1x Unit Price");
                         pt.addCell("Total Price");
+                        pt.addCell("1x Unit Cost");
+                        pt.addCell("Total Cost");
                     while(rs.next()) {
                         pt.addCell(rs.getString(1));
                         pt.addCell(rs.getString(2));
                         pt.addCell(rs.getString(3));
                         pt.addCell(rs.getString(4));
                         pt.addCell(rs.getString(5));
+                        pt.addCell(rs.getString(6));
+                        pt.addCell(rs.getString(7));
 
                     }
                 d.add(pt);
                     ResultSet rs1=db1.getOneReportTotal(date);
                     d.add(new Paragraph(" "));
-                    double price=0,price1=0;
+                    double price=0,price1=0,totalcost=0;
                     while(rs1.next()){
                         
                         price=rs1.getDouble(1);
@@ -167,11 +184,19 @@ public class reports extends javax.swing.JFrame {
                     while(rs2.next()){
                         price1=rs2.getDouble(1);
                     }
+                    ResultSet rs3 = db1.getOneReportTotalCost(date);
+                    while (rs3.next()) {
+                        totalcost = rs3.getDouble(1);
+
+                    }
+                    double profit = price1-totalcost;
                     double discounts=price-price1;
                     d.add(new Paragraph("Total Price : "+ price ));
                     d.add(new Paragraph("Discounts : " + discounts));
                     d.add(new Paragraph("Total Income : "+ price1 ));
-
+                    d.add(new Paragraph("Total Cost : "+ totalcost ));
+                    d.add(new Paragraph("Profit : "+ profit ));
+                    
                 }else if(seflag==4){
                     String date1=LocalDate.now().toString();
                     String time1=LocalTime.now().toString();
@@ -179,25 +204,39 @@ public class reports extends javax.swing.JFrame {
                         d.add(new Paragraph(" "));
                         pt.addCell("ItemID");
                         pt.addCell("Name");
-                        pt.addCell("1x Price");
+                        pt.addCell("1x Unit Price");
                         pt.addCell("Available Qty");
                         pt.addCell("Price x Qty");
+                        pt.addCell("1x Unit Cost");
+                        pt.addCell("Cost x Qty");
                     while(rs.next()) {
                         pt.addCell(rs.getString(1));
                         pt.addCell(rs.getString(2));
                         pt.addCell(rs.getString(3));
                         pt.addCell(rs.getString(4));
                         pt.addCell(rs.getString(5));
+                        pt.addCell(rs.getString(6));
+                        pt.addCell(rs.getString(7));
 
                     }
                 d.add(pt);
                  ResultSet rs1=db1.getSumStock();
+                 ResultSet rs2=db1.getSumCostStock();
                  d.add(new Paragraph(" "));
                     try {
                         while(rs1.next()){
 
                             double total=rs1.getDouble(1);
                             d.add(new Paragraph("Total Price : "+ total ));
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    try {
+                        while(rs2.next()){
+
+                            double total=rs2.getDouble(1);
+                            d.add(new Paragraph("Total Cost : "+ total ));
                         }
                     } catch (SQLException ex) {
                         ex.printStackTrace();
@@ -286,6 +325,7 @@ public class reports extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Check your network connection!","Error", JOptionPane.ERROR_MESSAGE);
     }
     }
+    
     public void addColoredText(JTextPane pane, String text, Color color) {
         StyledDocument doc = pane.getStyledDocument();
 
@@ -537,7 +577,7 @@ public class reports extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -705,7 +745,7 @@ public class reports extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -726,7 +766,7 @@ public class reports extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
         Date c=date_pick_fr.getDate();
         Date d=date_pick_to.getDate();
         from=df.format(c);
@@ -747,10 +787,10 @@ public class reports extends javax.swing.JFrame {
         btnSend.setEnabled(true);
         
         //genatate other info
-        lblTitle.setText("Report: From: "+from+" To: "+to);
+        lblTitle.setText("Report: From: "+from+" 12.00AM To: "+to+" 12.00AM");
         filename= "report_"+from+"_"+to+".pdf";
         try {
-            double price=0,price1=0;
+            double price=0,price1=0,totalcost=0;
             ResultSet rs1 = db1.getPeriodReportTotal(from,to);
             while (rs1.next()) {
 
@@ -762,11 +802,23 @@ public class reports extends javax.swing.JFrame {
                 price1 = rs2.getDouble(1);
                 
             }
-            Double discount=price-price1;
+            double discount=price-price1;
+            
+            ResultSet rs3 = db1.getPeriodReportTotalCost(from,to);
+            while (rs3.next()) {
+                totalcost = rs3.getDouble(1);
+                
+            }
+            
+            double profit = price1-totalcost;
             
             addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.BLACK);
             addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
             addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Cost : " + totalcost+"\n", Color.BLACK);
+            
+            addColoredText(txtReport, "Profit : " + profit+"\n", Color.BLACK);
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "please select a date","Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
@@ -799,11 +851,11 @@ public class reports extends javax.swing.JFrame {
         btnView.setEnabled(true);
         btnSend.setEnabled(true);
         
-        lblTitle.setText("Report: Date "+date);
+        lblTitle.setText("Report: Date "+date +" 12.00AM - 12.00PM");
         filename= "report_"+date+".pdf";
 
         try {
-            double price=0,price1=0;
+            double price=0,price1=0,totalcost=0;
             ResultSet rs1 = db1.getOneReportTotal(date);
             while (rs1.next()) {
 
@@ -815,11 +867,22 @@ public class reports extends javax.swing.JFrame {
                 price1 = rs2.getDouble(1);
                 
             }
-            Double discount=price-price1;
+            double discount=price-price1;
+            
+            ResultSet rs3 = db1.getOneReportTotalCost(date);
+            while (rs3.next()) {
+                totalcost = rs3.getDouble(1);
+                
+            }
+            double profit = price1-totalcost;
             
             addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.BLACK);
             addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
             addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Cost : " + totalcost+"\n", Color.BLACK);
+            addColoredText(txtReport, "Profit : " + profit+"\n", Color.BLACK);
+            
+            
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "please select a date","Error", JOptionPane.ERROR_MESSAGE);
@@ -894,11 +957,21 @@ public class reports extends javax.swing.JFrame {
         
         report_table.setModel(DbUtils.resultSetToTableModel(rs));
         ResultSet rs1=db1.getSumStock();
+        ResultSet rs2=db1.getSumCostStock();
         try {
             while(rs1.next()){
                 
                 double total=rs1.getDouble(1);
                 addColoredText(txtReport, "\nTotal Price : " +total+"\n", Color.BLACK);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            while(rs2.next()){
+                
+                double total=rs2.getDouble(1);
+                addColoredText(txtReport, "\nTotal Cost : " +total+"\n", Color.BLACK);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -947,10 +1020,10 @@ public class reports extends javax.swing.JFrame {
         
         
         //genatate other info
-        lblTitle.setText("Report: Date "+date);
+        lblTitle.setText("Report: Date "+date+" 12.00AM-12.00PM");
         filename= "report_"+date+".pdf";
         try {
-            double price=0,price1=0;
+            double price=0,price1=0,totalcost=0;
             ResultSet rs1 = db1.getOneReportTotal(date);
             while (rs1.next()) {
 
@@ -963,10 +1036,19 @@ public class reports extends javax.swing.JFrame {
                 
             }
             Double discount=price-price1;
+            ResultSet rs3 = db1.getOneReportTotalCost(date);
+            while (rs3.next()) {
+                totalcost = rs3.getDouble(1);
+                
+            }
+            double profit = price1-totalcost;
             
             addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.BLACK);
             addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
             addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Cost : " + totalcost+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Profit : " + profit+"\n", Color.BLACK);
+            
         } catch (Exception e) {
             e.printStackTrace();
         }

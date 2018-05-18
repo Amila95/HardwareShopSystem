@@ -18,6 +18,7 @@ public class Item {
     private String itemID;
     private String name;
     private double price;
+    private double unit_cost;
     private int qty;
     private int stock;
     private int monthstock;
@@ -45,6 +46,8 @@ public class Item {
     public void setItemID(String itemID) {
         this.itemID = itemID;
     }
+    
+    
 
     /**
      * @return the name
@@ -74,6 +77,16 @@ public class Item {
         this.price = price;
     }
 
+    public double getUnitCost() {
+        return unit_cost;
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setUnitCost(double price) {
+        this.unit_cost = price;
+    }
     /**
      * @return the qty
      */

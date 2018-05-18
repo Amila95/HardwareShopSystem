@@ -92,6 +92,7 @@ public class Admin_main extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        btnStockReports = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -209,7 +210,7 @@ public class Admin_main extends javax.swing.JFrame {
         btnDailyReports.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         btnDailyReports.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnDailyReports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/home_Add_Item.png"))); // NOI18N
-        btnDailyReports.setText("                Reports                ");
+        btnDailyReports.setText("            Sales Reports                ");
         btnDailyReports.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
         btnDailyReports.setOpaque(true);
         btnDailyReports.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -364,7 +365,7 @@ public class Admin_main extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3))
@@ -378,6 +379,25 @@ public class Admin_main extends javax.swing.JFrame {
                     .addContainerGap(167, Short.MAX_VALUE)))
         );
 
+        btnStockReports.setBackground(new java.awt.Color(190, 190, 190));
+        btnStockReports.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        btnStockReports.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnStockReports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images1/home_Add_Item.png"))); // NOI18N
+        btnStockReports.setText("            Stock Reports                ");
+        btnStockReports.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(170, 170, 170)));
+        btnStockReports.setOpaque(true);
+        btnStockReports.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnStockReportsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnStockReportsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnStockReportsMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -388,7 +408,8 @@ public class Admin_main extends javax.swing.JFrame {
                     .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAddStock, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAddItems, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDailyReports, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDailyReports, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnStockReports, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(167, 167, 167)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -410,8 +431,10 @@ public class Admin_main extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnDailyReports, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
+                        .addComponent(btnStockReports, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(200, Short.MAX_VALUE))
+                .addContainerGap(163, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -445,7 +468,7 @@ public class Admin_main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDailyReportsMouseEntered
 
     private void btnDailyReportsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDailyReportsMouseExited
-         resetBtnColour(btnDailyReports);
+        resetBtnColour(btnDailyReports);
     }//GEN-LAST:event_btnDailyReportsMouseExited
 
     private void btnExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExitMouseClicked
@@ -585,6 +608,19 @@ public class Admin_main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
+    private void btnStockReportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStockReportsMouseClicked
+        StockReport frm=new StockReport();
+        frm.setVisible(true);                // TODO add your handling code here:
+    }//GEN-LAST:event_btnStockReportsMouseClicked
+
+    private void btnStockReportsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStockReportsMouseEntered
+        setBtnColour(btnStockReports);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnStockReportsMouseEntered
+
+    private void btnStockReportsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStockReportsMouseExited
+        resetBtnColour(btnStockReports);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnStockReportsMouseExited
+
     
     
     private void showDate() {
@@ -675,6 +711,7 @@ public class Admin_main extends javax.swing.JFrame {
     private javax.swing.JLabel btnDailyReports;
     private javax.swing.JLabel btnExit;
     private javax.swing.JLabel btnLogout;
+    private javax.swing.JLabel btnStockReports;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

@@ -55,6 +55,7 @@ public class addItem extends javax.swing.JFrame {
         item_id.setText("");
         item_title.setText("");
         item_price.setText("");
+        unit_cost.setText("");
         
         btnSave.setEnabled(true);
         btnUpdate.setEnabled(false);
@@ -89,6 +90,8 @@ public class addItem extends javax.swing.JFrame {
         btnUpdate = new javax.swing.JButton();
         btnNew = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        unit_cost = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         item_table = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
@@ -140,7 +143,7 @@ public class addItem extends javax.swing.JFrame {
         jLabel2.setText("Name");
 
         jLabel3.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
-        jLabel3.setText("Price");
+        jLabel3.setText("Unit Price");
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(62, 62, 62)));
 
@@ -203,6 +206,15 @@ public class addItem extends javax.swing.JFrame {
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
+        unit_cost.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                unit_costKeyTyped(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
+        jLabel7.setText("Unit Cost");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -210,18 +222,24 @@ public class addItem extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(61, 61, 61)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(jLabel1))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(jLabel2)))
+                        .addGap(61, 61, 61))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7))
+                        .addGap(31, 31, 31)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(item_id, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
                     .addComponent(item_title)
-                    .addComponent(item_price))
+                    .addComponent(item_price)
+                    .addComponent(unit_cost))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -240,7 +258,11 @@ public class addItem extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(item_price, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(68, 68, 68)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(unit_cost, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -430,7 +452,7 @@ public class addItem extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(7, 7, 7)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -453,7 +475,7 @@ public class addItem extends javax.swing.JFrame {
             I.setItemID(item_id.getText());
             I.setName((item_title.getText().toString())); 
             I.setPrice(Double.parseDouble(item_price.getText().toString()));
-
+            I.setUnitCost(Double.parseDouble(unit_cost.getText().toString()));
             db1.addItem(I);
             this.resetFields();
             this.Get_Data(); 
@@ -484,6 +506,9 @@ public class addItem extends javax.swing.JFrame {
                 item_title.setText(name);
                 String price=rs.getString("item_price");
                 item_price.setText(price);
+                String cost=rs.getString("item_cost");
+                unit_cost.setText(cost);
+                
             }
             btnUpdate.setEnabled(true);
             btnDelete.setEnabled(true);
@@ -507,8 +532,9 @@ public class addItem extends javax.swing.JFrame {
         String nid= item_id.getText();
         String name=item_title.getText();
         Double price=Double.parseDouble(item_price.getText());
+        Double cost=Double.parseDouble(unit_cost.getText());
         //System.out.println(oid+nid+name+price);
-        db1.updateItem(oid, nid, name, price);
+        db1.updateItem(oid, nid, name, price,cost);
         this.Get_Data();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -554,6 +580,10 @@ public class addItem extends javax.swing.JFrame {
     private void item_priceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_item_priceKeyTyped
           // TODO add your handling code here:
     }//GEN-LAST:event_item_priceKeyTyped
+
+    private void unit_costKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_unit_costKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_unit_costKeyTyped
 
     /**
      * @param args the command line arguments
@@ -630,6 +660,7 @@ public class addItem extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -640,5 +671,6 @@ public class addItem extends javax.swing.JFrame {
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblTime;
     private javax.swing.JTextField search_id;
+    private javax.swing.JTextField unit_cost;
     // End of variables declaration//GEN-END:variables
 }

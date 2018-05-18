@@ -39,7 +39,7 @@ public class addStock extends javax.swing.JFrame {
         
         Get_Data();
         btnAdd.setEnabled(false);
-        btnChange.setEnabled(false);
+        
         
         stock_id.setEditable(false);
         stock_name.setEditable(false);
@@ -80,7 +80,8 @@ public class addStock extends javax.swing.JFrame {
         stock_cur = new javax.swing.JTextField();
         stock_ch = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
-        btnChange = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        stock_unitprice = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         search_id = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
@@ -177,13 +178,13 @@ public class addStock extends javax.swing.JFrame {
         jLabel2.setText("Name");
 
         jLabel3.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
-        jLabel3.setText("Price");
+        jLabel3.setText("Unit Price");
 
         jLabel4.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
         jLabel4.setText("Current Stock");
 
         jLabel5.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
-        jLabel5.setText("Add/Change ");
+        jLabel5.setText("Add ");
 
         stock_id.setFont(new java.awt.Font("Waree", 0, 16)); // NOI18N
         stock_id.addActionListener(new java.awt.event.ActionListener() {
@@ -228,11 +229,13 @@ public class addStock extends javax.swing.JFrame {
             }
         });
 
-        btnChange.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
-        btnChange.setText("CHANGE");
-        btnChange.addActionListener(new java.awt.event.ActionListener() {
+        jLabel9.setFont(new java.awt.Font("Waree", 0, 18)); // NOI18N
+        jLabel9.setText("Unit Cost");
+
+        stock_unitprice.setFont(new java.awt.Font("Waree", 0, 16)); // NOI18N
+        stock_unitprice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChangeActionPerformed(evt);
+                stock_unitpriceActionPerformed(evt);
             }
         });
 
@@ -249,18 +252,18 @@ public class addStock extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel4)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(stock_cur, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
                             .addComponent(stock_price)
                             .addComponent(stock_name)
                             .addComponent(stock_id)
-                            .addComponent(stock_ch)))
+                            .addComponent(stock_ch)
+                            .addComponent(stock_unitprice)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(btnChange, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(243, 243, 243)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
@@ -279,6 +282,10 @@ public class addStock extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(stock_price, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(stock_unitprice, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -288,10 +295,8 @@ public class addStock extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(stock_ch, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd)
-                    .addComponent(btnChange))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnAdd)
+                .addContainerGap(143, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(62, 62, 62)));
@@ -456,6 +461,8 @@ public class addStock extends javax.swing.JFrame {
                 stock_name.setText(name);
                 String price=rs.getString("item_price");
                 stock_price.setText(price);
+                String unitcost=rs.getString("item_cost");
+                stock_unitprice.setText(unitcost);
                 String stock=rs.getString("item_quantity");
                 stock_cur.setText(stock);
                 
@@ -466,7 +473,7 @@ public class addStock extends javax.swing.JFrame {
                 
             }
             btnAdd.setEnabled(true);
-            btnChange.setEnabled(true);
+            
             
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -481,25 +488,12 @@ public class addStock extends javax.swing.JFrame {
         if(value<0){
             JOptionPane.showMessageDialog(null, "Sorry! you don't have enough qty!");
         }else{
-            db1.addStock(id,value);
+            db1.addStock(id,value,avalue);
             this.Get_Data();
             stock_cur.setText(Integer.toString(value));
         }
         
     }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
-        String id=stock_id.getText();
-        int value=Integer.parseInt(stock_ch.getText());
-        if(value<0){
-            JOptionPane.showMessageDialog(null, "Sorry! Item qty should be greater than 0");
-        }else{
-            db1.addStock(id,value);
-            this.Get_Data();
-            stock_cur.setText(Integer.toString(value));
-        }
-        
-    }//GEN-LAST:event_btnChangeActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
@@ -509,6 +503,10 @@ public class addStock extends javax.swing.JFrame {
     private void stock_tableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stock_tableKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_stock_tableKeyPressed
+
+    private void stock_unitpriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stock_unitpriceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stock_unitpriceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -570,7 +568,6 @@ public class addStock extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAll;
-    private javax.swing.JButton btnChange;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -581,6 +578,7 @@ public class addStock extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -596,5 +594,6 @@ public class addStock extends javax.swing.JFrame {
     private javax.swing.JTextField stock_name;
     private javax.swing.JTextField stock_price;
     private javax.swing.JTable stock_table;
+    private javax.swing.JTextField stock_unitprice;
     // End of variables declaration//GEN-END:variables
 }
