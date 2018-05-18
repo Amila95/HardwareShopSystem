@@ -703,7 +703,7 @@ public class sales extends javax.swing.JFrame {
         I.setTotal_price(Double.parseDouble(price.getText()));
         double discount= Double.parseDouble(amont.getText())- Double.parseDouble(price.getText());
         I.setDiscount(discount);
-        System.out.println(discount);
+        //System.out.println(discount);
         I.setCash(Double.parseDouble(cash.getText()));
         I.setChange_amount(Double.parseDouble(change.getText()));
         ResultSet rs=db.payment(I);
