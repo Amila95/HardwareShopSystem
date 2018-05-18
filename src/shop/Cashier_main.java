@@ -544,37 +544,49 @@ public class Cashier_main extends javax.swing.JFrame {
                 para1.setAlignment(Paragraph.ALIGN_CENTER);
                 d.add(para1);
                 
-                d.add(new Paragraph("Date: " + date));
-                d.add(new Paragraph(" "));
-                pt.addCell("ItemID");
-                pt.addCell("Name");
-                pt.addCell("Sold quantity");
-                pt.addCell("1x Price");
-                pt.addCell("Total Price");
+                        d.add(new Paragraph("Date: "+date));
+                        d.add(new Paragraph(" "));
+                        pt.addCell("ItemID");
+                        pt.addCell("Name");
+                        pt.addCell("Sold quantity");
+                        pt.addCell("1x Unit Price");
+                        pt.addCell("Total Price");
+                        pt.addCell("1x Unit Cost");
+                        pt.addCell("Total Cost");
                 while (rs.next()) {
                     pt.addCell(rs.getString(1));
                     pt.addCell(rs.getString(2));
                     pt.addCell(rs.getString(3));
                     pt.addCell(rs.getString(4));
                     pt.addCell(rs.getString(5));
+                    pt.addCell(rs.getString(6));
+                    pt.addCell(rs.getString(7));
 
                 }
                 d.add(pt);
-                ResultSet rs1 = db1.getOneReportTotal(date);
-                d.add(new Paragraph(" "));
-                double price = 0, price1 = 0;
-                while (rs1.next()) {
+                ResultSet rs1=db1.getOneReportTotal(date);
+                    d.add(new Paragraph(" "));
+                    double price=0,price1=0,totalcost=0;
+                    while(rs1.next()){
+                        
+                        price=rs1.getDouble(1);
+                    }
+                    ResultSet rs2=db1.getOneReportTotalBillPrice(date);
+                    while(rs2.next()){
+                        price1=rs2.getDouble(1);
+                    }
+                    ResultSet rs3 = db1.getOneReportTotalCost(date);
+                    while (rs3.next()) {
+                        totalcost = rs3.getDouble(1);
 
-                    price = rs1.getDouble(1);
-                }
-                ResultSet rs2 = db1.getOneReportTotalBillPrice(date);
-                while (rs2.next()) {
-                    price1 = rs2.getDouble(1);
-                }
-                double discounts = price - price1;
-                d.add(new Paragraph("Total Price : " + price));
-                d.add(new Paragraph("Discounts : " + discounts));
-                d.add(new Paragraph("Total Income : " + price1));
+                    }
+                    double profit = price1-totalcost;
+                    double discounts=price-price1;
+                    d.add(new Paragraph("Total Price : "+ price ));
+                    d.add(new Paragraph("Discounts : " + discounts));
+                    d.add(new Paragraph("Total Income : "+ price1 ));
+                    d.add(new Paragraph("Total Cost : "+ totalcost ));
+                    d.add(new Paragraph("Profit : "+ profit ));
 
             d.close();
             
