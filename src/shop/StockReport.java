@@ -23,6 +23,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -457,8 +458,10 @@ public class StockReport extends javax.swing.JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            addColoredText(txtReport, "\nCurrent Stock Price : " + curStockPrice+"\n", Color.BLACK);
-            addColoredText(txtReport, "Current Stock Cost : " + curStockCost+"\n", Color.BLACK);
+            
+            DecimalFormat lf = new DecimalFormat("#.00");
+            addColoredText(txtReport, "\nCurrent Stock Price : " + lf.format(curStockPrice)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Current Stock Cost : " + lf.format(curStockCost)+"\n", Color.BLACK);
             
             
             //date_pick_fr.setDate(null);
@@ -591,9 +594,9 @@ public class StockReport extends javax.swing.JFrame {
                     
                     
             
-                    
-                    d.add(new Paragraph("Current Stock Price : "+ CurStockPrice ));
-                    d.add(new Paragraph("Current Stock Cost : " + CurStockCost));
+                    DecimalFormat lf = new DecimalFormat("#.00");
+                    d.add(new Paragraph("Current Stock Price : "+ lf.format(CurStockPrice)));
+                    d.add(new Paragraph("Current Stock Cost : " + lf.format(CurStockCost)));
                     
                 
                 

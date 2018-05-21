@@ -24,6 +24,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -143,11 +144,13 @@ public class reports extends javax.swing.JFrame {
                     }
             
                     double profit = price1-totalcost;
-                    d.add(new Paragraph("Total Price : "+ price ));
-                    d.add(new Paragraph("Discounts : " + discounts));
-                    d.add(new Paragraph("Total Income : "+ price1 ));
-                    d.add(new Paragraph("Total Cost : "+ totalcost ));
-                    d.add(new Paragraph("Profit : "+ profit ));
+                    
+                    DecimalFormat lf = new DecimalFormat("#.00");
+                    d.add(new Paragraph("Total Price : "+ lf.format(price) ));
+                    d.add(new Paragraph("Discounts : " + lf.format(discounts)));
+                    d.add(new Paragraph("Total Income : "+ lf.format(price1) ));
+                    d.add(new Paragraph("Total Cost : "+ lf.format(totalcost) ));
+                    d.add(new Paragraph("Profit : "+ lf.format(profit) ));
                 }
                 
                
@@ -191,11 +194,13 @@ public class reports extends javax.swing.JFrame {
                     }
                     double profit = price1-totalcost;
                     double discounts=price-price1;
-                    d.add(new Paragraph("Total Price : "+ price ));
-                    d.add(new Paragraph("Discounts : " + discounts));
-                    d.add(new Paragraph("Total Income : "+ price1 ));
-                    d.add(new Paragraph("Total Cost : "+ totalcost ));
-                    d.add(new Paragraph("Profit : "+ profit ));
+                    
+                    DecimalFormat lf = new DecimalFormat("#.00");
+                    d.add(new Paragraph("Total Price : "+ lf.format(price) ));
+                    d.add(new Paragraph("Discounts : " + lf.format(discounts)));
+                    d.add(new Paragraph("Total Income : "+ lf.format(price1) ));
+                    d.add(new Paragraph("Total Cost : "+ lf.format(totalcost) ));
+                    d.add(new Paragraph("Profit : "+ lf.format(profit) ));
                     
                 }else if(seflag==4){
                     String date1=LocalDate.now().toString();
@@ -223,11 +228,12 @@ public class reports extends javax.swing.JFrame {
                  ResultSet rs1=db1.getSumStock();
                  ResultSet rs2=db1.getSumCostStock();
                  d.add(new Paragraph(" "));
+                 DecimalFormat lf = new DecimalFormat("#.00");
                     try {
                         while(rs1.next()){
 
                             double total=rs1.getDouble(1);
-                            d.add(new Paragraph("Total Price : "+ total ));
+                            d.add(new Paragraph("Total Price : "+ lf.format(total) ));
                         }
                     } catch (SQLException ex) {
                         ex.printStackTrace();
@@ -236,7 +242,7 @@ public class reports extends javax.swing.JFrame {
                         while(rs2.next()){
 
                             double total=rs2.getDouble(1);
-                            d.add(new Paragraph("Total Cost : "+ total ));
+                            d.add(new Paragraph("Total Cost : "+ lf.format(total) ));
                         }
                     } catch (SQLException ex) {
                         ex.printStackTrace();
@@ -812,12 +818,13 @@ public class reports extends javax.swing.JFrame {
             
             double profit = price1-totalcost;
             
-            addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.BLACK);
-            addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
-            addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
-            addColoredText(txtReport, "Total Cost : " + totalcost+"\n", Color.BLACK);
+            DecimalFormat lf = new DecimalFormat("#.00");
             
-            addColoredText(txtReport, "Profit : " + profit+"\n", Color.BLACK);
+            addColoredText(txtReport, "\nTotal Price : " + lf.format(price)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Discounts : " + lf.format(discount)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Income : " + lf.format(price1)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Cost : " + lf.format(totalcost)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Profit : " + lf.format(profit)+"\n", Color.BLACK);
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "please select a date","Error", JOptionPane.ERROR_MESSAGE);
@@ -876,11 +883,13 @@ public class reports extends javax.swing.JFrame {
             }
             double profit = price1-totalcost;
             
-            addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.BLACK);
-            addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
-            addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
-            addColoredText(txtReport, "Total Cost : " + totalcost+"\n", Color.BLACK);
-            addColoredText(txtReport, "Profit : " + profit+"\n", Color.BLACK);
+            DecimalFormat lf = new DecimalFormat("#.00");
+            
+            addColoredText(txtReport, "\nTotal Price : " + lf.format(price)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Discounts : " + lf.format(discount)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Income : " + lf.format(price1)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Cost : " + lf.format(totalcost)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Profit : " + lf.format(profit)+"\n", Color.BLACK);
             
             
         } catch (Exception e) {
@@ -1043,11 +1052,13 @@ public class reports extends javax.swing.JFrame {
             }
             double profit = price1-totalcost;
             
-            addColoredText(txtReport, "\nTotal Price : " + price+"\n", Color.BLACK);
-            addColoredText(txtReport, "Discounts : " + discount+"\n", Color.BLACK);
-            addColoredText(txtReport, "Total Income : " + price1+"\n", Color.BLACK);
-            addColoredText(txtReport, "Total Cost : " + totalcost+"\n", Color.BLACK);
-            addColoredText(txtReport, "Total Profit : " + profit+"\n", Color.BLACK);
+            DecimalFormat lf = new DecimalFormat("#.00");
+            
+            addColoredText(txtReport, "\nTotal Price : " + lf.format(price)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Discounts : " + lf.format(discount)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Income : " + lf.format(price1)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Total Cost : " + lf.format(totalcost)+"\n", Color.BLACK);
+            addColoredText(txtReport, "Profit : " + lf.format(profit)+"\n", Color.BLACK);
             
         } catch (Exception e) {
             e.printStackTrace();
