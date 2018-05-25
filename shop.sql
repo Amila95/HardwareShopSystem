@@ -2,10 +2,10 @@
 -- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Mar 23, 2018 at 04:52 AM
--- Server version: 10.1.28-MariaDB
--- PHP Version: 5.6.32
+-- Host: 127.0.0.1
+-- Generation Time: May 18, 2018 at 08:12 AM
+-- Server version: 10.1.30-MariaDB
+-- PHP Version: 5.6.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,6 +25,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `addqty`
+--
+
+CREATE TABLE `addqty` (
+  `a_id` int(10) NOT NULL,
+  `item_id` varchar(100) NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `qty` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `bill`
 --
 
@@ -38,14 +51,6 @@ CREATE TABLE `bill` (
   `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `bill`
---
-
-INSERT INTO `bill` (`bill_id`, `amount`, `discount`, `total_price`, `cash`, `change_amount`, `datetime`) VALUES
-(1, 600.5, 0, 600.5, 700, 99.5, '2018-02-17 08:21:35'),
-(2, 319, 0, 319, 400, 81, '2018-02-19 14:51:52');
-
 -- --------------------------------------------------------
 
 --
@@ -56,18 +61,9 @@ CREATE TABLE `bill_item` (
   `bill_id` int(100) NOT NULL,
   `item_id` varchar(100) NOT NULL,
   `quantity` int(100) NOT NULL,
-  `cur_1x_price` double DEFAULT NULL
+  `cur_1x_price` double DEFAULT NULL,
+  `cur_1x_cost` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `bill_item`
---
-
-INSERT INTO `bill_item` (`bill_id`, `item_id`, `quantity`, `cur_1x_price`) VALUES
-(1, '0100', 4, 98),
-(1, '0200', 1, 110.5),
-(2, '0100', 1, 98),
-(2, '0200', 2, 110.5);
 
 -- --------------------------------------------------------
 
@@ -81,16 +77,6 @@ CREATE TABLE `daily` (
   `d_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `daily`
---
-
-INSERT INTO `daily` (`item_id`, `date`, `d_quantity`) VALUES
-('0100', '2018-02-17', 5),
-('0100', '2018-02-19', 1),
-('0200', '2018-02-17', 1),
-('0200', '2018-02-19', 2);
-
 -- --------------------------------------------------------
 
 --
@@ -101,19 +87,9 @@ CREATE TABLE `item` (
   `item_id` varchar(255) NOT NULL,
   `item_name` varchar(255) NOT NULL,
   `item_price` double NOT NULL,
-  `item_quantity` int(11) NOT NULL DEFAULT '0'
+  `item_quantity` int(11) NOT NULL DEFAULT '0',
+  `item_cost` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `item`
---
-
-INSERT INTO `item` (`item_id`, `item_name`, `item_price`, `item_quantity`) VALUES
-('0002', 'case', 45, 100),
-('0003', 'light', 75, 100),
-('0100', 'kuwai', 98, 94),
-('0200', 'poso', 110.5, 97),
-('1', 'broom', 220, 100);
 
 -- --------------------------------------------------------
 
@@ -132,12 +108,19 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`uname`, `password`, `type`) VALUES
-('admin', 'globalcare', 'Admin'),
+('admin', 's.w.nugera1973', 'Admin'),
 ('cashier', 'globalcare', 'Cashier');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `addqty`
+--
+ALTER TABLE `addqty`
+  ADD PRIMARY KEY (`a_id`),
+  ADD KEY `item_id` (`item_id`);
 
 --
 -- Indexes for table `bill`
@@ -175,14 +158,26 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `addqty`
+--
+ALTER TABLE `addqty`
+  MODIFY `a_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `bill_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `bill_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `addqty`
+--
+ALTER TABLE `addqty`
+  ADD CONSTRAINT `addqty_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
 
 --
 -- Constraints for table `bill_item`
